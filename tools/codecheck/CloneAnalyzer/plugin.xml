@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="CloneAnalyzer"
+   name="CloneAnalyzer Plug-in"
+   version="0.0.21"
+   provider-name=""
+   class="de.fzi.cloneanalyzer.core.CloneAnalyzerPlugin">
+   <runtime>
+      <library name="CloneAnalyzer.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.compare"/>
+   </requires>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="CloneAnalyzer Menu"
+            visible="true"
+            id="CloneAnalyzer.actionSet">
+         <menu
+               label="CloneAnalyzer"
+               id="CloneAnalyzerMenu">
+            <separator
+                  name="FileGroup">
+            </separator>
+            <separator
+                  name="BuildGroup">
+            </separator>
+            <separator
+                  name="ConfigGroup">
+            </separator>
+         </menu>
+         <action
+               label="&amp;Build..."
+               icon="icons/cloneanalyzer.gif"
+               tooltip="opens the ConfigurationWizzard for analyzing clones"
+               class="de.fzi.cloneanalyzer.actions.BuildWizardAction"
+               menubarPath="CloneAnalyzerMenu/BuildGroup"
+               id="CloneAnalyzer.actions.BuildWizzardAction">
+         </action>
+         <!--
+         <action
+               label="&amp;Rebuild"
+               icon="icons/cloneanalyzer.gif"
+               tooltip="analyzes clones using (previous/default) configuration"
+               class="de.fzi.cloneanalyzer.actions.BuildAction"
+               menubarPath="CloneAnalyzerMenu/BuildGroup"
+               toolbarPath="CloneAnalyzerGroup"
+               id="CloneAnalyzer.actions.BuildAction">
+         </action>
+         <action
+               label="&amp;Open CloneData..."
+               icon="icons/open.gif"
+               tooltip="Load previously built CloneData from file"
+               class="de.fzi.cloneanalyzer.actions.OpenAction"
+               menubarPath="CloneAnalyzerMenu/FileGroup"
+               id="CloneAnalyzer.actions.OpenAction">
+         </action>
+         -->
+         <action
+               label="&amp;Save CloneData As..."
+               icon="icons/saveas.gif"
+               tooltip="Save built CloneData to file"
+               class="de.fzi.cloneanalyzer.actions.SaveAsAction"
+               menubarPath="CloneAnalyzerMenu/FileGroup"
+               id="CloneAnalyzer.actions.SaveAsAction">
+         </action>
+         <action
+               label="&amp;Save all CloneSetInfo"
+               icon="toogle"
+               state="true"
+               tooltip="Save CloneSet and CloneInstance Info"
+               class="de.fzi.cloneanalyzer.actions.SaveAllInfoAction"
+               menubarPath="CloneAnalyzerMenu/FileGroup"
+               id="CloneAnalyzer.actions.SaveAllInfoAction">
+         </action>
+         <!--
+         <action
+               label="Show &amp;Reminder on Change"
+               style="toggle"
+               state="false"
+               tooltip="Show Reminder MessageBox on Change"
+               class="de.fzi.cloneanalyzer.actions.ReminderAction"
+               menubarPath="CloneAnalyzerMenu/ConfigGroup"
+               id="CloneAnalyzer.actions.ReminderAction">
+         </action>
+         -->
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <actionSet
+               id="CloneAnalyzer.actionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               visible="true"
+               relationship="right"
+               id="de.fzi.cloneanalyzer.viewer.TreeView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="CloneAnalyzer"
+            id="CloneAnalyzer">
+      </category>
+      <!--
+      <view
+            name="CloneTableViewer"
+            icon="icons/cloneanalyzer.gif"
+            category="CloneAnalyzer"
+            class="de.fzi.cloneanalyzer.viewer.CloneTableViewer"
+            id="de.fzi.cloneanalyzer.viewer.CloneTableViewer">
+      </view>
+      -->
+      <view
+            name="CloneTreeViewer"
+            icon="icons/cloneanalyzer.gif"
+            category="CloneAnalyzer"
+            class="de.fzi.cloneanalyzer.viewer.CloneTreeViewer"
+            id="de.fzi.cloneanalyzer.viewer.CloneTreeViewer">
+      </view>
+   </extension>
+   <!--
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="CloneAnalyzerWizards"
+            id="CloneAnalyzer">
+      </category>
+      <wizard
+            name="Configure Clone Analyzer"
+            icon="icons/cloneanalyzer.gif"
+            category="CloneAnalyzer"
+            class="de.fzi.cloneanalyzer.wizards.ConfigWizard"
+            id="CloneAnalyzer.wizards.ConfigWizard">
+      </wizard>
+   </extension>
+   <extension
+         id="cloneproblem"
+         name="Clone Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <attribute
+            name="cloneinstance">
+      </attribute>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>   
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            colorPreferenceValue="255,64,128"
+            annotationType="org.eclipse.ui.workbench.texteditor.warning"
+            colorPreferenceKey="cloneIndicationColor"
+            contributesToHeader="true"
+            overviewRulerPreferenceValue="true"
+            markerType="CloneAnalyzer.cloneproblem"
+            presentationLayer="6"
+            textPreferenceValue="true"
+            label="Clone"
+            textPreferenceKey="cloneIndication"
+            markerSeverity="1"
+            overviewRulerPreferenceKey="cloneIndicationInOverviewRuler">
+      </specification>
+   </extension>
+   <extension
+         name="CloneResolution"
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            markerType="CloneAnalyzer.cloneproblem"
+            class="de.fzi.cloneanalyzer.annotation.CloneResolutionGenerator">
+      </markerResolutionGenerator>
+   </extension>
+-->
+	<extension
+	      point="org.eclipse.ui.editors">
+	   <editor
+	         name="Clone Editor"
+	         extensions="java,cpp,c,h,pas"
+	         icon="icons/cloneanalyzer.gif"
+	         class="de.fzi.cloneanalyzer.viewer.CloneEditor"
+	         id="de.fzi.cloneanalyzer.viewer.CloneEditor">
+	   </editor>
+	</extension>
+</plugin>

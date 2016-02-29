@@ -1,0 +1,1322 @@
+;A23 PAD application
+;---------------------------------------------------------------------------------------------------------
+; port configuration:
+; port_name = port:GPIO<mux><pull up/down><driver level><default value>
+; mux: GPIO function configuration, 0-input, 1-output, 2+: special funciton for modules
+; pull up/down: 1-pull up, 2-pull down
+; driver level: 0,1,2,3. 2 is recommended
+; default value: default output value when this IO is configured as an output IO
+;---------------------------------------------------------------------------------------------------------
+
+[product]
+version = "100"
+machine = "CDR"
+
+[platform]
+eraseflag   = 0
+
+;----------------------------------------------------------------------------------
+;[target]  system bootup configuration
+;boot_clock	= CPU boot frequency, Unit: MHz
+;storage_type	= boot medium, 0-nand, 1-card0, 2-card2, -1(defualt)auto scan
+;----------------------------------------------------------------------------------
+[target]
+boot_clock   	= 1200
+storage_type  	= -1
+
+[boot_spi_board0]
+boot_spi_speed_hz = 80000000
+
+;----------------------------------------------------------------------------------
+;dcdc1_vol	---set dcdc1 voltage,mV,1600-3400,100mV/step
+;dcdc2_vol	---set dcdc2 voltage,mV,600-1540,20mV/step
+;dcdc3_vol	---set dcdc3 voltage,mV,600-1860,20mV/step
+;dcdc4_vol	---set dcdc4 voltage,mV,600-1540,20mV/step
+;dcdc5_vol	---set dcdc5 voltage,mV,1000-2550,50mV/step
+;aldo2_vol	---set aldo2 voltage,mV,700-3300,100mV/step
+;aldo3_vol	---set aldo3 voltage,mV,700-3300,100mV/step
+;----------------------------------------------------------------------------------
+[power_sply]
+dcdc2_vol       = 1250
+dcdc3_vol       = 3300
+aldo2_vol       = 2500
+aldo3_vol       = 3000
+ldo1_vol        = 3300
+ldo2_vol        = 3000
+;----------------------------------------------------------------------------------
+;card boot
+;----------------------------------------------------------------------------------
+[card_boot]
+logical_start   = 40960
+sprite_gpio0    =
+
+;----------------------------------------------------------------------------------
+;[cardx_boot_para] boot card configuration
+;card_ctrl 	 = boot card NO. 0 or 2
+;card_high_speed = speed mode, 0-normal mode(up to 25MHz), 1-high speed mode(up to 50MHz)
+;card_line       = boot card buswidth(1 or 4)
+;----------------------------------------------------------------------------------
+[card0_boot_para]
+card_ctrl       = 0
+card_high_speed = 1
+card_line       = 4
+sdc_d1          = port:PF0<2><1><default><default>
+sdc_d0          = port:PF1<2><1><default><default>
+sdc_clk         = port:PF2<2><1><default><default>
+sdc_cmd         = port:PF3<2><1><default><default>
+sdc_d3          = port:PF4<2><1><default><default>
+sdc_d2          = port:PF5<2><1><default><default>
+
+[card2_boot_para]
+card_ctrl       = 2
+card_high_speed = 1
+card_line       = 8
+sdc_cmd         = port:PC01<2><1><default><default>
+sdc_clk         = port:PC00<2><1><default><default>
+sdc_d0          = port:PC03<2><1><default><default>
+sdc_d1          = port:PC04<2><1><default><default>
+sdc_d2          = port:PC05<2><1><default><default>
+sdc_d3          = port:PC06<2><1><default><default>
+sdc_d4          = port:PC07<2><1><default><default>
+sdc_d5          = port:PC08<2><1><default><default>
+sdc_d6          = port:PC09<2><1><default><default>
+sdc_d7          = port:PC10<2><1><default><default>
+sdc_2xmode   	= 1
+sdc_ddrmode		= 1
+;----------------------------------------------------------------------------------
+;[twi_para] twi for boot code
+;twi_port	= twi controller ID
+;----------------------------------------------------------------------------------
+[twi_para]
+twi_port        = 0
+twi_scl         = port:PB07<2><default><default><default>
+twi_sda         = port:PB06<2><default><default><default>
+
+;----------------------------------------------------------------------------------
+;[uart_para] boot debug port configuration
+;uart_debug_port = uart port ID for boot debug
+;----------------------------------------------------------------------------------
+[uart_para]
+uart_debug_port = 1
+uart_debug_tx   = port:PG06<2><1><default><default>
+uart_debug_rx   = port:PG07<2><1><default><default>
+
+;----------------------------------------------------------------------------------
+;[jtag_para] jtag configuration
+;jtag_enable     = 0-disable jtag, 1-enable jtag
+;----------------------------------------------------------------------------------
+[jtag_para]
+jtag_enable     = 0
+jtag_ms         = port:PB10<2><default><default><default>
+jtag_ck         = port:PB11<2><default><default><default>
+jtag_do         = port:PB12<2><default><default><default>
+jtag_di         = port:PB13<2><default><default><default>
+
+;----------------------------------------------------------------------------------
+;[clock] pll configuration
+;----------------------------------------------------------------------------------
+[clock]
+pll3            = 297
+pll4            = 300
+pll6            = 600
+pll8            = 360
+pll9            = 480
+pll10           = 297
+
+pll_ve          = 360
+pll_isp         = 360
+;---------------------------------------------------------------------------------------------------------
+;[pm_para] power management
+;standby_mode = 0-normal standby, 1-super standby
+;---------------------------------------------------------------------------------------------------------
+[pm_para]
+standby_mode		= 1
+
+;----------------------------------------------------------------------------------
+;sys_pwr_dm_para
+;this para is used to change default sys_pwr_dm config when necessary.
+;   allowed sys_pwr_dm is such as follow:
+;		vdd-cpua
+; 		vdd-cpub
+; 		vdd-gpu
+; 		vcc-dram
+; 		vdd-sys
+; 		which is compatible with pmu regu config. see: [pmu1_regu] for more info.
+;   value: 0: del the pwr_dm from sys_pwr_dm_mask;
+;	   1: add the pwr_dm into sys_pwr_dm_mask;
+;----------------------------------------------------------------------------------
+[sys_pwr_dm_para]
+vdd-cpua = 1
+vdd-sys  = 1
+
+;----------------------------------------------------------------------------------
+;dynamic_standby_para
+;   enable:
+;	value: 0: all config is ignored.
+;	       1: all config is effective.
+;   dram_selfresh_flag:
+;	value: 0: dram will not enter selfresh,
+;		    this config is used for stop dram entering selfresh, in case of dram memory have bug.
+;	       1: dram will enter slefresh.
+;
+;----------------------------------------------------------------------------------
+[dynamic_standby_para]
+enable = 0
+dram_selfresh_flag = 1
+vdd_cpua_vol     = 1200
+vdd_sys_vol      = 1200
+
+;*****************************************************************************
+;sdram configuration
+;
+;*****************************************************************************
+[dram_para]
+dram_clk        = 600
+dram_type       = 3	
+dram_zq         = 0x39bb
+dram_odt_en     = 1
+dram_para1      = 0x10E20000
+dram_para2      = 0x0000
+dram_mr0        = 0x1840
+dram_mr1        = 0x4
+dram_mr2        = 0x18
+dram_mr3        = 0x4
+dram_tpr0       = 0x00832087
+dram_tpr1       = 0x01C24085
+dram_tpr2       = 0x0002A01D
+dram_tpr3       = 0x0
+dram_tpr4       = 0x0
+dram_tpr5       = 0x0
+dram_tpr6       = 0x0
+dram_tpr7       = 0x0
+dram_tpr8       = 0x0
+dram_tpr9       = 0x0
+dram_tpr10      = 0x0
+dram_tpr11      = 0x0
+dram_tpr12      = 0x55
+dram_tpr13      = 0x0d000000
+
+;---------------------------------------------------------------------------------------------------------
+; if 1 == standby_mode, then support super standby;
+; else, support normal standby.
+;---------------------------------------------------------------------------------------------------------
+[pm_para]
+standby_mode		= 1
+
+;---------------------------------------------------------------------------------------------------------
+; wakeup_src_para:
+;	sometimes, u would like to add more wakeup src in standby mode, these para will be
+;	help;
+;	u need to make sure the standby mode support the wakeup src. Also, some hw
+;	condition must be guaranteed.
+;	including:
+;	cpu_en: power on or off.
+;		1: mean power on
+;		0: mean power off
+;	cpu_freq: indicating lowest freq. unit is Mhz;
+;	dram selfresh_en: selfresh or not.
+;		1: enable enter selfresh
+;		0: disable enter selfresh
+;	dram_pll: if not enter selfresh, indicating lowest freq. unit is Mhz;
+;	wakeup_src: to make the scenario work, the wakeup src is needed.
+;---------------------------------------------------------------------------------------------------------
+[wakeup_src_para]
+cpu_en		= 0
+cpu_freq	= 48
+; (cpu:apb:ahb)
+pll_ratio	= 0x111
+dram_selfresh_en= 1
+dram_freq	= 36
+wakeup_src_wl 	= port:PL07<4><default><default><0>
+wakeup_src_bt 	= port:PL09<4><default><default><0>
+bb_wake_ap	= port:PL02<4><default><default><0>
+
+;----------------------------------------------------------------------------------
+;i2c configuration
+; twi_used = twix enable
+;----------------------------------------------------------------------------------
+[twi0]
+twi_used        = 1
+twi_scl         = port:PB06<2><default><default><default>
+twi_sda         = port:PB07<2><default><default><default>
+
+[twi1]
+twi_used        = 1
+twi_scl         = port:PB08<2><default><default><default>
+twi_sda         = port:PB09<2><default><default><default>
+
+;----------------------------------------------------------------------------------
+;uart configuration
+;uart_used = uart x enable
+;uart_type       = 2:2 wire,4:4 wire,8:8 wire, full function
+;----------------------------------------------------------------------------------
+[uart0]
+uart_used       = 0
+uart_port       = 0
+uart_type       = 2
+uart_tx         = port:PF02<3><1><default><default>
+uart_rx         = port:PF04<3><1><default><default>
+
+[uart1]
+uart_used       = 1
+uart_type       = 2
+uart_port       = 0
+uart_tx         = port:PG06<2><1><default><default>
+uart_rx         = port:PG07<2><1><default><default>
+;uart_rts        = port:PE23<4><1><default><default>
+;uart_cts        = port:PE24<4><1><default><default>
+
+[uart2]
+uart_used       = 0
+uart_type       = 2
+uart_port       = 2
+uart_tx         = port:PB00<2><1><default><default>
+uart_rx         = port:PB01<2><1><default><default>
+;uart_rts        = port:PB02<2><1><default><default>
+;uart_cts        = port:PB03<2><1><default><default>
+
+;----------------------------------------------------------------------------------
+;SPI controller configuration
+;spi_used       = SPIx enable
+;spi_cs_bitmap  = SPI bit mapping
+;----------------------------------------------------------------------------------
+[spi0]
+spi_used       = 1
+spi_cs_bitmap  = 1
+spi_mosi       = port:PC03<3><default><default><default>
+spi_miso       = port:PC00<3><default><default><default>
+spi_sclk       = port:PC01<3><default><default><default>
+spi_cs0        = port:PC02<3><1><default><default>
+
+;----------------------------------------------------------------------------------
+;SPI device configuration
+;spi_dev_num: number of spi devices
+;----------------------------------------------------------------------------------
+[spi_devices]
+spi_dev_num = 1
+
+;----------------------------------------------------------------------------------
+;[spi_board0] spi device configuration
+;modalias      = spi device name
+;max_speed_hz  = max transfer speed
+;bus_num       = bus ID
+;chip_select   = chip select, 0,1
+;mode          = SPI transfer mode
+; sflash_size- 16 : 16M nor flash size , 8 : 8M nor flash size
+;----------------------------------------------------------------------------------
+[spi_board0]
+modalias      = "at25df641"
+max_speed_hz  = 50000000
+bus_num       = 0
+chip_select   = 0
+mode          = 0
+sflash_size   = 16
+
+
+
+;----------------------------------------------------------------------------------
+;capacitor tp configuration
+;ctp_twi_id : twi controller ID
+;ctp_twi_addr : I2C slave address, 7bit
+;ctp_screen_max_x/_y : resolution of touch panel
+;ctp_revert_x/_y_flag : whether need to revert x/y
+;ctp_exchange_x_y_flag: whether need to exchange the value of x and y
+;ctp_int_port : port for tp's interrupt signal
+;ctp_wakeup : port for wakeup tp
+;----------------------------------------------------------------------------------
+[ctp_para]
+ctp_used            = 0
+ctp_name            = "gt911_m785q6"
+ctp_twi_id          = 1
+ctp_twi_addr        = 0x5d
+ctp_screen_max_x    = 800
+ctp_screen_max_y    = 480
+ctp_revert_x_flag   = 0
+ctp_revert_y_flag   = 0
+ctp_exchange_x_y_flag = 1
+
+ctp_int_port        = 
+ctp_wakeup          =
+
+;--------------------------------------------------------------------------------
+; CTP automatic detection configuration
+;ctp_detect_used  --- Whether startup automatic inspection function. 1:used,0:unused
+;Module name postposition 1 said detection, 0 means no detection. 
+;--------------------------------------------------------------------------------
+[ctp_list_para]
+ctp_det_used              = 0
+gt911_ts                  = 1
+ft5x_ts                   = 1
+gt82x                     = 1
+gslX680                   = 1
+gt9xx_ts                  = 1
+gt811                     = 1
+zet622x                   = 1
+aw5306_ts                 = 1
+
+;----------------------------------------------------------------------------------
+;touch key configuration
+;tkey_twi_id : twi controller ID
+;tkey_twi_addr : I2C slave address, 7bit
+;tkey_int : port for touch key's interrupt signal
+;----------------------------------------------------------------------------------
+[tkey_para]
+tkey_used           = 0
+tkey_twi_id         =
+tkey_twi_addr       =
+tkey_int            =
+
+;----------------------------------------------------------------------------------
+;motor configuration
+;motor_shake : port for making the moto shaking
+;----------------------------------------------------------------------------------
+[motor_para]
+motor_used          = 0
+motor_shake         = port:power3<1><default><default><1>
+
+;----------------------------------------------------------------------------------
+;cooler_table  cooler_count <=32
+;----------------------------------------------------------------------------------
+[cooler_table]
+cooler_count = 4
+cooler0 = "1340000 4 4294967295 0"
+cooler1 = "1200000 4 4294967295 0"
+cooler2 = "1008000 4 4294967295 0"
+cooler3 =  "648000 4 4294967295 0"
+
+;----------------------------------------------------------------------------------
+;disp init configuration
+;
+;disp_mode             (0:screen0<screen0,fb0>)
+;screenx_output_type   (0:none; 1:lcd; 3:hdmi;)
+;screenx_output_mode   (used for hdmi output, 0:480i 1:576i 2:480p 3:576p 4:720p50)
+;                      (5:720p60 6:1080i50 7:1080i60 8:1080p24 9:1080p50 10:1080p60)
+;fbx format            (4:RGB655 5:RGB565 6:RGB556 7:ARGB1555 8:RGBA5551 9:RGB888 10:ARGB8888 12:ARGB4444)
+;fbx pixel sequence    (0:ARGB 1:BGRA 2:ABGR 3:RGBA)
+;fb0_scaler_mode_enable(scaler mode enable, used FE)
+;fbx_width,fbx_height  (framebuffer horizontal/vertical pixels, fix to output resolution while equal 0)
+;lcdx_backlight        (lcd init backlight,the range:[0,256],default:197
+;lcdx_yy               (lcd init screen bright/contrast/saturation/hue, value:0~100, default:50/50/57/50)
+;lcd0_contrast         (LCD contrast, 0~100)
+;lcd0_saturation       (LCD saturation, 0~100)
+;lcd0_hue              (LCD hue, 0~100)
+;----------------------------------------------------------------------------------
+[disp_init]
+disp_init_enable         = 1
+disp_mode                = 0
+
+screen0_output_type      = 1
+screen0_output_mode      = 4
+
+screen1_output_type      = 1
+screen1_output_mode      = 4
+
+fb0_format               = 0
+fb0_pixel_sequence       = 0
+fb0_scaler_mode_enable   = 0
+fb0_width                = 0
+fb0_height               = 0
+
+fb1_format               = 0
+fb1_pixel_sequence       = 0
+fb1_scaler_mode_enable   = 0
+fb1_width                = 0
+fb1_height               = 0
+
+lcd0_backlight           = 200
+lcd1_backlight           = 50
+
+lcd0_bright              = 50
+lcd0_contrast            = 50
+lcd0_saturation          = 57
+lcd0_hue                 = 50
+
+lcd1_bright              = 50
+lcd1_contrast            = 50
+lcd1_saturation          = 57
+lcd1_hue                 = 50
+
+;----------------------------------------------------------------------------------
+;lcd0 configuration
+
+;lcd_if:               0:hv(sync+de); 1:8080; 2:ttl; 3:lvds; 4:dsi; 5:edp; 6:extend dsi
+;lcd_x:                lcd horizontal resolution
+;lcd_y:                lcd vertical resolution
+;lcd_width:            width of lcd in mm
+;lcd_height:           height of lcd in mm
+;lcd_dclk_freq:        in MHZ unit
+;lcd_pwm_freq:         in HZ unit
+;lcd_pwm_pol:          lcd backlight PWM polarity
+;lcd_pwm_max_limit     lcd backlight PWM max limit(<=255)
+;lcd_hbp:              hsync back porch
+;lcd_ht:               hsync total cycle
+;lcd_vbp:              vsync back porch
+;lcd_vt:               vysnc total cycle
+;lcd_hspw:             hsync plus width
+;lcd_vspw:             vysnc plus width
+;lcd_lvds_if:          0:single link;  1:dual link
+;lcd_lvds_colordepth:  0:8bit; 1:6bit
+;lcd_lvds_mode:        0:NS mode; 1:JEIDA mode
+;lcd_frm:              0:disable; 1:enable rgb666 dither; 2:enable rgb656 dither
+;lcd_io_phase:         0:noraml; 1:intert phase(0~3bit: vsync phase; 4~7bit:hsync phase;
+;                      8~11bit:dclk phase; 12~15bit:de phase)
+;lcd_gamma_en          lcd gamma correction enable
+;lcd_bright_curve_en   lcd bright curve correction enable
+;lcd_cmap_en           lcd color map function enable
+;deu_mode              0:smoll lcd screen; 1:large lcd screen(larger than 10inch)
+;lcdgamma4iep:         Smart Backlight parameter, lcd gamma vale * 10;
+;                      decrease it while lcd is not bright enough; increase while lcd is too bright
+;smart_color           90:normal lcd screen 65:retina lcd screen(9.7inch)
+;----------------------------------------------------------------------------------
+[lcd0_para]
+lcd_used            = 1
+
+lcd_driver_name     = "t27p06"
+lcd_if              = 0
+lcd_x               = 320
+lcd_y               = 240
+lcd_width           = 108
+lcd_height          = 64
+lcd_dclk_freq       = 27
+lcd_pwm_used        = 1
+lcd_pwm_ch          = 0
+lcd_pwm_freq        = 50000
+lcd_pwm_pol         = 1
+lcd_pwm_max_limit   = 255
+lcd_hbp             = 70
+lcd_ht              = 1716
+lcd_hspw            = 1
+lcd_vbp             = 21
+lcd_vt              = 262
+lcd_vspw            = 1
+lcd_frm             = 0
+lcd_hv_clk_phase    = 2
+lcd_hv_sync_polarity = 0
+lcd_gamma_en        = 0
+lcd_bright_curve_en = 1
+lcd_cmap_en         = 0
+
+lcd_hv_if	    	= 8
+lcd_hv_srgb_seq	    = 4
+lcd_rb_swap			= 1
+
+lcdgamma4iep        = 22
+
+lcd_bl_en           = port:PD12<1><0><default><1>
+lcd_power           = ""
+
+
+lcd_gpio_3          = port:PD13<1><0><default><1>
+lcd_gpio_0          = port:PD14<1><0><default><1>
+lcd_gpio_1          = port:PD16<1><0><default><1>
+lcd_gpio_2          = port:PD15<1><0><default><1>
+
+;lcdd2               = port:PD0<2><0><default><default>
+lcdd3               = port:PD1<2><0><default><default>
+lcdd4               = port:PD2<2><0><default><default>
+lcdd5               = port:PD3<2><0><default><default>
+lcdd6               = port:PD4<2><0><default><default>
+lcdd7               = port:PD5<2><0><default><default>
+lcdd10              = port:PD6<2><0><default><default>
+lcdd11              = port:PD7<2><0><default><default>
+lcdd12              = port:PD8<2><0><default><default>
+;lcdd13              = port:PD9<2><0><default><default>
+;lcdd14              = port:PD10<2><0><default><default>
+;lcdd15              = port:PD11<2><0><default><default>
+;lcdd18              = port:PD12<2><0><default><default>
+;lcdd19              = port:PD13<2><0><default><default>
+;lcdd20              = port:PD14<2><0><default><default>
+;lcdd21              = port:PD15<2><0><default><default>
+;lcdd22              = port:PD16<2><0><default><default>
+;lcdd23              = port:PD17<2><0><default><default>
+lcdclk              = port:PD18<2><0><3><default>
+;lcdde               = port:PD19<2><0><3><default>
+lcdhsync            = port:PD20<2><0><3><default>
+lcdvsync            = port:PD21<2><0><3><default>
+
+;----------------------------------------------------------------------------------
+;pwm config
+;----------------------------------------------------------------------------------
+[pwm0_para]
+pwm_used            = 1
+pwm_positive        = port:PB04<2><0><default><default>
+
+;--------------------------------------------------------------------------------
+;vip (video input port) configuration
+;vip_used: 0:disable 1:enable
+;vip_mode: 0:sample one interface to one buffer 1:sample two interface to one buffer
+;vip_dev_qty: The quantity of devices linked to capture bus
+;
+;vip_define_sensor_list: If you want use sensor detect function, please set vip_define_sensor_list = 1, and
+;                                    verify that file /system/etc/hawkview/sensor_list_cfg.ini is properly configured!
+;
+;vip_dev(x)_pos: sensor position, "rear" or "front", if vip_define_sensor_list = 1,vip_dev(x)_pos must be configured!
+;
+;vip_dev(x)_isp_used 0:not use isp 1:use isp
+;vip_dev(x)_fmt: 0:yuv 1:bayer raw rgb 
+;vip_dev(x)_stby_mode: 0:not shut down power at standby 1:shut down power at standby
+;vip_dev(x)_vflip: flip in vertical direction 0:disable 1:enable
+;vip_dev(x)_hflip: flip in horizontal direction 0:disable 1:enable
+;vip_dev(x)_iovdd: camera module io power handle string, pmu power supply
+;vip_dev(x)_iovdd_vol: camera module io power voltage, pmu power supply
+;vip_dev(x)_avdd: camera module analog power handle string, pmu power supply
+;vip_dev(x)_avdd_vol: camera module analog power voltage, pmu power supply
+;vip_dev(x)_dvdd: camera module core power handle string, pmu power supply
+;vip_dev(x)_dvdd_vol: camera module core power voltage, pmu power supply
+;vip_dev(x)_afvdd: camera module vcm power handle string, pmu power supply
+;vip_dev(x)_afvdd_vol: camera module vcm power voltage, pmu power supply
+;x indicates the index of the devices which are linked to the same capture bus
+;fill voltage in uV, e.g. iovdd = 2.8V, vip_devx_iovdd_vol = 2800000
+;fill handle string as below:
+;axp22_eldo3
+;axp22_dldo4
+;axp22_eldo2
+;fill handle string "" when not using any pmu power supply
+;--------------------------------------------------------------------------------
+
+[csi0]
+
+vip_used                 = 1
+vip_mode                 = 0
+vip_dev_qty              = 1
+vip_define_sensor_list     = 0
+vip_csi_mck              = port:PE20<3><default><default><default>
+vip_csi_sck               = port:PE21<2><default><default><default>
+vip_csi_sda               = port:PE22<2><default><default><default>
+vip_dev0_mname           = "ov2710_mipi"
+vip_dev0_pos             = "rear"
+vip_dev0_lane            = 1
+vip_dev0_twi_id          = 0
+vip_dev0_twi_addr        = 0x6c
+vip_dev0_isp_used        = 1
+vip_dev0_fmt             = 1
+vip_dev0_stby_mode       = 0
+vip_dev0_vflip           = 1
+vip_dev0_hflip           = 1
+vip_dev0_iovdd           = "vcc-pe"
+vip_dev0_iovdd_vol       = 3300000
+vip_dev0_avdd            = "vcc-pe"
+vip_dev0_avdd_vol        = 3300000
+vip_dev0_dvdd            = ""
+vip_dev0_dvdd_vol        = 3300000
+vip_dev0_afvdd           = ""
+vip_dev0_afvdd_vol       = 2800000
+vip_dev0_power_en        = port:PD11<1><default><default><default>
+vip_dev0_reset           = port:PE18<1><default><default><default>
+vip_dev0_pwdn            = port:PE19<1><default><default><default>
+vip_dev0_flash_en        = 
+vip_dev0_flash_mode      = 
+vip_dev0_af_pwdn         = 
+vip_dev0_act_used        = 0
+vip_dev0_act_name        = "dw9714_act"
+vip_dev0_act_slave       = 0x18
+vip_dev1_mname           = ""
+vip_dev1_pos                 = "front"
+vip_dev1_lane            = 1
+vip_dev1_twi_id          = 0
+vip_dev1_twi_addr        =
+vip_dev1_isp_used        = 0
+vip_dev1_fmt             = 1
+vip_dev1_stby_mode       = 0
+vip_dev1_vflip           = 0
+vip_dev1_hflip           = 0
+vip_dev1_iovdd           = ""
+vip_dev1_iovdd_vol       = 2800000
+vip_dev1_avdd            = ""
+vip_dev1_avdd_vol        = 2800000
+vip_dev1_dvdd            = ""
+vip_dev1_dvdd_vol        = 1500000
+vip_dev1_afvdd           = ""
+vip_dev1_afvdd_vol       = 2800000
+vip_dev1_power_en        =
+vip_dev1_reset           =
+vip_dev1_pwdn            =
+vip_dev1_flash_en        =
+vip_dev1_flash_mode      =
+vip_dev1_af_pwdn         =
+
+[csi1]
+vip_used                 = 0
+vip_mode                 = 0
+vip_dev_qty              = 1
+vip_define_sensor_list   = 0
+vip_csi_pck              = port:PE00<2><default><default><default>
+vip_csi_mck              = port:PE01<2><default><default><default>
+vip_csi_hsync            = port:PE02<2><default><default><default>
+vip_csi_vsync            = port:PE03<2><default><default><default>
+vip_csi_d0               = port:PE04<2><default><default><default>
+vip_csi_d1               = port:PE05<2><default><default><default>
+vip_csi_d2               = port:PE06<2><default><default><default>
+vip_csi_d3               = port:PE07<2><default><default><default>
+vip_csi_d4               = port:PE08<2><default><default><default>
+vip_csi_d5               = port:PE09<2><default><default><default>
+vip_csi_d6               = port:PE10<2><default><default><default>
+vip_csi_d7               = port:PE11<2><default><default><default>
+vip_csi_d8               = port:PE12<2><default><default><default>
+vip_csi_d9               = port:PE13<2><default><default><default>
+vip_csi_d10               = port:PE14<2><default><default><default>
+vip_csi_d11               = port:PE15<2><default><default><default>
+
+vip_csi_sck               = port:PE21<2><default><default><default>
+vip_csi_sda               = port:PE22<2><default><default><default>
+
+vip_dev0_mname           = "ov5640"
+vip_dev0_pos             = "front"
+vip_dev0_twi_id          = 4
+vip_dev0_twi_addr        = 0x78
+vip_dev0_isp_used        = 0
+vip_dev0_fmt             = 0
+vip_dev0_stby_mode       = 0
+vip_dev0_vflip           = 0
+vip_dev0_hflip           = 0
+vip_dev0_iovdd           = ""
+vip_dev0_iovdd_vol       = 2800000
+vip_dev0_avdd            = ""
+vip_dev0_avdd_vol        = 2800000
+vip_dev0_dvdd            = ""
+vip_dev0_dvdd_vol        = 1500000
+vip_dev0_afvdd           = ""
+vip_dev0_afvdd_vol       = 2800000
+vip_dev0_power_en        =
+vip_dev0_reset           = port:PE23<1><default><default><default>
+vip_dev0_pwdn            = port:PE24<1><default><default><default>
+vip_dev0_flash_en        =
+vip_dev0_flash_mode      =
+vip_dev0_af_pwdn         =
+
+vip_dev0_act_used        = 0
+vip_dev0_act_name        = "ad5820_act"
+vip_dev0_act_slave       = 0x18
+
+vip_dev1_mname           = "gc2035"
+vip_dev1_pos                 = "front"
+vip_dev1_lane            = 1
+vip_dev1_twi_id          = 4
+vip_dev1_twi_addr        = 0x78
+vip_dev1_isp_used        = 0
+vip_dev1_fmt             = 1
+vip_dev1_stby_mode       = 0
+vip_dev1_vflip           = 0
+vip_dev1_hflip           = 0
+vip_dev1_iovdd           = ""
+vip_dev1_iovdd_vol       = 2800000
+vip_dev1_avdd            = ""
+vip_dev1_avdd_vol        = 2800000
+vip_dev1_dvdd            = ""
+vip_dev1_dvdd_vol        = 1500000
+vip_dev1_afvdd           = ""
+vip_dev1_afvdd_vol       = 2800000
+vip_dev1_power_en        =
+vip_dev1_reset           =
+vip_dev1_pwdn            =
+vip_dev1_flash_en        =
+vip_dev1_flash_mode      =
+vip_dev1_af_pwdn         =
+
+
+;-------------------------------------------------------------------------------
+;   mmc configuration
+;
+;   Config Guide
+;   sdc_used:      1-enable card, 0-disable card
+;   sdc_detmode:   card detect mode
+;                  1-detect card by gpio polling
+;                  2-detect card by gpio irq(must use IO with irq function)
+;                  3-no detect, always in for boot card
+;                  4-manually insert and remove by /proc/driver/sunxi-mmc.x/insert
+;   sdc_buswidth:  card bus width, 1-1bit, 4-4bit, 8-8bit
+;   sdc_use_wp:    1-with write protect IO, 0-no write protect IO
+;   sdc_isio:      for sdio card
+;   sdc_regulator: power control.if card supports UHS-I/DDR and HS200 timing for
+;                  SD3.0 or eMMC4.5, regulator must be configured. the value is
+;                  the ldo name of AXP221, eg: sdc_regulator = "axp22_eldo2"
+;   other: GPIO Mapping configuration
+;
+;   Note:
+;   1 if detmode=2, sdc_det's config=6
+;     else if detmode=1, sdc_det's config=0
+;     else sdc_det IO is not necessary
+;   2 if the customer wants to support UHS-I and HS200 features, he must provide
+;     an independent power supply for the card. This is only used in platforms
+;     that supports SD3.0 cards and eMMC4.4+ flashes
+;-------------------------------------------------------------------------------
+[mmc0_para]
+sdc_used          = 1
+sdc_detmode       = 1
+sdc_buswidth      = 4
+sdc_d1            = port:PF00<2><1><2><default>
+sdc_d0            = port:PF01<2><1><2><default>
+sdc_clk           = port:PF02<2><1><2><default>
+sdc_cmd           = port:PF03<2><1><2><default>
+sdc_d3            = port:PF04<2><1><2><default>
+sdc_d2            = port:PF05<2><1><2><default>
+sdc_det           = port:PF06<0><1><2><default>
+sdc_use_wp        = 0
+sdc_wp            =
+sdc_isio          = 0
+sdc_regulator     = "none"
+
+[mmc1_para]
+sdc_used          = 1
+sdc_detmode       = 4
+sdc_buswidth      = 4
+sdc_clk           = port:PG00<2><1><1><default>
+sdc_cmd           = port:PG01<2><1><1><default>
+sdc_d0            = port:PG02<2><1><1><default>
+sdc_d1            = port:PG03<2><1><1><default>
+sdc_d2            = port:PG04<2><1><1><default>
+sdc_d3            = port:PG05<2><1><1><default>
+sdc_det           =
+sdc_use_wp        = 0
+sdc_wp            =
+sdc_isio          = 1
+sdc_regulator     = "none"
+
+[mmc2_para]
+sdc_used          = 0
+sdc_detmode       = 3
+sdc_buswidth      = 8
+sdc_clk           = port:PC00<2><1><2><default>
+sdc_cmd           = port:PC01<2><1><2><default>
+sdc_d0            = port:PC03<2><1><2><default>
+sdc_d1            = port:PC04<2><1><2><default>
+sdc_d2            = port:PC05<2><1><2><default>
+sdc_d3            = port:PC06<2><1><2><default>
+sdc_d4            = port:PC07<2><1><2><default>
+sdc_d5            = port:PC08<2><1><2><default>
+sdc_d6            = port:PC09<2><1><2><default>
+sdc_d7            = port:PC10<2><1><2><default>
+emmc_rst          = port:PC02<2><1><2><default>
+sdc_det           =
+sdc_use_wp        = 0
+sdc_wp            =
+sdc_isio          = 0
+sdc_regulator     = "none"
+
+;----------------------------------------------------------------------------------
+;usb configuration
+;usb_used:          usb controller enable, 0-disable, 1-enable
+;usb_port_type:     usb mode: 0-device, 1-host, 2-otg
+;usb_detect_type:   usb hotplug detect mode, 0-none, 1-vbus/id detect, 2-id/dpdm detect
+;usb_id_gpio:       usb id detect IO
+;usb_det_vbus_gpio: usb vbus detect IO, "axp_ctrl" for axp
+;usb_drv_vbus_gpio: usb dirve vbus IO
+;usb_restrict_gpio: usb current restrict IO
+;usb_restric_flag:  usb current restrict flag
+;----------------------------------------------------------------------------------
+[usbc0]
+usb_used            = 1
+usb_port_type       = 2
+usb_detect_type     = 1
+usb_id_gpio         = port:PG11<0><1><default><default>
+usb_det_vbus_gpio   = port:PG11<0><1><default><default>
+usb_drv_vbus_gpio   = port:PG10<1><0><default><0>
+usb_restrict_gpio   =
+usb_host_init_state = 0
+usb_restric_flag    = 0
+usb_restric_voltage = 3550000
+usb_restric_capacity= 5
+usb_regulator_io    = "nocare"
+usb_regulator_vol   = 0
+usb_not_suspend     = 0
+
+; USB Device vendor Info.
+;----------------------------------------------------------------------------------
+[usb_feature]
+vendor_id           = 0x18D1
+mass_storage_id     = 0x0001
+adb_id              = 0x0002
+
+manufacturer_name   = "USB Developer"
+product_name        = "Android"
+serial_number       = "20080411"
+
+[msc_feature]
+vendor_name         = "USB 2.0"
+product_name        = "USB Flash Driver"
+release             = 100
+luns                = 1
+
+[serial_feature]
+serial_unique       = 0
+
+;--------------------------------------------------------------------------------
+; G sensor configuration
+; gs_twi_id	---  TWI ID for controlling Gsensor (0: TWI0, 1: TWI1, 2: TWI2)
+;--------------------------------------------------------------------------------
+[gsensor_para]
+gsensor_used        = 1
+gsensor_twi_id      = 1
+gsensor_twi_addr    = 0x18
+gsensor_int1        = 
+gsensor_int2        =
+
+;--------------------------------------------------------------------------------
+; G sensor automatic detection configuration
+;gsensor_detect_used  --- Whether startup automatic inspection function. 1:used,0:unused
+;Module name postposition 1 said detection, 0 means no detection. 
+;--------------------------------------------------------------------------------
+[gsensor_list_para]
+gsensor_det_used          = 1
+bma250                    = 1
+mma8452                   = 1
+mma7660                   = 1
+mma865x                   = 1
+afa750                    = 1
+lis3de_acc                = 1
+lis3dh_acc                = 1
+kxtik                     = 1
+dmard10                   = 0
+dmard06                   = 1
+mxc622x                   = 1
+fxos8700                  = 1
+lsm303d                   = 1
+
+;--------------------------------------------------------------------------------
+; gps gpio configuration
+; gps_spi_id:     the index of SPI controller. 0: SPI0, 1: SPI1, 2: SPI2, 15: no SPI used
+; gps_spi_cs_num: the chip select number of SPI controller. 0: SPI CS0, 1: SPI CS1
+; gps_lradc:      the lradc number for GPS used. 0 and 1 is valid, set 2 if not use lradc
+;--------------------------------------------------------------------------------
+[gps_para]
+
+;--------------------------------------------------------------------------------
+;wifi configuration
+;wifi_sdc_id:    0- SDC0, 1- SDC1, 2- SDC2, 3- SDC3
+;wifi_usbc_id:   0- USB0, 1- USB1, 2- USB2
+;wifi_usbc_type: 1- EHCI(speed 2.0), 2- OHCI(speed 1.0)
+;wifi_mod_sel:   0- none, 1- ap6181, 2- ap6210(wifi+bt),
+;                3 - rtl8188eu, 4- rtl8723au(wifi+bt)
+;--------------------------------------------------------------------------------
+
+;--------------------------------------------------------------------------------
+;wifi/bt/fm/gps/nfc modules configuration
+;module_num:
+;             0- none
+;             1- rtl8188eu(wifi)
+;             2- rtl8723bs(wifi+bt)
+;             3- ap6181(wifi)
+;             4- ap6210(wifi+bt)
+;             5- ap6330(wifi+bt)
+;             6- ap6335(wifi)
+;module_power0: axp used by module, "axp22_dldo1" - use dldo1, not use keep it empty
+;module_power0_vol: power0 voltage, mv;
+;chip_en:       enable chip io
+;lpo_use_apclk: ""- not use, "losc_out"- a23/33, "ac10032k1"¡¢"ac10032k2"¡¢"ac10032k3"- a80
+;--------------------------------------------------------------------------------
+[module_para]
+module_num          = 7
+module_power0       = 
+module_power0_vol   = 3300000
+module_power1       =
+module_power1_vol   =
+module_power2       =
+module_power2_vol   =
+module_power3       =
+module_power3_vol   =
+chip_en             =
+lpo_use_apclk       = ""
+
+[wifi_para]
+wifi_used             = 1
+wifi_sdc_id           = 1
+wifi_usbc_id          = 
+wifi_usbc_type        = 
+wl_reg_on             = port:PB02<1><default><default><1>
+wl_host_wake          = port:PB03<1><default><default><1>
+wl_host_wake_invert   = 0
+
+
+;--------------------------------------------------------------------------------
+;blue tooth
+;bt_used 			---- blue tooth used (0- no used, 1- used)
+;bt_uard_id			---- uart index
+;--------------------------------------------------------------------------------
+[bt_para]
+bt_used             = 0
+bt_uart_id          = 1
+
+;--------------------------------------------------------------------------------
+;gyroscope
+;--------------------------------------------------------------------------------
+[gy_para]
+gy_used             = 0
+gy_twi_id           = 1
+gy_twi_addr         = 0x6a
+gy_int1             =
+gy_int2             =
+
+;--------------------------------------------------------------------------------
+; lsensor automatic detection configuration
+;ls_detect_used  --- Whether startup automatic inspection function. 1:used,0:unused
+;Module name postposition 1 said detection, 0 means no detection. 
+;--------------------------------------------------------------------------------
+[ls_list_para]
+ls_det_used          = 0
+ltr_501als           = 1
+jsa1212              = 1
+
+;--------------------------------------------------------------------------------
+;compass
+;--------------------------------------------------------------------------------
+[compass_para]
+compass_used        = 0
+compass_twi_id      = 1
+compass_twi_addr    = 0x0d
+compass_int         =
+
+;--------------------------------------------------------------------------------
+;daudio_master:1: SND_SOC_DAIFMT_CBM_CFM(codec clk & FRM master)        use
+;			2: SND_SOC_DAIFMT_CBS_CFM(codec clk slave & FRM master)  not use
+;			3: SND_SOC_DAIFMT_CBM_CFS(codec clk master & frame slave) not use
+;			4: SND_SOC_DAIFMT_CBS_CFS(codec clk & FRM slave)         use
+;daudio_select:0 is pcm.1 is i2s
+;audio_format: 1:SND_SOC_DAIFMT_I2S(standard i2s format).            use
+;			   2:SND_SOC_DAIFMT_RIGHT_J(right justfied format).
+;			   3:SND_SOC_DAIFMT_LEFT_J(left justfied format)
+;			   4:SND_SOC_DAIFMT_DSP_A(pcm. MSB is available on 2nd BCLK rising edge after LRC rising edge). use
+;			   5:SND_SOC_DAIFMT_DSP_B(pcm. MSB is available on 1nd BCLK rising edge after LRC rising edge)
+;signal_inversion:1:SND_SOC_DAIFMT_NB_NF(normal bit clock + frame)  use
+;				  2:SND_SOC_DAIFMT_NB_IF(normal BCLK + inv FRM)
+;				  3:SND_SOC_DAIFMT_IB_NF(invert BCLK + nor FRM)  use
+;				  4:SND_SOC_DAIFMT_IB_IF(invert BCLK + FRM)
+;over_sample_rate: support 128fs/192fs/256fs/384fs/512fs/768fs
+;sample_resolution	:16bits/20bits/24bits
+;word_select_size 	:16bits/20bits/24bits/32bits
+;pcm_sync_period 	:16/32/64/128/256
+;msb_lsb_first 		:0: msb first; 1: lsb first
+;sign_extend 		:0: zero pending; 1: sign extend
+;slot_index 		:slot index: 0: the 1st slot - 3: the 4th slot
+;slot_width 		:8 bit width / 16 bit width
+;frame_width 		:0: long frame = 2 clock width;  1: short frame
+;tx_data_mode 		:0: 16bit linear PCM; 1: 8bit linear PCM; 2: 8bit u-law; 3: 8bit a-law
+;rx_data_mode 		:0: 16bit linear PCM; 1: 8bit linear PCM; 2: 8bit u-law; 3: 8bit a-law
+;--------------------------------------------------------------------------------
+[tdm0]
+daudio_used         = 1
+daudio_master		= 4
+daudio_select  		= 1
+audio_format		= 1
+signal_inversion	= 1
+mclk_fs				= 512
+sample_resolution   = 16
+slot_width_select 	= 16
+pcm_lrck_period		= 32
+pcm_lrckr_period 	= 1
+msb_lsb_first 	    = 0
+sign_extend 		= 0
+slot_index 		    = 0
+slot_width 		    = 16
+frame_width 		= 1
+tx_data_mode 		= 0
+rx_data_mode 		= 0
+;i2s_mclk            = port:PB08<2><1><default><default>
+i2s_bclk            = port:PG11<2><1><default><default>
+i2s_lrclk           = port:PG10<2><1><default><default>
+i2s_dout0           = port:PG12<2><1><default><default>
+i2s_dout1           =
+i2s_dout2           =
+i2s_dout3           =
+i2s_din             = port:PG13<2><1><default><default>
+
+;--------------------------------------------------------------------------------------
+;pa_single_vol,pa_double_vol: 31 level,1.5db/step.0x1f is the large volume.
+;cap_val:use for system record,0x0--0db,0x1--24db,0x2--27db,0x3--30db,0x4--33db,0x5--36db,0x6--39db,0x7--42db
+;headphone_vol,earpiece_vol: must least than 0x3b. 0x1 is a step.
+;headset_mic_vol: headset mic(mic2) vol,use for phone headset mic call
+;main_mic_vol: main mic(mic1) vol,use for phone main mic call
+;version_v3_used : 1:v3,0:v3s
+[audio0]
+;audio_used           = 1
+headphone_vol         = 0x3b
+cap_vol               = 0x5
+Differential_output   = 1
+pa_single_vol         = 0x19
+pa_double_used        = 0
+pa_double_vol         = 0x1f
+headphone_direct_used = 0
+phone_mic_vol         = 0x6
+version_v3_used       = 1
+audio_hp_ldo          =none
+;v3s
+;audio_pa_ctrl        = port:PB00<1><default><default><0>
+;v3
+audio_pa_ctrl         = port:PB05<1><default><default><0>
+
+;----------------------------------------------------------------------------------
+;ir --- infra remote configuration
+;----------------------------------------------------------------------------------
+[s_ir0]
+ir_used             = 0
+ir_rx               = port:PL04<2><1><default><default>
+
+
+;-------------------------------------------------------------------------------------
+;pmu_used                    ---0:not used,1:used
+;pmu_id                      ---0:axp19x,1:axp209,2:axp22x,3:axp806,4:axp808,5:axp809,6:axp803,7:axp813
+;pmu_twi_addr                ---slave address
+;pmu_twi_id                  ---i2c bus number (0 TWI0, 1 TWI2, 2 TWI3)
+;pmu_irq_id		     ---irq number (0 irq0,1 irq1,â€¦â€?
+;pmu_battery_rdc             ---battery initial resistance
+;pmu_battery_cap             ---battery capability,mAh
+;pmu_batdeten		     ---battery detect en;0:disable 1:enable
+;pmu_runtime_chgcur          ---set initial charging current limite,mAï¼?00/450/600/750/900/1050/1200/1350/1500/1650/1800/1950/
+;pmu_earlysuspend_chgcur     ---set earlysuspend charging current limite,mAï¼?00/450/600/750/900/1050/1200/1350/1500/1650/1800/1950/
+;pmu_suspend_chgcur          ---set suspend charging current limite,mAï¼?00/450/600/750/900/1050/1200/1350/1500/1650/1800/1950/
+;pmu_shutdown_chgcur         ---set shutdown charging current limite,mAï¼?00/450/600/750/900/1050/1200/1350/1500/1650/1800/1950/
+;pmu_init_chgvol             ---set initial charing target voltage,mV,4100/4220/4200/4240
+;pmu_init_chgend_rate        ---set initial charing end current  rate,10/15
+;pmu_init_chg_enabled        ---set initial charing enabled,0:disable,1:enable
+;pmu_init_adc_freq           ---set initial adc frequency,Hz,100/200/400/800
+;pmu_init_adcts_freq         ---set initial adc TS,Hz,100/200/400/800
+;pmu_init_chg_pretime        ---set initial pre-charging time,min,40/50/60/70
+;pmu_init_chg_csttime        ---set initial constance-charging time,min,360/480/600/720
+;pmu_batt_cap_correct	     ---correct the battery capacity or not when one charge cycle 0:not correct 1:correct
+;pmu_bat_regu_en			 ---bat regulator is enable or not when charge done 0:disable 1:enable
+;pmu_bat_para1 		     			 ---battery indication at 3.13V
+;pmu_bat_para2               ---battery indication at 3.27V
+;pmu_bat_para3               ---battery indication at 3.34V
+;pmu_bat_para4               ---battery indication at 3.41V
+;pmu_bat_para5               ---battery indication at 3.48V
+;pmu_bat_para6               ---battery indication at 3.52V
+;pmu_bat_para7               ---battery indication at 3.55V
+;pmu_bat_para8               ---battery indication at 3.57V
+;pmu_bat_para9               ---battery indication at 3.59V
+;pmu_bat_para10              ---battery indication at 3.61V
+;pmu_bat_para11              ---battery indication at 3.63V
+;pmu_bat_para12              ---battery indication at 3.64V
+;pmu_bat_para13              ---battery indication at 3.66V
+;pmu_bat_para14              ---battery indication at 3.7V
+;pmu_bat_para15              ---battery indication at 3.73V
+;pmu_bat_para16              ---battery indication at 3.77V
+;pmu_bat_para17              ---battery indication at 3.78V
+;pmu_bat_para18              ---battery indication at 3.8V
+;pmu_bat_para19              ---battery indication at 3.82V
+;pmu_bat_para20              ---battery indication at 3.84V
+;pmu_bat_para21              ---battery indication at 3.85V
+;pmu_bat_para22              ---battery indication at 3.87V
+;pmu_bat_para23              ---battery indication at 3.91V
+;pmu_bat_para24              ---battery indication at 3.94V
+;pmu_bat_para25              ---battery indication at 3.98V
+;pmu_bat_para26              ---battery indication at 4.01V
+;pmu_bat_para27              ---battery indication at 4.05V
+;pmu_bat_para28              ---battery indication at 4.08V
+;pmu_bat_para29              ---battery indication at 4.1V
+;pmu_bat_para30              ---battery indication at 4.12V
+;pmu_bat_para31              ---battery indication at 4.14V
+;pmu_bat_para32              ---battery indication at 4.15V
+;pmu_usbvol_limit            ---set usb-ac limited voltage enable,1:enableï¼?ï¼šdisable
+;pmu_usbcur_limit            ---set usb-ac limited current enable,1:enableï¼?ï¼šdisable
+;pmu_usbvol                  ---set usb-ac limited voltage level,mV,4000/4100/4200/4300/4400/4500/4600/4700,0 - not limite
+;pmu_usbcur                  ---set usb-ac limited current level,mA,500/900, 0 - not limite
+;pmu_usbvol_pc	             ---set usb-pc limited voltage level,mV,4000/4100/4200/4300/4400/4500/4600/4700,0 - not limite
+;pmu_usbcur_pc               ---set usb-pc limited current level,mA,500/900, 0 - not limite
+;pmu_pwroff_vol              ---set protect voltage when system start up,mV,2600/2700/2800/2900/3000/3100/3200/3300
+;pmu_pwron_vol               ---set protect voltage after system start up,mV,2600/2700/2800/2900/3000/3100/3200/3300
+;pmu_pekoff_time             ---set pek off time,ms, 4000/6000/8000/10000
+;pmu_pekoff_func             ---set pek off func, 0:shutdown,1:restart
+;pmu_pekoff_en		     ---set pek offlevel powerdown or not, 0:not powerdown,1:powerdown
+;pmu_peklong_time            ---set pek pek long irq time,ms,1000/1500/2000/2500
+;pmu_pekon_time              ---set pek on time,ms,128/1000/2000/3000
+;pmu_pwrok_time              ---set pmu pwrok delay time,ms,8/16/32/64
+;pmu_battery_warning_level1  ---low power warning high level,5%-20%,1%/step
+;pmu_battery_warning_level2  ---low power warning low level,0%-15%,1%/step
+;pmu_restvol_time            ---battery indicaton reflash time,30/60/120/
+;pmu_ocv_cou_adjust_time     ---ocv battery indication reflash time,60/120/30
+;pmu_chgled_func             ---CHGKED pin controlï¼?:controlled by pmu,1:controlled by Charger
+;pmu_chgled_type             ---CHGLED Type select when pmu_chgled_func=0,0:Type Aï¼?ï¼šType B
+;pmu_vbusen_func	     ---N_VBUSEN function select,0:as an output,1:as an input
+;pmu_reset                   ---when power key press longer than 16's,PMU reset or not.0:not reset 1:reset
+;pmu_IRQ_wakeup		     ---press IRQ wakeup or not when sleep or power down.0:not wakeup 1:wakeup
+;pmu_hot_shutdowm            ---when PMU over temperature protect or not;0:disable 1:enable
+;pmu_inshort		     ---ACIN and VBUS inshort or not by software;0:auto detect 1:inshort
+;pmu_temp_enable             ---temp detect enable
+;pmu_charge_ltf              ---charge temp low threshold voltage
+;pmu_charge_htf              ---charge temp high threshold voltage
+;pmu_discharge_ltf           ---shutdown temp low threshold voltage
+;pmu_discharge_htf           ---shutdown temp high threshold voltage
+;pmu_temp_para1              --- temp -25 voltage
+;pmu_temp_para2              --- temp -15 voltage
+;pmu_temp_para3              --- temp -10 voltage
+;pmu_temp_para4              --- temp -5  voltage
+;pmu_temp_para5              --- temp  0  voltage
+;pmu_temp_para6              --- temp  5  voltage
+;pmu_temp_para7              --- temp  10 voltage
+;pmu_temp_para8              --- temp  20 voltage
+;pmu_temp_para9              --- temp  30 voltage
+;pmu_temp_para10             --- temp  40 voltage
+;pmu_temp_para11             --- temp  45 voltage
+;pmu_temp_para12             --- temp  50 voltage
+;pmu_temp_para13             --- temp  55 voltage
+;pmu_temp_para14             --- temp  60 voltage
+;pmu_temp_para15             --- temp  70 voltage
+;pmu_temp_para16             --- temp  80 voltage
+;--------------------------------------------------------------------------------------------------------
+[pmu1_para]
+pmu_used                   = 1
+pmu_id                     = 1
+pmu_twi_addr               = 0x34
+pmu_twi_id                 = 0
+pmu_irq_id                 = 64
+pmu_battery_rdc            =  249
+pmu_battery_cap          =   709
+pmu_batdeten               = 1
+pmu_runtime_chgcur         = 300
+pmu_earlysuspend_chgcur    = 300
+pmu_suspend_chgcur         = 300
+pmu_shutdown_chgcur        = 300
+pmu_init_chgvol            = 4200
+pmu_init_chgend_rate       = 15
+pmu_init_chg_enabled       = 1
+pmu_init_adc_freq          = 100
+pmu_init_chg_pretime       = 50
+pmu_init_chg_csttime       = 720
+
+
+pmu_bat_para1            = 0
+pmu_bat_para2            = 0
+pmu_bat_para3            = 0
+pmu_bat_para4            = 0
+pmu_bat_para5            = 7
+pmu_bat_para6            = 13
+pmu_bat_para7            = 28
+pmu_bat_para8            = 39
+pmu_bat_para9            = 48
+pmu_bat_para10           = 56
+pmu_bat_para11           = 63
+pmu_bat_para12           = 70
+pmu_bat_para13           = 80
+pmu_bat_para14           = 87
+pmu_bat_para15           = 96
+pmu_bat_para16           = 100
+
+pmu_usbvol_limit           = 1
+pmu_usbcur_limit           = 0
+pmu_usbvol                 = 4000
+pmu_usbcur                 = 0
+pmu_usbvol_pc            = 4000
+pmu_usbcur_pc            = 0
+pmu_pwroff_vol             = 3300
+pmu_pwron_vol            = 2900
+pmu_pekoff_time            = 6000
+pmu_pekoff_en              = 1
+pmu_peklong_time           = 1500
+pmu_pekon_time             = 1000
+pmu_pwrok_time             = 64
+pmu_pwrnoe_time          = 2000
+pmu_hot_shutdown            = 1
+pmu_suspendpwroff_vol    = 3500
+power_start              = 3
+
+[pmu1_regu]
+regulator_count = 7
+regulator1      = "axp20_dcdc2 none vdd-sys vdd-cpu vdd-ephy"
+regulator2      = "axp20_dcdc3 none vcc-io hpvcc vcc-pd vcc-usb vcc-ephy vcc-mcsi vcc-lcd vcc-wifi vcc-device vcc-csi vcc-ctp"
+regulator3      = "axp20_ldo1 none vcc-rtc"
+regulator4      = "axp20_ldo2 none  vcc-avcc vcc-pll"
+regulator5      = "axp20_ldo3 none vcc-pe"
+regulator6      = "axp20_ldo4 none"
+regulator7      = "axp20_ldoio0 none"
+
+;----------------------------------------------------------------------------------
+; dvfs voltage-frequency table configuration
+;
+; extremity_freq(Hz): cpu extremity frequency when run benckmark or demo apk
+;                     1536MHz@1500mV with radiator, 1296MHz@1340mV without radiator
+; max_freq: cpu maximum frequency, based on Hz, can not be more than 1200MHz
+; min_freq: cpu minimum frequency, based on Hz, can not be less than 60MHz
+;
+; LV_count: count of LV_freq/LV_volt, must be < 16
+;
+; LV1: core vdd is 1.50v if cpu frequency is (1296Mhz,  1536Mhz]
+; LV2: core vdd is 1.34v if cpu frequency is (1200Mhz,  1296Mhz]
+; LV3: core vdd is 1.32v if cpu frequency is (1008Mhz,  1200Mhz]
+; LV4: core vdd is 1.20v if cpu frequency is (816Mhz,   1008Mhz]
+; LV5: core vdd is 1.10v if cpu frequency is (648Mhz,    816Mhz]
+; LV6: core vdd is 1.04v if cpu frequency is (0Mhz,      648Mhz]
+; LV7: core vdd is 1.04v if cpu frequency is (0Mhz,      648Mhz]
+; LV8: core vdd is 1.04v if cpu frequency is (0Mhz,      648Mhz]
+;
+;----------------------------------------------------------------------------------
+[dvfs_table]
+;extremity_freq = 1536000000
+max_freq = 1200000000
+min_freq = 60000000
+
+LV_count = 8
+
+LV1_freq = 1536000000
+LV1_volt = 1500
+
+LV2_freq = 1296000000
+LV2_volt = 1340
+
+LV3_freq = 1200000000
+LV3_volt = 1320
+
+LV4_freq = 1008000000
+LV4_volt = 1200
+
+LV5_freq = 816000000
+LV5_volt = 1100
+
+LV6_freq = 648000000
+LV6_volt = 1040
+
+LV7_freq = 0
+LV7_volt = 1040
+
+LV8_freq = 0
+LV8_volt = 1040
+
+;----------------------------------------------------------------------------------
+;virtual device
+;virtual device for pinctrl testing
+;device have pin PA1 PA2
+;----------------------------------------------------------------------------------
+[Vdevice]
+Vdevice_used        = 1
+Vdevice_0           = port:PA01<5><1><2><default>
+Vdevice_1           = port:PA02<5><1><2><default>
+
+;----------------------------------------------------------------------------------
+; dram dvfs voltage-frequency table configuration
+;
+; LV_count: count of LV_freq/LV_volt
+;
+; LV1: core vdd is 1.1v if dram frequency is (360Mhz, 552Mhz]
+; LV2: core vdd is 1.0v if dram frequency is (  0Mhz, 360Mhz]
+; LV3: core vdd is 1.0v if dram frequency is (  0Mhz, 360Mhz]
+;
+;----------------------------------------------------------------------------------
+[dram_dvfs_table]
+LV_count = 3
+
+LV1_freq = 552000000
+LV1_volt = 1100
+
+LV2_freq = 360000000
+LV2_volt = 1000
+
+LV3_freq = 0
+LV3_volt = 1000
+
+[leds_para]
+leds_used = 0
+led_0 = port:PB08<1><default><default><0>
+led_0_active_low = 0
+led_1 = port:PB09<1><default><default><0>
+led_1_active_low = 0
+;led_2 = port:PA00<1><default><default><0>
+;led_2_active_low = 0
+;led_3 = port:PA00<1><default><default><0>
+;led_3_active_low = 0
+;led_4 = port:PA00<1><default><default><0>
+;led_4_active_low = 0
+;led_5 = port:PA00<1><default><default><0>
+;led_5_active_low = 0
+;led_6 = port:PA00<1><default><default><0>
+;led_6_active_low = 0
+;led_7 = port:PA00<1><default><default><0>
+;led_7_active_low = 0
+

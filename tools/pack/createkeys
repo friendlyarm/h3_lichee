@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# pack/pack
+# (c) Copyright 2013
+# Allwinner Technology Co., Ltd. <www.allwinnertech.com>
+# flord wang <wangflord@allwinnertech.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+ROOT_DIR=$PWD
+TOOLS_DIR=${ROOT_DIR}/pctools/linux
+
+export PATH=${TOOLS_DIR}/openssl:$PATH
+
+function pack_error()
+{
+    echo -e "\033[47;31mERROR: $*\033[0m"
+}
+
+function pack_warn()
+{
+    echo -e "\033[47;34mWARN: $*\033[0m"
+}
+
+function pack_info()
+{
+    echo -e "\033[47;30mINFO: $*\033[0m"
+}
+
+show_help()
+{
+	printf "\nbuild.sh - parser firmware and fetch one file\n"
+	echo " this script is used to create all keys defined in the dragon_toc.cfg"
+	printf "\n"
+}
+
+createkeys()
+{
+	printf "ready to create keys\n"
+
+	cp -v common/sign_config/dragon_toc.cfg dragon_toc.cfg
+
+	if [ $? -ne 0 ]
+	then
+		pack_error "dragon toc config file is not exist"
+		exit 1
+	fi
+
+	dragonsecboot -key dragon_toc.cfg common/keys
+	if [ $? -ne 0 ]
+	then
+		pack_error "dragon toc run error"
+		rm -rf dragon_toc.cfg
+
+		exit 1
+	fi
+
+	rm -rf dragon_toc.cfg
+}
+
+while getopts f:o:m:s: OPTION
+do
+	case $OPTION in
+	*) show_help
+	exit 0
+	;;
+esac
+done
+
+createkeys

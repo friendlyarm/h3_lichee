@@ -1,0 +1,8 @@
+board        tx		                    rx		        port               jtag_ms	                  jtag_ck		         jtag_do                        jtag_di                            NO.
+sun6i		port:PF2<4><1><1><default>	port:PF4<4><1><1><default>	0	port:PF0<4><1><1><default>	port:PF1<4><1><1><default>	port:PF3<4><1><1><default>	port:PF5<4><1><1><default>	1
+sun8iw1p1   	port:PF2<4><1><1><default>	port:PF4<4><1><1><default>	0	port:PF0<4><1><1><default>	port:PF1<4><1><1><default>	port:PF3<4><1><1><default>	port:PF5<4><1><1><default>	1
+sun8iw5p1    port:PF02<3><1><1><default>    port:PF04<3><1><1><default>     0   port:PF00<3><1><1><default>    port:PF05<3><1><1><default>    port:PF03<3><1><1><default>     port:PF01<3><1><1><default>    1
+sun8iw6p1    port:PF02<3><1><1><default>    port:PF04<3><1><1><default>     0   port:PF00<3><1><1><default>    port:PF05<3><1><1><default>    port:PF03<3><1><1><default>     port:PF01<3><1><1><default>    1
+sun8iw7p1    port:PF02<3><1><1><default>    port:PF04<3><1><1><default>     0   port:PF00<3><1><1><default>    port:PF05<3><1><1><default>    port:PF03<3><1><1><default>     port:PF01<3><1><1><default>    1
+sun8iw8p1    port:PF02<3><1><1><default>    port:PF04<3><1><1><default>     0   port:PF00<3><1><1><default>    port:PF05<3><1><1><default>    port:PF03<3><1><1><default>     port:PF01<3><1><1><default>    1
+sun9iw1p1    port:PF02<4><1><1><default>    port:PF04<4><1><1><default>     0   port:PF00<4><1><1><default>    port:PF05<4><1><1><default>    port:PF03<4><1><1><default>     port:PF01<4><1><1><default>    1

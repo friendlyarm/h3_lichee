@@ -1,0 +1,20 @@
+
+Examples:
+
+1. Build linux-3.3 image for EVB
+
+  $cd lichee/
+  $./build.sh -p sun6i
+  $./build.sh pack
+
+
+2. Build linux kernel android
+
+  $./build.sh -p sun6i_fiber
+
+3. Build linux test package
+  $./build.sh -p sun6i_dragonboard
+
+
+
+

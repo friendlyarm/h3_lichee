@@ -1,0 +1,39 @@
+sun9iw1p1_android 				xxx						sun9iw1p1smp_android_defconfig
+sun9iw1p1_dragonboard 			xxx						sun9iw1p1smp_android_defconfig
+sun9iw1p1_linux 				sun9i_defconfig			sun9iw1p1smp_defconfig
+
+sun9iw1p1_android_jaws 				xxx						sun9iw1p1smp_android_jaws_defconfig
+sun9iw1p1_dragonboard_jaws 			xxx						sun9iw1p1smp_android_jaws_defconfig
+sun9iw1p1_linux_jaws 				sun9i_defconfig			sun9iw1p1smp_android_jaws_defconfig
+
+sun9iw1p1_android_secure 				xxx						sun9iw1p1smp_android_jaws_secure_defconfig
+sun9iw1p1_dragonboard_secure 			xxx						sun9iw1p1smp_android_jaws_secure_defconfig
+sun9iw1p1_linux_secure 				sun9i_defconfig			sun9iw1p1smp_android_jaws_secure_defconfig
+
+sun8iw1p1_android				sun8i_defconfig			sun6ismp_fiber_android_defconfig
+sun8iw1p1_dragonboard			sun8i_defconfig			sun6ismp_fiber_android_defconfig
+sun8iw1p1_linux					sun8i_defconfig			sun6ismp_fiber_android_defconfig
+
+sun6i_android					sun6i_defconfig			sun6ismp_fiber_android_defconfig
+sun6i_dragonboard				sun6i_defconfig			sun6ismp_fiber_android_defconfig
+sun6i_linux						sun6i_defconfig			sun6ismp_fiber_android_defconfig
+
+sun8iw7p1_android				sun8i_defconfig			sun8iw7p1smp_android_defconfig
+sun8iw7p1_dragonboard			sun8i_defconfig			sun8iw7p1smp_android_defconfig
+sun8iw7p1_linux					sun8i_defconfig			sun8iw7p1smp_defconfig
+
+sun8iw7p1_android_karaok		sun8i_defconfig			sun8iw7p1smp_android_karaok_defconfig
+sun8iw7p1_dragonboard_karaok		sun8i_defconfig			sun8iw7p1smp_android_karaok_defconfig
+sun8iw7p1_linux_karaok			sun8i_defconfig			sun8iw7p1smp_android_karaok_defconfig
+
+sun8iw6p1_android				sun8i_defconfig			sun8iw6p1smp_android_eagle_defconfig
+sun8iw6p1_dragonboard			sun8i_defconfig			sun8iw6p1smp_android_eagle_defconfig
+sun8iw6p1_linux					sun8i_defconfig			sun8iw6p1smp_defconfig
+
+sun8iw6p1_android_secure				sun8i_defconfig			sun8iw6p1smp_android_eagle_secure_defconfig
+sun8iw6p1_dragonboard_secure		sun8i_defconfig			sun8iw6p1smp_android_eagle_secure_defconfig
+sun8iw6p1_linux_secure					sun8i_defconfig			sun8iw6p1smp_android_eagle_secure_defconfig
+
+sun8iw7p1_android_secure				sun8i_defconfig		    sun8iw7p1smp_android_secure_defconfig	
+sun8iw7p1_dragonboard_secure			sun8i_defconfig		    sun8iw7p1smp_android_secure_defconfig	
+sun8iw7p1_linux_secure					sun8i_defconfig		    sun8iw7p1smp_android_secure_defconfig	
