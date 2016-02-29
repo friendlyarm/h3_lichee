@@ -599,7 +599,7 @@ function mkbr()
 
 function clbr()
 {
-    mk_info "build buildroot ..."
+    mk_info "clean buildroot ..."
 
     local build_script="scripts/build.sh"
     (cd ${LICHEE_BR_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
@@ -638,8 +638,12 @@ function mkkernel()
 		elif [ "x$LIHCEE_BUILD_CMD" = "x" ] ; then
 			printf "\033[0;31;1muse last time build config\033[0m\n"
 		else
-			printf "\033[0;31;1mclean last time build for config cmd used\033[0m\n"
-			(cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
+            if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
+			    printf "\033[0;31;1mclean last time build for config cmd used\033[0m\n"
+			    (cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
+            else 
+                printf "\033[0;31;1mskip kernel clean for nanopi-h3\033[0m\n"
+            fi
 		fi
 	else
 		echo "${LICHEE_KERN_DEFCONF}" > ${config_mark}
@@ -700,7 +704,7 @@ function cluboot()
 	
 	prepare_toolchain
 	
-	(cd ${LICHEE_UBOOT_DIR} && [-x ${build_script} ] && ./${build_script} "clean")
+	(cd ${LICHEE_UBOOT_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
 	[ $? -ne 0 ] && mk_error "clean uboot failed" && return 1
 
 	mk_info "clean uboot ok."	
@@ -792,7 +796,11 @@ function mklichee()
 	mk_info "----------------------------------------"
 
 	check_env
-    mkbr && mkkernel && mkrootfs
+    if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
+        mkbr && mkkernel && mkrootfs
+    else
+        mkkernel && mkuboot
+    fi
     [ $? -ne 0 ] && return 1
 
 	printf "\033[0;31;1m----------------------------------------\033[0m\n"
@@ -802,8 +810,14 @@ function mklichee()
 
 function mkclean()
 {
-    clkernel
-    clbr
+    if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
+        clkernel
+        clbr
+    else
+        clkernel
+        cluboot
+        clbr
+    fi
 
     mk_info "clean product output dir ..."
     rm -rf ${LICHEE_PLAT_OUT}

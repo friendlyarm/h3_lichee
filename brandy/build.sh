@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PLATFORM="sun8iw3p1"
+PLATFORM="sun8iw7p1"
 MODE=""
 
 show_help()
@@ -17,7 +17,11 @@ show_help()
 build_uboot()
 {
 	cd u-boot-2011.09/
-	make distclean
+	if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
+		make distclean
+	else
+		printf "\033[0;31;1mskip uboot clean for nanopi-h3\033[0m\n"
+	fi
 	if [ "x$MODE" = "xota_test" ] ; then
 		export "SUNXI_MODE=ota_test"
 	fi
@@ -46,9 +50,15 @@ do
 esac
 done
 
-
-build_uboot
-
-
-
-
+case "$1" in
+clean)
+	cd u-boot-2011.09/
+	if [ "x$LICHEE_BOARD" = "xnanopi-h3" ] ; then                
+		make distclean
+	fi
+	cd - 1>/dev/null
+	;;
+*)
+	build_uboot
+	;;
+esac

@@ -207,10 +207,11 @@ build_kernel()
         fi
         cp ./drivers/arisc/binary/arisc output/
 
-	for file in $(find drivers sound crypto block fs security net -name "*.ko"); do
-		cp $file ${LICHEE_MOD_DIR}
-	done
-	cp -f Module.symvers ${LICHEE_MOD_DIR}
+    #for file in $(find drivers sound crypto block fs security net -name "*.ko"); do
+    #   cp $file ${LICHEE_MOD_DIR}
+    #done
+    #cp -f Module.symvers ${LICHEE_MOD_DIR}
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} -j${LICHEE_JLEVEL} INSTALL_MOD_PATH=output modules_install
 
 }
 
@@ -225,9 +226,9 @@ build_modules()
 
 	update_kern_ver
 
-	build_nand_lib
-	make -C modules/nand LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} \
-		CONFIG_CHIP_ID=${CONFIG_CHIP_ID} install
+	# build_nand_lib
+	# make -C modules/nand LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} \
+	# 	CONFIG_CHIP_ID=${CONFIG_CHIP_ID} install
 
 	build_gpu
 }
@@ -357,15 +358,17 @@ gen_output()
 
 clean_kernel()
 {
-	echo "Cleaning kernel"
-	make distclean
-	rm -rf output/*
+    echo "Cleaning kernel"
+    if [ -f .config ] ; then
+        make -C modules/mali LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} clean
+    fi
+    make distclean
+    rm -rf output/*
 
-	(
-	export LANG=en_US.UTF-8
-	unset LANGUAGE
-	make -C modules/mali LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} clean
-	)
+    (
+    export LANG=en_US.UTF-8
+    unset LANGUAGE
+    )
 }
 
 clean_modules()

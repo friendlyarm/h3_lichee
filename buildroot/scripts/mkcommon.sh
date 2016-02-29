@@ -115,10 +115,10 @@ if ! init_chips ${chip} || \
     exit 1
 fi
 
-if ! init_business ${chip} ${business} ; then
-	mk_error "invalid business '${FLAGS_business}'  need to set business like -c [business]"
-	exit 1
-fi
+# if ! init_business ${chip} ${business} ; then
+# 	mk_error "invalid business '${FLAGS_business}'  need to set business like -c [business]"
+# 	exit 1
+# fi
 
 if 	! init_kern_ver ${kernel} ; then
 	mk_error "invalid kernel '${FLAGS_kernel}'  need to set board like -k [kernel]"
