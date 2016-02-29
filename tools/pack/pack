@@ -549,7 +549,11 @@ function do_pack_linux()
 		merge_package full_img.fex boot0_spinor.fex u-boot-spinor.fex sunxi_mbr.fex sys_partition.bin
 	fi
 
-	dragon image.cfg sys_partition.fex
+	if [ "x${PACK_BOARD}" = "xnanopi-h3" ]; then
+		echo "skip dragon image.cfg sys_partition.fex"
+	else
+		dragon image.cfg sys_partition.fex
+	fi
 }
 
 function do_pack_dump()
