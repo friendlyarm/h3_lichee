@@ -47,7 +47,7 @@
 
 //#define CONFIG_FPGA
 #define CONFIG_ARCH_SUN8IW7P1
-#define CONFIG_ARCH_HOMELET
+//#define CONFIG_ARCH_HOMELET
 #define CONFIG_ARCH_SUN8IW7
 #define CONFIG_VIDEO_SUNXI_V3
 #define CONFIG_SUNXI_CHIPID 
@@ -306,7 +306,9 @@
 #define CONFIG_SYS_MONITOR_LEN		(256 << 10)	/* 256 KiB */
 #define CONFIG_IDENT_STRING			" Allwinner Technology "
 
-#define CONFIG_ENV_IS_IN_NAND_SUNXI	    /* we store env in one partition of our nand */
+#define CONFIG_ENV_IS_IN_MMC	    /* we store env in one partition of our nand */
+#define CONFIG_SYS_MMC_ENV_DEV          0
+#define CONFIG_ENV_OFFSET				(256 << 10)	/* 256KiB, 0x40000 */
 #define CONFIG_SUNXI_ENV_PARTITION		"env"	/* the partition name */
 
 /*------------------------------------------------------------------------
@@ -319,7 +321,7 @@
 #define CONFIG_CMD_SAVEENV
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"bootdelay=3\0" \
+	"bootdelay=2\0" \
 	"bootcmd=run setargs_mmc boot_normal\0" \
 	"console=ttyS0,115200\0" \
 	"fbconsole=tty0\0" \
@@ -329,7 +331,7 @@
 	"loglevel=8\0" \
 	"setargs_nand=setenv bootargs console=${console} console=${fbconsole} root=${nand_root}init=${init} loglevel=${loglevel} partitions=${partitions}" \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
-	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} disp.screen\0_output_mode=EDID init=${init} loglevel=${loglevel} partitions=${partitions}" \
+	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} rootfstype=ext4 rootwait init=/sbin/init disp.screen\0" \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
 	"boot_normal=fatload mmc 0:1 0x43000000 script.bin;fatload mmc 0:1 40007800 uimage;bootm 40007800\0" \
 	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
