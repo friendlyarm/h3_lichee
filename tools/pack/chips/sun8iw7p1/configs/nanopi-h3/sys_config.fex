@@ -36,7 +36,7 @@ led_state = 0
 
 [boot_init_gpio]
 used = 1
-gpio0 = port:PA15<1><default><default><1>
+gpio0 = port:PA10<1><default><default><1>
 gpio1 = port:PG11<1><default><default><1>
 
 [recovery_para]
@@ -666,34 +666,8 @@ spdif_used = 1
 hdmi_used = 1
 
 [s_cir0]
-ir_used = 0
+ir_used = 1
 ir_rx = port:PL11<2><1><default><default>
-ir_power_key_code0 = 87
-ir_addr_code0 = 40704
-ir_power_key_code1 = 26
-ir_addr_code1 = 64260
-ir_power_key_code2 = 20
-ir_addr_code2 = 32640
-ir_power_key_code3 = 21
-ir_addr_code3 = 32640
-ir_power_key_code4 = 11
-ir_addr_code4 = 63240
-ir_power_key_code5 = 3
-ir_addr_code5 = 239
-ir_power_key_code6 = 159
-ir_addr_code6 = 19635
-ir_power_key_code7 = 10
-ir_addr_code7 = 30536
-ir_power_key_code8 = 69
-ir_addr_code8 = 48386
-ir_power_key_code9 = 77
-ir_addr_code9 = 56865
-ir_power_key_code10 = 24
-ir_addr_code10 = 65025
-ir_power_key_code11 = 87
-ir_addr_code11 = 65280
-ir_power_key_code12 = 77
-ir_addr_code12 = 65344
 
 [cir]
 ir_used = 1
