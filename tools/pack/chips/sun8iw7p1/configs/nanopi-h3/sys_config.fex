@@ -249,8 +249,8 @@ gpio_pin_19      = port:PG07<1><default><default><0>
 leds_used = 1
 green_led = port:PL10<1><default><default><0>
 green_led_active_low = 0
-red_led = port:PA15<1><default><default><0>
-red_led_active_low = 1
+blue_led = port:PA10<1><default><default><0>
+blue_led_active_low = 0
 
 [ths_para]
 ths_used = 1
@@ -494,16 +494,6 @@ sdc_power_supply = "none"
 sdc_2xmode = 1
 sdc_ddrmode = 1
 
-[smc_para]
-smc_used = 0
-smc_rst = port:PA09<2><default><default><default>
-smc_vppen = port:PA20<3><default><default><default>
-smc_vppp = port:PA21<3><default><default><default>
-smc_det = port:PA10<2><default><default><default>
-smc_vccen = port:PA06<2><default><default><default>
-smc_sck = port:PA07<2><default><default><default>
-smc_sda = port:PA08<2><default><default><default>
-
 [usbc0]
 usb_used = 1
 usb_port_type = 2
@@ -745,14 +735,6 @@ s_jtag_tdi = port:PL07<2><1><2><default>
 s_powchk_used = -2147483648
 s_power_reg = 0
 s_system_power = 50
-
-[sim0]
-scr_used = 0
-scr_vccen = port:PA06<2><default><default><default>
-scr_slk = port:PA07<2><default><default><default>
-scr_sda = port:PA08<2><default><default><default>
-scr_rst = port:PA09<2><default><default><default>
-scr_det = port:PA10<2><default><default><default>
 
 [ts0]
 tsc_used = 0

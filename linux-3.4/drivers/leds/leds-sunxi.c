@@ -17,12 +17,12 @@
 struct gpio_led gpio_leds[] = {
 {
         .name                   = "default_led",
-        .default_trigger        = "none",
+        .default_trigger        = "default-on",
         .gpio                   = 0xffff,
         .retain_state_suspended = 1,
         }, {
         .name                   = "default_led",
-        .default_trigger        = "none",
+        .default_trigger        = "heartbeat",
         .gpio                   = 0xffff,
         .retain_state_suspended = 1,
         }, {
