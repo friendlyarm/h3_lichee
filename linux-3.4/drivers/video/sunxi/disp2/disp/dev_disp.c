@@ -932,7 +932,7 @@ static s32 disp_init(struct platform_device *pdev)
 	}
 
 	para->disp_int_process       = disp_sync_finish_process;
-	para->vsync_event            = drv_disp_vsync_event;
+	//para->vsync_event            = drv_disp_vsync_event;
 	para->start_process          = start_process;
 	//para.capture_event          = capture_event;
 

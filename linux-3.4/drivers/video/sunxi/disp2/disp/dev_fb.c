@@ -1327,6 +1327,7 @@ s32 fb_init(struct platform_device *pdev)
        fb_parse_bootlogo_base(&bootlogo_addr, &bootlogo_sz);
 #endif
 
+/*
 	for(i=0; i<num_screens; i++) {
 		char task_name[25];
 
@@ -1341,6 +1342,7 @@ s32 fb_init(struct platform_device *pdev)
 			sched_setscheduler_nocheck(g_fbi.vsync_task[i], SCHED_FIFO, &param);
 		}
 	}
+*/
 	init_waitqueue_head(&g_fbi.wait[0]);
 	init_waitqueue_head(&g_fbi.wait[1]);
 	init_waitqueue_head(&g_fbi.wait[2]);
