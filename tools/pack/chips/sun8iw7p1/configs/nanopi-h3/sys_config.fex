@@ -321,9 +321,9 @@ hdmi_mode_check = 1
 
 [disp_init]
 disp_init_enable = 1
-disp_mode = 1
+disp_mode = 0
 screen0_output_type = 3
-screen0_output_mode = 4
+screen0_output_mode = 10
 screen1_output_type = 2
 screen1_output_mode = 14
 fb0_format = 0

@@ -331,7 +331,7 @@
 	"loglevel=8\0" \
 	"setargs_nand=setenv bootargs console=${console} console=${fbconsole} root=${nand_root}init=${init} loglevel=${loglevel} partitions=${partitions}" \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
-	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} rootfstype=ext4 rootwait init=/sbin/init disp.screen\0" \
+	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} rootfstype=ext4 rootwait init=/sbin/init\0" \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
 	"boot_normal=fatload mmc 0:1 0x43000000 script.bin;fatload mmc 0:1 40007800 uimage;bootm 40007800\0" \
 	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
