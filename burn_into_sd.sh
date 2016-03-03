@@ -1,9 +1,6 @@
 #!/bin/sh
 
-boot_part=$(mount | grep /media/*/BOOT* | awk '{print $3}')
-if [ -z $boot_part ] ; then
-    boot_part=$(mount | grep /media/*/boot* | awk '{print $3}')
-fi
+boot_part=$(mount | grep /media/*/boot* | awk '{print $3}')
 if [ -z $boot_part ] ; then
     echo "fail to find sdcard boot partition"
     exit 1
@@ -18,4 +15,5 @@ cp -fv tools/pack/out/sys_config.bin $boot_part/script.bin
 cd ./tools/pack > /dev/null
 ./fuse_uboot.sh /dev/${device}
 cd - > /dev/null
+rsync -a --exclude=".gitignore" ./script $boot_part
 #eject /dev/${device}
