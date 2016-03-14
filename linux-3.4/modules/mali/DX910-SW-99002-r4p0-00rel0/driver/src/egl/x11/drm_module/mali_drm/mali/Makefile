@@ -11,7 +11,7 @@
 # Makefile for the drm device driver.  This driver provides support for the
 # Direct Rendering Infrastructure (DRI) in XFree86 4.1.0 and higher.
 
-ccflags-y = -Iinclude/drm
+ccflags-y = -I include/drm 
 mali_drm-y := mali_drv.o mali_mm.o
 
 obj-$(CONFIG_DRM_MALI)   += mali_drm.o

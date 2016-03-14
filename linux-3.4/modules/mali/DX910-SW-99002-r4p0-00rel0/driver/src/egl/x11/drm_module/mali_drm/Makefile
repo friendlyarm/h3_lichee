@@ -14,7 +14,7 @@ MALI_DRM_FILE_PREFIX =
 
 ARCH ?= arm
 ## @note Should allow overriding of building MALI DRM for non-debug:
-EXTRA_CFLAGS += -DDEBUG
+EXTRA_CFLAGS += -DDEBUG 
 
 DRM_SYMVERS_FILE = ../drm/Module.symvers
 KBUILD_EXTRA_SYMBOLS = $(KBUILD_EXTMOD)/$(DRM_SYMVERS_FILE)
@@ -25,7 +25,8 @@ KBUILD_EXTRA_SYMBOLS = $(KBUILD_EXTMOD)/$(DRM_SYMVERS_FILE)
 ifneq ($(KERNELRELEASE),)
 # Inside the kernel build system
 
-EXTRA_CFLAGS += -I$(KBUILD_EXTMOD) -I$(KBUILD_EXTMOD)/include -I$(KBUILD_EXTMOD)/../drm/include/
+#EXTRA_CFLAGS += -I$(KBUILD_EXTMOD) -I$(KBUILD_EXTMOD)/include -I$(KBUILD_EXTMOD)/../drm/include/
+EXTRA_CFLAGS += -I$(KBUILD_EXTMOD) -I$(KBUILD_EXTMOD)/include -I$(KBUILD_EXTMOD)/../drm/include/ -D__linux__
 
 SRC +=	$(MALI_DRM_FILE_PREFIX)mali/mali_drv.c \
 	$(MALI_DRM_FILE_PREFIX)mali/mali_mm.c
