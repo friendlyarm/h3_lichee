@@ -879,7 +879,7 @@ s32 sunxi_mci_request_done(struct sunxi_mmc_host* smc_host)
 			} while (time_before(jiffies, expire) && !(rint & SDXC_CmdDone));
 		}
 
-		sunxi_mci_dump_errinfo(smc_host);
+		//sunxi_mci_dump_errinfo(smc_host);
 		if (req->data)
 			SMC_DBG(smc_host, "In data %s operation\n",
 				req->data->flags & MMC_DATA_WRITE ? "write" : "read");
