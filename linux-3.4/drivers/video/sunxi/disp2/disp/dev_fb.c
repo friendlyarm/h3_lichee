@@ -1166,8 +1166,14 @@ static s32 display_fb_request(u32 fb_id, disp_fb_create_info *fb_para)
 				g_fbi.fbinfo[fb_id]->var.hsync_len = tt.hor_sync_time;
 				g_fbi.fbinfo[fb_id]->var.vsync_len = tt.ver_sync_time;
 			}
+#if 0			
 			info->var.width = bsp_disp_get_screen_physical_width(sel);
 			info->var.height = bsp_disp_get_screen_physical_height(sel);
+#endif
+			#define FIX_DPI_10X 	(1300)
+			#define CM_PER_INCH_10X (254)
+			info->var.width = xres * CM_PER_INCH_10X / FIX_DPI_10X;
+			info->var.height = yres * CM_PER_INCH_10X / FIX_DPI_10X;
 
 			memset(&config, 0, sizeof(disp_layer_config));
 
