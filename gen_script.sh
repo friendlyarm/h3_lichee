@@ -26,3 +26,4 @@ gen_script $DISP_TV_MOD_720P_50HZ "720p-50"
 gen_script $DISP_TV_MOD_720P_60HZ "720p-60"
 gen_script $DISP_TV_MOD_1080P_50HZ "1080p-50"
 gen_script $DISP_TV_MOD_1080P_60HZ "1080p-60"
+cp -fv ./tools/pack/out/sys_config.bin ./tools/pack/out/script.bin

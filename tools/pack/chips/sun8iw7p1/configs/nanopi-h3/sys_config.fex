@@ -166,14 +166,14 @@ uart_rx = port:PA05<2><1><default><default>
 [uart1]
 uart_used = 0
 uart_port = 1
-uart_type = 4
+uart_type = 2
 uart_tx = port:PG06<2><1><default><default>
 uart_rx = port:PG07<2><1><default><default>
 uart_rts = port:PG08<2><1><default><default>
 uart_cts = port:PG09<2><1><default><default>
 
 [uart2]
-uart_used = 0
+uart_used = 1
 uart_port = 2
 uart_type = 4
 uart_tx = port:PA00<2><1><default><default>
@@ -182,7 +182,7 @@ uart_rts = port:PA02<2><1><default><default>
 uart_cts = port:PA03<2><1><default><default>
 
 [uart3]
-uart_used = 0
+uart_used = 1
 uart_port = 3
 uart_type = 4
 uart_tx = port:PA13<3><1><default><default>
@@ -253,39 +253,41 @@ blue_led = port:PA10<1><default><default><0>
 blue_led_active_low = 0
 
 [ths_para]
-ths_used = 1
-ths_trip1_count = 6
-ths_trip1_0 = 70
-ths_trip1_1 = 80
-ths_trip1_2 = 85
-ths_trip1_3 = 90
-ths_trip1_4 = 95
-ths_trip1_5 = 100
-ths_trip1_6 = 0
-ths_trip1_7 = 0
-ths_trip1_0_min = 0
-ths_trip1_0_max = 1
-ths_trip1_1_min = 1
-ths_trip1_1_max = 2
-ths_trip1_2_min = 2
-ths_trip1_2_max = 3
-ths_trip1_3_min = 3
-ths_trip1_3_max = 4
-ths_trip1_4_min = 4
-ths_trip1_4_max = 5
-ths_trip1_5_min = 5
-ths_trip1_5_max = 5
-ths_trip1_6_min = 0
-ths_trip1_6_max = 0
-ths_trip2_count = 1
-ths_trip2_0 = 105
+ths_used            = 1
+ths_trip1_count     = 5
+ths_trip1_0         = 70
+ths_trip1_1         = 80
+ths_trip1_2         = 90
+ths_trip1_3         = 100
+ths_trip1_4         = 105
+ths_trip1_5         = 0
+ths_trip1_6         = 0
+ths_trip1_7         = 0
+ths_trip1_0_min     = 0
+ths_trip1_0_max     = 1
+ths_trip1_1_min     = 1
+ths_trip1_1_max     = 2
+ths_trip1_2_min     = 2
+ths_trip1_2_max     = 3
+ths_trip1_3_min     = 3
+ths_trip1_3_max     = 4
+ths_trip1_4_min     = 4
+ths_trip1_4_max     = 4
+ths_trip1_5_min     = 0
+ths_trip1_5_max     = 0
+ths_trip1_6_min     = 0
+ths_trip1_6_max     = 0
+ths_trip2_count     = 1
+ths_trip2_0         = 105
 
 [cooler_table]
-cooler_count = 4
+cooler_count = 5
 cooler0 = "1200000 4 4294967295 0"
 cooler1 = "1008000 4 4294967295 0"
 cooler2 = "816000 4 4294967295 0"
-cooler3 = "648000 1 4294967295 0"
+cooler3 = "504000 4 4294967295 0"
+cooler4 = "504000 1 4294967295 0"
+
 
 [nand0_para]
 nand_support_2ch = 0
@@ -660,8 +662,11 @@ ir_used = 1
 ir_rx = port:PL11<2><1><default><default>
 
 [cir]
-ir_used = 1
+ir_used = 0
 ir_tx = port:PH07<2><default><default><default>
+
+[ls_para]
+ls_used = 0
 
 ;----------------------------------------------------------------------------------
 ; dvfs voltage-frequency table configuration
@@ -688,17 +693,39 @@ ir_tx = port:PH07<2><default><default><default>
 ;
 ;----------------------------------------------------------------------------------
 [dvfs_table]
-pmuic_type = 1
-pmu_gpio0 = port:PL06<1><1><2><1>
-pmu_level0 = 11300
-pmu_level1 = 1100
+pmuic_type = 0
+pmu_gpio0         = port:PL06<1><1><2><1>
+pmu_level0        = 11300
+pmu_level1        = 01100
+;extremity_freq = 1344000000
 max_freq = 1200000000
-min_freq = 648000000
-LV_count = 2
+min_freq = 480000000
+boot_freq = 1008000000
+LV_count = 8
+
 LV1_freq = 1200000000
 LV1_volt = 1300
-LV2_freq = 648000000
-LV2_volt = 1100
+
+LV2_freq = 1008000000
+LV2_volt = 1200
+
+LV3_freq = 0
+LV3_volt = 1100
+
+LV4_freq = 0
+LV4_volt = 1100
+
+LV5_freq = 0
+LV5_volt = 1100
+
+LV6_freq = 0
+LV6_volt = 1100
+
+LV7_freq = 0
+LV7_volt = 1100
+
+LV8_freq = 0
+LV8_volt = 1100
 
 [gpu_dvfs_table]
 G_LV_count = 3

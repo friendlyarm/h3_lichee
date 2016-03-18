@@ -1451,11 +1451,11 @@ static int ddrfreq_budget_cooling_notifier_call(struct notifier_block *nfb, unsi
 
 	temperature = ths_read_data(4);
 	if (temperature >= 100) {
-		DDRFREQ_DBG(DEBUG_FREQ, "temperature=%d C, ddr freq down\n", temperature);
+		//DDRFREQ_DBG(DEBUG_FREQ, "temperature=%d C, ddr freq down\n", temperature);
 		ddrfreq_target(&sunxi_ddrfreq_device.dev, &this_df->min_freq, 0);
 		goto out;
 	} else if (temperature < 90) {
-		DDRFREQ_DBG(DEBUG_FREQ, "temperature=%d C, ddr freq up\n", temperature);
+		//DDRFREQ_DBG(DEBUG_FREQ, "temperature=%d C, ddr freq up\n", temperature);
 		ddrfreq_target(&sunxi_ddrfreq_device.dev, &this_df->max_freq, 0);
 		goto out;
 	} else {
