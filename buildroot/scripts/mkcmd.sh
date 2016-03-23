@@ -814,6 +814,8 @@ function mkclean()
         clkernel
         clbr
     else
+        echo `pwd`
+        rm ./script -rf
         clkernel
         cluboot
         clbr
