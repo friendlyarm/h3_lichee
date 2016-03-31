@@ -32,9 +32,9 @@ if [ ${BLOCK_CNT} -gt 64000000 ]; then
     exit 1
 fi
 
-cd out > /dev/null
-dd if=${boot0_fex} of=${SDCARD} bs=1k seek=8
-dd if=${uboot_fex} of=${SDCARD} bs=1k seek=16400
+cd tools/pack/out/ > /dev/null
+[ -e ${boot0_fex} ] && dd if=${boot0_fex} of=${SDCARD} bs=1k seek=8
+[ -e ${uboot_fex} ] && dd if=${uboot_fex} of=${SDCARD} bs=1k seek=16400
 sync
 cd -  > /dev/null
 

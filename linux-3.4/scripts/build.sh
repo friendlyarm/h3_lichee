@@ -140,7 +140,6 @@ clean_gpu_sun8iw6()
 clean_gpu()
 {
 	chip_sw=`echo $LICHEE_CHIP | awk '{print substr($0,1,length($0)-2)}'`
-	echo
     echo clean gpu module ${chip_sw} $LICHEE_PLATFORM
 	if [ "${chip_sw}" = "sun9iw1" ]; then
 		clean_gpu_sun9iw1
@@ -226,9 +225,9 @@ build_modules()
 
 	update_kern_ver
 
-	# build_nand_lib
-	# make -C modules/nand LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} \
-	# 	CONFIG_CHIP_ID=${CONFIG_CHIP_ID} install
+	build_nand_lib
+	make -C modules/nand LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} \
+		CONFIG_CHIP_ID=${CONFIG_CHIP_ID} install
 
 	build_gpu
 }

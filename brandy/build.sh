@@ -17,10 +17,12 @@ show_help()
 build_uboot()
 {
 	cd u-boot-2011.09/
-	if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
-		make distclean
+	if [ "x${LICHEE_BOARD}" = "xnanopi-h3"  -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then
+		printf "\033[0;31;1mskip uboot clean for nanopi-h3 Linux system\033[0m\n"
+	elif [ "x${LICHEE_BOARD}" = "x"  -a "x${LICHEE_PLATFORM}" = "xandroid" ] ; then
+		printf "\033[0;31;1mskip uboot clean for nanopi-h3 Android system\033[0m\n"
 	else
-		printf "\033[0;31;1mskip uboot clean for nanopi-h3\033[0m\n"
+		make distclean
 	fi
 	if [ "x$MODE" = "xota_test" ] ; then
 		export "SUNXI_MODE=ota_test"

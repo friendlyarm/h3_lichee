@@ -383,6 +383,10 @@ function do_common()
 	fi
 
 	ln -s $LICHEE_OUT/arisc arisc.fex
+
+	if [ "x${PACK_BOARD}" = "xnanopi-h3" ]; then
+		cp -vf sys_config.bin script.bin
+	fi
 }
 
 function do_finish()

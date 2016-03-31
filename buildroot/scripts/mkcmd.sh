@@ -638,11 +638,12 @@ function mkkernel()
 		elif [ "x$LIHCEE_BUILD_CMD" = "x" ] ; then
 			printf "\033[0;31;1muse last time build config\033[0m\n"
 		else
-            if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
-			    printf "\033[0;31;1mclean last time build for config cmd used\033[0m\n"
-			    (cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
-            else 
-                printf "\033[0;31;1mskip kernel clean for nanopi-h3\033[0m\n"
+            if [ "x${LICHEE_BOARD}" = "xnanopi-h3"  -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then
+            	printf "\033[0;31;1mskip kernel clean for nanopi-h3 Linux system\033[0m\n"
+            elif [ "x${LICHEE_BOARD}" = "x"  -a "x${LICHEE_PLATFORM}" = "xandroid" ] ; then
+			    printf "\033[0;31;1mskip kernel clean for nanopi-h3 Android system\033[0m\n"
+            else
+            	(cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
             fi
 		fi
 	else
@@ -796,10 +797,23 @@ function mklichee()
 	mk_info "----------------------------------------"
 
 	check_env
-    if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
-        mkbr && mkkernel && mkrootfs
-    else
+    if [ "x${LICHEE_BOARD}" = "xnanopi-h3" -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then                
         mkkernel && mkuboot
+        if [ -e rootfs.ext4 ]; then
+            ln -s rootfs.ext4 out/sun8iw7p1/linux/common/rootfs.ext4
+            printf "\033[0;31;1muse user's rootfs.ext4\033[0m\n"
+        else
+            printf "\033[0;31;1muse a fake rootfs.ext4\033[0m\n"
+            cd out/sun8iw7p1/linux/common/ && dd if=/dev/zero of=rootfs.ext4 bs=1M count=1
+            if [ $? = 0 ] ; then
+                mkfs.ext4 rootfs.ext4 -F >/dev/null
+            fi
+            cd - > /dev/null
+        fi
+    elif [ "x${LICHEE_BOARD}" = "x" -a "x${LICHEE_PLATFORM}" = "xandroid" ] ; then
+        mkkernel && mkuboot
+    else
+        mkbr && mkkernel && mkrootfs
     fi
     [ $? -ne 0 ] && return 1
 
@@ -810,14 +824,21 @@ function mklichee()
 
 function mkclean()
 {
-    if [ "x$LICHEE_BOARD" != "xnanopi-h3" ] ; then                
-        clkernel
-        clbr
-    else
-        echo `pwd`
+    if [ "x${LICHEE_BOARD}" = "xnanopi-h3"  -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then
+        printf "\033[0;31;1mclean for nanopi-h3 Linux system\033[0m\n"
         rm ./script -rf
         clkernel
         cluboot
+        clbr
+        rm ${LICHEE_TOOLS_DIR}/pack/*.img -fv
+    elif [ "x${LICHEE_BOARD}" = "x"  -a "x${LICHEE_PLATFORM}" = "xandroid" ] ; then
+        printf "\033[0;31;1mclean for nanopi-h3 Android system\033[0m\n"
+        clkernel
+        cluboot
+        clbr
+        rm ${LICHEE_TOOLS_DIR}/pack/*.img -fv
+    else
+        clkernel
         clbr
     fi
 
