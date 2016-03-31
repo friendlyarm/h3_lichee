@@ -107,8 +107,15 @@ static int flash_saveenv(void)
 
 	start = sunxi_partition_get_offset_byname(CONFIG_SUNXI_ENV_PARTITION);
 	if(!start){
+#ifdef CONFIG_SUNXI_NANOPI_M1_ENV
+		start = 0x0;	// blk_size = 512byte, phy_addr = start + CONFIG_MMC_LOGICAL_OFFSET = 20Mbyte
+		printf("saveenv to logic blk %x without env partition\n", start);
+#else
 		printf("fail to find part named %s\n", CONFIG_SUNXI_ENV_PARTITION);
 		return -1;
+#endif
+	} else {
+		printf("saveenv to blk %x in env partition\n", start);
 	}
 
 	res = (char *)&env_new.data;
@@ -143,9 +150,14 @@ static void flash_env_relocate_spec(int workmode)
 	{
 		start = sunxi_partition_get_offset_byname(CONFIG_SUNXI_ENV_PARTITION);
 		if(!start){
+#ifdef CONFIG_SUNXI_NANOPI_M1_ENV
+			start = 0x0;	// blk_size = 512byte, phy_addr = start + CONFIG_MMC_LOGICAL_OFFSET = 20Mbyte
+			printf("try to read logic blk %x without env partition\n", start);
+#else
 			printf("fail to find part named %s\n", CONFIG_SUNXI_ENV_PARTITION);
 			use_default();
 			return;
+#endif
 		}
 
 		if(!sunxi_flash_read(start, CONFIG_ENV_SIZE/512, buf))

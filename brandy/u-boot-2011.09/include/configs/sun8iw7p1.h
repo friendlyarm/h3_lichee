@@ -47,7 +47,7 @@
 
 //#define CONFIG_FPGA
 #define CONFIG_ARCH_SUN8IW7P1
-//#define CONFIG_ARCH_HOMELET
+#define CONFIG_ARCH_HOMELET
 #define CONFIG_ARCH_SUN8IW7
 #define CONFIG_VIDEO_SUNXI_V3
 #define CONFIG_SUNXI_CHIPID 
@@ -310,6 +310,7 @@
 #define CONFIG_SYS_MMC_ENV_DEV          0
 #define CONFIG_ENV_OFFSET				(256 << 10)	/* 256KiB, 0x40000 */
 #define CONFIG_SUNXI_ENV_PARTITION		"env"	/* the partition name */
+#define CONFIG_SUNXI_NANOPI_M1_ENV	1
 
 /*------------------------------------------------------------------------
  * we save the environment in a nand partition, the partition name is defined
