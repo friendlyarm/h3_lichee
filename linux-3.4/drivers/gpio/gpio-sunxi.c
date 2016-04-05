@@ -551,12 +551,12 @@ static int __init gpio_sw_init(void)
     /* filter out the led pins */
     type = script_get_item("led_assign", "normal_led", &normal_led_pin);
     if(SCIRPT_ITEM_VALUE_TYPE_STR != type){
-        printk(KERN_ERR "failed to get normal led pin assign\n");
+        printk(KERN_ERR "normal led pin is not assigned\n");
         normal_led_pin.str = NULL;
     }
     type = script_get_item("led_assign", "standby_led", &standby_led_pin);
     if(SCIRPT_ITEM_VALUE_TYPE_STR != type){
-        printk(KERN_ERR "failed to get standby led pin assign\n");
+        printk(KERN_ERR "standby led pin is not assigned\n");
         standby_led_pin.str = NULL;
     }
 
