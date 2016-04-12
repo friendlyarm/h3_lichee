@@ -16,9 +16,22 @@ config WEXT_SPY
 config WEXT_PRIV
 	bool
 
+config LINUX_BACKPORTS
+	bool "Support for Linux kernel backports"
+	depends on ARCH_SUN8IW7P1
+	default y if !ANDROID
+	select WIRELESS_EXT
+	select WEXT_SPY
+	select WEXT_PRIV
+	select CRYPTO_CCM
+	select CRYPTO_GCM
+	select CRYPTO_CMAC
+	select CRYPTO_MICHAEL_MIC
+	
 config CFG80211
 	tristate "cfg80211 - wireless configuration API"
 	depends on RFKILL || !RFKILL
+	depends on !LINUX_BACKPORTS
 	---help---
 	  cfg80211 is the Linux wireless LAN (802.11) configuration API.
 	  Enable this if you have a wireless device.
