@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SDCARD=$1
 boot0_fex=boot0_sdcard.fex

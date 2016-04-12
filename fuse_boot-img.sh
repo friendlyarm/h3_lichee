@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SDCARD=$1
 boot_img=boot.fex
