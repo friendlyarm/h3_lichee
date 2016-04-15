@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "*******************************************************"
+echo " WARNING:This script is only for ANDROID."
+echo "*******************************************************"
+
 SDCARD=$1
 boot_img=boot.fex
 
@@ -36,4 +40,4 @@ cd tools/pack/out/ > /dev/null
 sync
 cd -  > /dev/null
 
-echo FINISH
+echo "FINISH: boot.img fuse success"

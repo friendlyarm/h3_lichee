@@ -660,6 +660,36 @@ hdmi_used = 1
 [s_cir0]
 ir_used = 1
 ir_rx = port:PL11<2><1><default><default>
+ir_power_key_code0  = 0x00
+ir_addr_code0       = 0xC43B
+ir_power_key_code1  = 0x08
+ir_addr_code1       = 0xC43B
+ir_power_key_code2  = 0x1A
+ir_addr_code2       = 0xC43B
+ir_power_key_code3  = 0x0A
+ir_addr_code3       = 0xC43B
+ir_power_key_code4  = 0x0D
+ir_addr_code4       = 0xC43B
+ir_power_key_code5  = 0x10
+ir_addr_code5       = 0xC43B
+ir_power_key_code6  = 0x11
+ir_addr_code6       = 0xC43B
+ir_power_key_code7  = 0x12
+ir_addr_code7       = 0xC43B
+ir_power_key_code8  = 0x15
+ir_addr_code8       = 0xC43B
+ir_power_key_code9  = 0x0E
+ir_addr_code9       = 0xC43B
+ir_power_key_code10  = 0x16
+ir_addr_code10       = 0xC43B
+ir_power_key_code11  = 0x0C
+ir_addr_code11       = 0xC43B
+ir_power_key_code12  = 0x51
+ir_addr_code12       = 0xC43B
+ir_power_key_code13  = 0x14
+ir_addr_code13       = 0xC43B
+ir_power_key_code14  = 0x50
+ir_addr_code15       = 0xC43B
 
 [cir]
 ir_used = 0
