@@ -1,37 +1,50 @@
 #!/bin/bash
 
-echo "*******************************************************"
-echo " WARNING:This script is only for ANDROID."
-echo "*******************************************************"
-
 SDCARD=$1
 boot_img=boot.fex
 
+function pt_error()
+{
+    echo -e "\033[1;31mERROR: $*\033[0m"
+}
+
+function pt_warn()
+{
+    echo -e "\033[1;31mWARN: $*\033[0m"
+}
+
+function pt_info()
+{
+    echo -e "\033[1;32mINFO: $*\033[0m"
+}
+
+pt_warn "This script is only for ANDROID."
+
 if [ $UID -ne 0 ]
     then
-    echo "Please run as root."
+    pt_error "Please run as root."
     exit
 fi
 
 if [ $# -ne 1 ]; then
-    echo "Usage:$0 device"
+    pt_error "Usage:$0 device"
     exit 1
 fi
 
 DEV_NAME=`basename $1`
 BLOCK_CNT=`cat /sys/block/${DEV_NAME}/size`
 if [ $? -ne 0 ]; then
-    echo "Error: Can't find device ${DEV_NAME}"
+    pt_error "Can't find device ${DEV_NAME}"
     exit 1
 fi
 
 if [ ${BLOCK_CNT} -le 0 ]; then
-    echo "Error: NO media found in card reader."
+    pt_error "NO media found in card reader."
     exit 1
 fi
 
 if [ ${BLOCK_CNT} -gt 64000000 ]; then
-    echo "Error: Block device size (${BLOCK_CNT}) is too large"
+    pt_error "Block device size (${BLOCK_CNT}) is too large"
     exit 1
 fi
 
@@ -40,4 +53,4 @@ cd tools/pack/out/ > /dev/null
 sync
 cd -  > /dev/null
 
-echo "FINISH: boot.img fuse success"
+pt_info "FINISH: boot.img fuse success"

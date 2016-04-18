@@ -18,9 +18,9 @@ build_uboot()
 {
 	cd u-boot-2011.09/
 	if [ "x${LICHEE_BOARD}" = "xnanopi-h3"  -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then
-		printf "\033[0;31;1mskip uboot clean for nanopi-h3 Linux system\033[0m\n"
+		printf "\033[0;32;1mskip uboot clean for nanopi-h3 Linux system\033[0m\n"
 	elif [ "x${LICHEE_BOARD}" = "x"  -a "x${LICHEE_PLATFORM}" = "xandroid" ] ; then
-		printf "\033[0;31;1mskip uboot clean for nanopi-h3 Android system\033[0m\n"
+		printf "\033[0;32;1mskip uboot clean for nanopi-h3 Android system\033[0m\n"
 	else
 		make distclean
 	fi

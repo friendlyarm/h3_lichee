@@ -408,7 +408,7 @@ clean)
 	build_modules
 	build_ramfs
 	gen_output
-	echo -e "\n\033[0;31;1m${LICHEE_CHIP} compile Kernel successful\033[0m\n\n"
+	echo -e "\n\033[0;32;1m${LICHEE_CHIP} compile Kernel successful\033[0m\n\n"
 	;;
 esac
 

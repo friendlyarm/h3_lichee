@@ -394,7 +394,7 @@ function do_finish()
 	if [ -e ${IMG_NAME} ]; then
         mv ${IMG_NAME} ../${IMG_NAME}
         echo '----------image is at----------'
-        echo -e '\033[0;31;1m'
+        echo -e '\033[0;32;1m'
         echo ${ROOT_DIR}/${IMG_NAME}
         echo -e '\033[0m'
     fi

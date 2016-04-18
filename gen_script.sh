@@ -14,8 +14,23 @@ DISP_TV_MOD_1080P_24HZ=8
 DISP_TV_MOD_1080P_50HZ=9
 DISP_TV_MOD_1080P_60HZ=10
 
+function pt_error()
+{
+    echo -e "\033[1;31mERROR: $*\033[0m"
+}
+
+function pt_warn()
+{
+    echo -e "\033[1;31mWARN: $*\033[0m"
+}
+
+function pt_info()
+{
+    echo -e "\033[1;32mINFO: $*\033[0m"
+}
+
 gen_script() {
-    echo "generating script-$2.bin"
+    pt_info "generating script-$2.bin"
     sed -i 's/\(^screen0_output_mode\) = \([0-9]\+\)/\1 = '$1'/g' ${SYS_CONFIG}
     ./build.sh pack
     [ -d ./script ] || mkdir script
