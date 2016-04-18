@@ -164,7 +164,7 @@ uart_tx = port:PA04<2><1><default><default>
 uart_rx = port:PA05<2><1><default><default>
 
 [uart1]
-uart_used = 0
+uart_used = 1
 uart_port = 1
 uart_type = 2
 uart_tx = port:PG06<2><1><default><default>
