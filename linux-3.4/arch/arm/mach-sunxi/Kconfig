@@ -146,6 +146,13 @@ config SUN8I_CCI
 	default n
 	help
 	  Enable Cache Coherent Interconnect support
+
+config SUN8I_ROOT_DEVICE
+	bool "A easy way to root device offered by AllWinner"
+	depends on ARCH_SUN8IW7
+	default n
+	help
+	  Enable root the device
 endif
 
 #
