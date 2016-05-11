@@ -285,8 +285,8 @@ cooler_count = 5
 cooler0 = "1200000 4 4294967295 0"
 cooler1 = "1008000 4 4294967295 0"
 cooler2 = "816000 4 4294967295 0"
-cooler3 = "504000 4 4294967295 0"
-cooler4 = "504000 1 4294967295 0"
+cooler3 = "480000 4 4294967295 0"
+cooler4 = "480000 1 4294967295 0"
 
 
 [nand0_para]
@@ -726,10 +726,10 @@ ls_used = 0
 pmuic_type = 1
 pmu_gpio0         = port:PL06<1><1><2><1>
 pmu_level0        = 11300
-pmu_level1        = 01100
+pmu_level1        = 1100
 ;extremity_freq = 1200000000
 max_freq = 1200000000
-min_freq = 504000000
+min_freq = 480000000
 boot_freq = 1200000000
 LV_count = 4
 
@@ -742,7 +742,7 @@ LV2_volt = 1300
 LV3_freq = 816000000
 LV3_volt = 1100
 
-LV4_freq = 648000000
+LV4_freq = 480000000
 LV4_volt = 1100
 
 [gpu_dvfs_table]
