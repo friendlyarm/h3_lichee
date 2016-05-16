@@ -223,7 +223,7 @@ static const struct adxl34x_platform_data adxl34x_default_init = {
 	.free_fall_threshold = 8,
 	.free_fall_time = 0x20,
 	.data_rate = 8,
-	.data_range = ADXL_FULL_RES,
+	.data_range = ADXL_FULL_RES | INT_INVERT,
 
 	.ev_type = EV_ABS,
 	.ev_code_x = ABS_X,	/* EV_REL */
@@ -235,6 +235,9 @@ static const struct adxl34x_platform_data adxl34x_default_init = {
 	.fifo_mode = FIFO_STREAM,
 	.watermark = 0,
 };
+
+static irqreturn_t adxl34x_irq(int irq, void *handle);
+static int adxl34x_read_without_int(int irq, void* handle);
 
 static void adxl34x_get_triple(struct adxl34x *ac, struct axis_triple *axis)
 {
@@ -294,6 +297,14 @@ static void adxl34x_do_tap(struct adxl34x *ac,
 	adxl34x_send_key_events(ac, pdata, status, true);
 	input_sync(ac->input);
 	adxl34x_send_key_events(ac, pdata, status, false);
+}
+
+static int adxl34x_read_without_int(int irq, void* handle)
+{
+	if (adxl34x_irq(irq, handle) != IRQ_HANDLED) {
+		return -1;
+	}
+	return 0;
 }
 
 static irqreturn_t adxl34x_irq(int irq, void *handle)
@@ -486,6 +497,10 @@ static ssize_t adxl34x_calibrate_show(struct device *dev,
 	struct adxl34x *ac = dev_get_drvdata(dev);
 	ssize_t count;
 
+	if (adxl34x_read_without_int(0, ac)) {
+		return 0;
+	}
+
 	mutex_lock(&ac->mutex);
 	count = sprintf(buf, "%d,%d,%d\n",
 			ac->hwcal.x * 4 + ac->swcal.x,
@@ -607,6 +622,9 @@ static ssize_t adxl34x_position_show(struct device *dev,
 	struct adxl34x *ac = dev_get_drvdata(dev);
 	ssize_t count;
 
+	if (adxl34x_read_without_int(0, ac)) {
+		return 0;
+	}
 	mutex_lock(&ac->mutex);
 	count = sprintf(buf, "(%d, %d, %d)\n",
 			ac->saved.x, ac->saved.y, ac->saved.z);
@@ -810,14 +828,16 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
 		ac->fifo_delay = false;
 
 	ac->bops->write(dev, POWER_CTL, 0);
-
+	// not use int
+#if 0
 	err = request_threaded_irq(ac->irq, NULL, adxl34x_irq,
-				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+				   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
 				   dev_name(dev), ac);
 	if (err) {
 		dev_err(dev, "irq %d busy?\n", ac->irq);
 		goto err_free_mem;
 	}
+#endif
 
 	err = sysfs_create_group(&dev->kobj, &adxl34x_attr_group);
 	if (err)
@@ -884,6 +904,13 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
 
 	ac->pdata.power_mode &= (PCTL_AUTO_SLEEP | PCTL_LINK);
 
+	__adxl34x_enable(ac);
+#if 0	
+	int start = 0x1D;
+	for(; start < 0x3C; start++) {
+		printk("reg[%x]=%x\n", start, AC_READ(ac, start));
+	}
+#endif
 	return ac;
 
  err_remove_attr:

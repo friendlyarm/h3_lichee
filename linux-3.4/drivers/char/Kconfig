@@ -636,6 +636,30 @@ config SUNXI_D7S
 	---help---
 	  Sunxi display 7 segment for h3.
 
+config MATRIX_GPIO_INT
+	tristate "Matrix GPIO int sensor module"
+	default m
+	---help---
+	  Driver for Matrix GPIO int sensor module.
+
+config MATRIX_PWM
+	tristate "Matrix PWM module"
+	default m
+	---help---
+	  Driver for Matrix PWM module.
+
+config MATRIX_ROTARY_ENCODER
+	tristate "Matrix rotary encoder"
+	default m
+	---help---
+	  Driver for Matrix rotary encoder.
+
+config MATRIX_HCSR04
+	tristate "Matrix hcsr04"
+	default m
+	---help---
+	  Driver for Matrix hcsr04.
+	  
 source "drivers/char/sunxi_g2d/Kconfig"
 source "drivers/char/sunxi_ir_cut/Kconfig"
 source "drivers/char/cma_test/Kconfig"

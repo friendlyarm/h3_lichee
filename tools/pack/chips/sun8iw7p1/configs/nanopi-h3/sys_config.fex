@@ -219,7 +219,7 @@ full_duplex = 1
 manual_cs = 0
 
 [gpio_para]
-gpio_used = 1
+gpio_used = 0
 gpio_num = 19
 gpio_pin_1       = port:PA06<1><default><default><0>
 gpio_pin_2       = port:PA13<1><default><default><0>
@@ -345,9 +345,12 @@ tv_dac_used = 1
 tv_dac_src0 = 0
 
 [pwm0_para]
-pwm_used = 0
+pwm_used = 1
 pwm_positive = port:PA05<3><0><default><default>
-;       If set gamc_phy to use = 2
+
+[pwm1_para]
+pwm_used = 1
+pwm_positive = port:PA06<3><0><default><default>
 
 [gmac0]
 gmac_used = 2

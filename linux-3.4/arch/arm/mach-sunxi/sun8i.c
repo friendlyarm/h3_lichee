@@ -117,6 +117,40 @@ static struct i2c_board_info i2c_ina219_devs[] __initdata = {
 };
 #endif
 
+/*------------------------------------------------------------------------------
+ * Matrix device
+ */
+#if defined(CONFIG_INPUT_ADXL34X_I2C_MODULE)
+#define ADXL34X_I2C_BUS     (0)
+static struct i2c_board_info __initdata adxl34x_i2c_bdi = {
+	I2C_BOARD_INFO("adxl34x", 0x1d),
+	.irq	= -1,
+};
+#endif
+
+#if defined(CONFIG_BMP085_MODULE)
+#define BMP085_I2C_BUS (0)
+static struct i2c_board_info __initdata bmp085_i2c_bdi = {
+	I2C_BOARD_INFO("bmp085", 0x77),
+	.irq	= -1,
+};
+#endif
+
+#if defined(CONFIG_RTC_DRV_DS1307_MODULE)
+#define DS1307_I2C_BUS (0)
+static struct i2c_board_info __initdata ds1307_i2c_bdi = {
+	I2C_BOARD_INFO("ds1307", 0X68),
+	.irq	= -1,
+};
+#endif
+
+#if defined(CONFIG_SENSORS_PCF8591_MODULE)
+#define PCF8591_I2C_BUS (0)
+static struct i2c_board_info __initdata pcf8591_i2c_bdi = {
+        I2C_BOARD_INFO("pcf8591", 0x48),
+};
+#endif
+
 #if defined(CONFIG_ION) || defined(CONFIG_ION_MODULE)
 #define DEFAULT_SUNXI_ION_RESERVE_SIZE	96
 #define ION_CARVEOUT_INIT_MAX	4
@@ -461,6 +495,27 @@ static void __init sunxi_dev_init(void)
 	}
 	printk("ina219 device registered\n");
 #endif
+
+#if defined(CONFIG_INPUT_ADXL34X_I2C_MODULE)
+	printk("plat: add adxl34x device\n");
+	i2c_register_board_info(ADXL34X_I2C_BUS, &adxl34x_i2c_bdi, 1);
+#endif
+
+#if defined(CONFIG_BMP085_MODULE)
+	printk("plat: add bmp085 device\n");
+	i2c_register_board_info(BMP085_I2C_BUS, &bmp085_i2c_bdi, 1);
+#endif
+
+#if defined(CONFIG_RTC_DRV_DS1307_MODULE)
+	printk("plat: add ds1307 device\n");
+	i2c_register_board_info(DS1307_I2C_BUS, &ds1307_i2c_bdi, 1);
+#endif
+
+#if defined(CONFIG_SENSORS_PCF8591_MODULE)
+	printk("plat: add pcf8591 device\n");
+	i2c_register_board_info(PCF8591_I2C_BUS, &pcf8591_i2c_bdi, 1);
+#endif	
+
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	/*	ram console	platform device initialize*/
 	ram_console_device_init();

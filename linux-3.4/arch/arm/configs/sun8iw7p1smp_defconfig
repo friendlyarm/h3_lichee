@@ -1079,7 +1079,7 @@ CONFIG_BLK_DEV_CRYPTOLOOP=y
 # CONFIG_DS1682 is not set
 # CONFIG_TI_DAC7512 is not set
 CONFIG_UID_STAT=y
-# CONFIG_BMP085 is not set
+CONFIG_BMP085=m
 # CONFIG_USB_SWITCH_FSA9480 is not set
 # CONFIG_SUNXI_BROM_READ is not set
 # CONFIG_C2PORT is not set
@@ -1396,7 +1396,9 @@ CONFIG_INPUT_UINPUT=y
 # CONFIG_INPUT_GPIO is not set
 # CONFIG_INPUT_PCF8574 is not set
 # CONFIG_INPUT_GPIO_ROTARY_ENCODER is not set
-# CONFIG_INPUT_ADXL34X is not set
+CONFIG_INPUT_ADXL34X=m
+CONFIG_INPUT_ADXL34X_I2C=m
+# CONFIG_INPUT_ADXL34X_SPI is not set
 # CONFIG_INPUT_CMA3000 is not set
 # CONFIG_INPUT_SHAFT_ENCODER is not set
 
@@ -1461,6 +1463,10 @@ CONFIG_SERIAL_SUNXI_CONSOLE=y
 # CONFIG_DCC_TTY is not set
 # CONFIG_RAMOOPS is not set
 # CONFIG_SUNXI_D7S is not set
+CONFIG_MATRIX_GPIO_INT=m
+CONFIG_MATRIX_PWM=m
+CONFIG_MATRIX_ROTARY_ENCODER=m
+CONFIG_MATRIX_HCSR04=m
 # CONFIG_IR_CUT is not set
 CONFIG_SUNXI_CMATESET=y
 # CONFIG_SUNXI_ARISC_TEST is not set
@@ -1475,7 +1481,7 @@ CONFIG_SUNXI_SOC_INFO=y
 CONFIG_I2C=y
 CONFIG_I2C_BOARDINFO=y
 CONFIG_I2C_COMPAT=y
-# CONFIG_I2C_CHARDEV is not set
+CONFIG_I2C_CHARDEV=y
 # CONFIG_I2C_MUX is not set
 CONFIG_I2C_HELPER_AUTO=y
 CONFIG_I2C_ALGOBIT=y
@@ -1530,7 +1536,7 @@ CONFIG_SPI_SUNXI=y
 #
 # SPI Protocol Masters
 #
-# CONFIG_SPI_SPIDEV is not set
+CONFIG_SPI_SPIDEV=y
 # CONFIG_SPI_TLE62X0 is not set
 # CONFIG_HSI is not set
 
@@ -1602,7 +1608,29 @@ CONFIG_GPIO_SYSFS=y
 # MODULbus GPIO expanders:
 #
 CONFIG_GPIO_SUNXI=m
-# CONFIG_W1 is not set
+CONFIG_W1=y
+
+#
+# 1-wire Bus Masters
+#
+# CONFIG_W1_MASTER_DS2490 is not set
+# CONFIG_W1_MASTER_DS2482 is not set
+# CONFIG_W1_MASTER_DS1WM is not set
+CONFIG_W1_MASTER_GPIO=m
+
+#
+# 1-wire Slaves
+#
+CONFIG_W1_SLAVE_THERM=y
+# CONFIG_W1_SLAVE_SMEM is not set
+# CONFIG_W1_SLAVE_DS2408 is not set
+# CONFIG_W1_SLAVE_DS2423 is not set
+# CONFIG_W1_SLAVE_DS2431 is not set
+# CONFIG_W1_SLAVE_DS2433 is not set
+# CONFIG_W1_SLAVE_DS2760 is not set
+# CONFIG_W1_SLAVE_DS2780 is not set
+# CONFIG_W1_SLAVE_DS2781 is not set
+# CONFIG_W1_SLAVE_BQ27000 is not set
 # CONFIG_POWER_SUPPLY is not set
 CONFIG_HWMON=y
 # CONFIG_HWMON_VID is not set
@@ -1677,7 +1705,7 @@ CONFIG_HWMON=y
 # CONFIG_SENSORS_NTC_THERMISTOR is not set
 # CONFIG_SENSORS_PC87360 is not set
 # CONFIG_SENSORS_PC87427 is not set
-# CONFIG_SENSORS_PCF8591 is not set
+CONFIG_SENSORS_PCF8591=m
 # CONFIG_PMBUS is not set
 # CONFIG_DA380 is not set
 # CONFIG_SENSORS_SHT15 is not set
@@ -1809,7 +1837,8 @@ CONFIG_BCMA_POSSIBLE=y
 # CONFIG_MFD_AAT2870_CORE is not set
 # CONFIG_MFD_RC5T583 is not set
 # CONFIG_REGULATOR is not set
-# CONFIG_PWM is not set
+CONFIG_PWM=y
+CONFIG_PWM_SUNXI=y
 CONFIG_MEDIA_SUPPORT=y
 
 #
@@ -2574,7 +2603,7 @@ CONFIG_RTC_INTF_DEV=y
 #
 # I2C RTC drivers
 #
-# CONFIG_RTC_DRV_DS1307 is not set
+CONFIG_RTC_DRV_DS1307=m
 # CONFIG_RTC_DRV_DS1374 is not set
 # CONFIG_RTC_DRV_DS1672 is not set
 # CONFIG_RTC_DRV_DS3232 is not set
@@ -2658,7 +2687,164 @@ CONFIG_SUNXI_DMA=y
 #
 # Microsoft Hyper-V guest support
 #
-# CONFIG_STAGING is not set
+CONFIG_STAGING=y
+# CONFIG_USBIP_CORE is not set
+# CONFIG_ECHO is not set
+# CONFIG_ASUS_OLED is not set
+# CONFIG_RTLLIB is not set
+# CONFIG_R8712U is not set
+# CONFIG_RTS5139 is not set
+# CONFIG_TRANZPORT is not set
+# CONFIG_LINE6_USB is not set
+# CONFIG_USB_SERIAL_QUATECH2 is not set
+# CONFIG_USB_SERIAL_QUATECH_USB2 is not set
+# CONFIG_VT6656 is not set
+CONFIG_IIO=y
+# CONFIG_IIO_ST_HWMON is not set
+# CONFIG_IIO_BUFFER is not set
+# CONFIG_IIO_TRIGGER is not set
+
+#
+# Accelerometers
+#
+# CONFIG_ADIS16201 is not set
+# CONFIG_ADIS16203 is not set
+# CONFIG_ADIS16204 is not set
+# CONFIG_ADIS16209 is not set
+# CONFIG_ADIS16220 is not set
+# CONFIG_ADIS16240 is not set
+# CONFIG_KXSD9 is not set
+# CONFIG_LIS3L02DQ is not set
+
+#
+# Analog to digital converters
+#
+# CONFIG_AD7291 is not set
+# CONFIG_AD7298 is not set
+# CONFIG_AD7606 is not set
+# CONFIG_AD799X is not set
+# CONFIG_AD7476 is not set
+# CONFIG_AD7887 is not set
+# CONFIG_AD7780 is not set
+# CONFIG_AD7793 is not set
+# CONFIG_AD7816 is not set
+# CONFIG_AD7192 is not set
+# CONFIG_ADT7310 is not set
+# CONFIG_ADT7410 is not set
+# CONFIG_AD7280 is not set
+# CONFIG_MAX1363 is not set
+
+#
+# Analog digital bi-direction converters
+#
+# CONFIG_ADT7316 is not set
+
+#
+# Capacitance to digital converters
+#
+# CONFIG_AD7150 is not set
+# CONFIG_AD7152 is not set
+# CONFIG_AD7746 is not set
+
+#
+# Digital to analog converters
+#
+# CONFIG_AD5064 is not set
+# CONFIG_AD5360 is not set
+# CONFIG_AD5380 is not set
+# CONFIG_AD5421 is not set
+# CONFIG_AD5624R_SPI is not set
+# CONFIG_AD5446 is not set
+# CONFIG_AD5504 is not set
+# CONFIG_AD5764 is not set
+# CONFIG_AD5791 is not set
+# CONFIG_AD5686 is not set
+# CONFIG_MAX517 is not set
+
+#
+# Direct Digital Synthesis
+#
+# CONFIG_AD5930 is not set
+# CONFIG_AD9832 is not set
+# CONFIG_AD9834 is not set
+# CONFIG_AD9850 is not set
+# CONFIG_AD9852 is not set
+# CONFIG_AD9910 is not set
+# CONFIG_AD9951 is not set
+
+#
+# Digital gyroscope sensors
+#
+# CONFIG_ADIS16060 is not set
+# CONFIG_ADIS16080 is not set
+# CONFIG_ADIS16130 is not set
+# CONFIG_ADIS16260 is not set
+# CONFIG_ADXRS450 is not set
+
+#
+# Humidity sensors
+#
+CONFIG_DHT11=m
+
+#
+# Network Analyzer, Impedance Converters
+#
+# CONFIG_AD5933 is not set
+CONFIG_INV_SENSOR=y
+
+#
+# Light sensors
+#
+# CONFIG_SENSORS_ISL29018 is not set
+# CONFIG_SENSORS_TSL2563 is not set
+# CONFIG_TSL2583 is not set
+
+#
+# Magnetometer sensors
+#
+# CONFIG_SENSORS_HMC5843 is not set
+
+#
+# Active energy metering IC
+#
+# CONFIG_ADE7753 is not set
+# CONFIG_ADE7754 is not set
+# CONFIG_ADE7758 is not set
+# CONFIG_ADE7759 is not set
+# CONFIG_ADE7854 is not set
+
+#
+# Resolver to digital converters
+#
+# CONFIG_AD2S90 is not set
+# CONFIG_AD2S1200 is not set
+# CONFIG_AD2S1210 is not set
+
+#
+# Triggers - standalone
+#
+# CONFIG_IIO_SIMPLE_DUMMY is not set
+# CONFIG_ZSMALLOC is not set
+# CONFIG_FB_SM7XX is not set
+# CONFIG_USB_ENESTORAGE is not set
+# CONFIG_BCM_WIMAX is not set
+# CONFIG_FT1000 is not set
+
+#
+# Speakup console speech
+#
+# CONFIG_SPEAKUP is not set
+# CONFIG_TOUCHSCREEN_CLEARPAD_TM1217 is not set
+# CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 is not set
+# CONFIG_STAGING_MEDIA is not set
+
+#
+# Android
+#
+# CONFIG_ANDROID is not set
+# CONFIG_PHONE is not set
+# CONFIG_USB_WPAN_HCD is not set
+# CONFIG_SUNXIOOPS is not set
 CONFIG_CLKDEV_LOOKUP=y
 CONFIG_HAVE_CLK_PREPARE=y
 CONFIG_COMMON_CLK=y
