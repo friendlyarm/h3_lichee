@@ -659,6 +659,12 @@ config MATRIX_HCSR04
 	default m
 	---help---
 	  Driver for Matrix hcsr04.
+
+config MATRIX_IR_RECV
+	tristate "Matrix ir receiver"
+	default m
+	---help---
+	  Device info for Matrix ir receiver.
 	  
 source "drivers/char/sunxi_g2d/Kconfig"
 source "drivers/char/sunxi_ir_cut/Kconfig"
