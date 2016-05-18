@@ -58,3 +58,4 @@ obj-$(CONFIG_PHONE)		+= telephony/
 obj-$(CONFIG_RAMSTER)		+= ramster/
 obj-$(CONFIG_USB_WPAN_HCD)	+= ozwpan/
 obj-$(CONFIG_ARCH_SUNXI) += sunxi/
+obj-$(CONFIG_FB_TFT)		+= fbtft/

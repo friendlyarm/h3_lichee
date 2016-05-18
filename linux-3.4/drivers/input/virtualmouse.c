@@ -91,14 +91,14 @@ static struct file_operations vmouse_fops =
 
 static int vmouse_input_dev_open(struct input_dev* idev)
 {
-    printk(KERN_INFO"%s \n", __func__);
+    // printk(KERN_INFO"%s \n", __func__);
  
     return 0;
 }
  
 static void vmouse_input_dev_close(struct input_dev* idev)
 {
-    printk(KERN_INFO"%s \n", __func__);
+    // printk(KERN_INFO"%s \n", __func__);
  
     return;
 }

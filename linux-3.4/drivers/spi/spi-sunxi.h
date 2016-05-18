@@ -203,6 +203,11 @@
 #define SUNXI_CS_BITMAP(ch)     (ch%2 == 0 ? 1 : 3)
 #define SUNXI_CS_NUM(ch)        (ch%2 == 0 ? 1 : 2)
 #endif
+#ifdef CONFIG_ARCH_SUN8IW7P1
+#define SUNXI_CS_BITMAP(ch)     (ch == 0 ? 7 : 1)
+#define SUNXI_CS_NUM(ch)        (ch == 0 ? 3 : 1)
+#define SUNXI_SPI_NO_CHECK_CS_OCCUPIED
+#endif
 #ifdef CONFIG_ARCH_SUN9IW1P1
 #define SUNXI_CS_BITMAP(ch)     (ch == 3 ? 7 : 1)
 #define SUNXI_CS_NUM(ch)        (ch == 3 ? 4 : 1)
@@ -247,6 +252,7 @@ struct sunxi_spi_config {
 	int bits_per_word; //8bit
 	int max_speed_hz;  //80MHz
 	int mode; // pha,pol,LSB,etc..
+	void (*cs_control) (u32 control);
 };
 
 /* spi device data, used in dual spi mode */

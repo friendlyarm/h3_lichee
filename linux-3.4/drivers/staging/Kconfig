@@ -133,4 +133,7 @@ source "drivers/staging/ramster/Kconfig"
 source "drivers/staging/ozwpan/Kconfig"
 
 source "drivers/staging/sunxi/Kconfig"
+
+source "drivers/staging/fbtft/Kconfig"
+
 endif # STAGING

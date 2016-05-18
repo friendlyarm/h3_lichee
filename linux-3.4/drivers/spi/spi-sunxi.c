@@ -766,6 +766,7 @@ static int sunxi_spi_release_dma(struct sunxi_spi *sspi, struct spi_transfer *t)
 /* check the valid of cs id */
 static int sunxi_spi_check_cs(int cs_id, struct sunxi_spi *sspi)
 {
+#ifndef SUNXI_SPI_NO_CHECK_CS_OCCUPIED
     int ret = SUNXI_SPI_FAIL;
 
     switch(cs_id)
@@ -782,11 +783,15 @@ static int sunxi_spi_check_cs(int cs_id, struct sunxi_spi *sspi)
     }
 
     return ret;
+#else
+	return SUNXI_SPI_OK;
+#endif
 }
 
 /* spi device on or off control */
 static void sunxi_spi_cs_control(struct spi_device *spi, bool on)
 {
+	struct sunxi_spi_config *config = spi->controller_data;
 	struct sunxi_spi *sspi = spi_master_get_devdata(spi->master);
 	unsigned int cs = 0;
 	if (sspi->cs_control) {
@@ -800,6 +805,8 @@ static void sunxi_spi_cs_control(struct spi_device *spi, bool on)
 		}
 		spi_ss_level(sspi->base_addr, cs);
 	}
+	if(config->cs_control)
+		config->cs_control(cs);
 }
 
 /*
@@ -1347,10 +1354,10 @@ static int sunxi_spi_setup(struct spi_device *spi)
 /* interface 3 */
 static void sunxi_spi_cleanup(struct spi_device *spi)
 {
-    if(spi->controller_data) {
-        kfree(spi->controller_data);
-        spi->controller_data = NULL;
-    }
+	struct sunxi_spi_config *config = spi_get_ctldata(spi);
+	
+	spi_set_ctldata(spi, NULL);
+	kfree(config);
 }
 
 /* get configuration in the script */
