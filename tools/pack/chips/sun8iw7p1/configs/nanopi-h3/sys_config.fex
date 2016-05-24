@@ -183,8 +183,6 @@ uart_port = 3
 uart_type = 4
 uart_tx = port:PA13<3><1><default><default>
 uart_rx = port:PA14<3><1><default><default>
-uart_rts = port:PA15<3><1><default><default>
-uart_cts = port:PA16<3><1><default><default>
 
 [spi0]
 spi_used = 1
@@ -644,7 +642,7 @@ adcdrc_used = 0
 dacdrc_used = 0
 adchpf_used = 0
 dachpf_used = 0
-audio_pa_ctrl = port:PA16<1><default><default><0>
+;audio_pa_ctrl = port:PA16<1><default><default><0>
 
 [spdif0]
 spdif_used = 0
