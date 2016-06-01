@@ -27,6 +27,7 @@
 #include <linux/mutex.h>
 #include <linux/err.h>
 #include <linux/hwmon.h>
+#include <linux/delay.h>
 
 /* Insmod parameters */
 
@@ -277,7 +278,8 @@ static void pcf8591_init_client(struct i2c_client *client)
 
 static int pcf8591_read_channel(struct device *dev, int channel)
 {
-	u8 value;
+	int i=0, j=0;
+	u8 value, prevalue;
 	struct i2c_client *client = to_i2c_client(dev);
 	struct pcf8591_data *data = i2c_get_clientdata(client);
 
@@ -287,14 +289,23 @@ static int pcf8591_read_channel(struct device *dev, int channel)
 		data->control = (data->control & ~PCF8591_CONTROL_AICH_MASK)
 			      | channel;
 		i2c_smbus_write_byte(client, data->control);
-
+	}
+	prevalue = 0;
+	for(i=0; i<100; i++) {
 		/*
 		 * The first byte transmitted contains the conversion code of
 		 * the previous read cycle. FLUSH IT!
 		 */
-		i2c_smbus_read_byte(client);
-	}
-	value = i2c_smbus_read_byte(client);
+		value = i2c_smbus_read_byte(client);
+		if (value == prevalue)
+			j++;
+		else
+			j = 0;
+		prevalue = value;
+		if (j == 10)
+			break;
+		msleep(20);
+	}	
 
 	mutex_unlock(&data->update_lock);
 
