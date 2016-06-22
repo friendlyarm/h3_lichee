@@ -5,7 +5,9 @@ targets := resumes.elf
 
 #use "-Os" flags.
 #Don't use "-O2" flags.
-KBUILD_CFLAGS := -g -c -nostdlib -march=armv7-a -marm -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian -O2 --min_array_alignment=4 --no_unaligned_access
+KBUILD_CFLAGS := -g -c -nostdlib -march=armv7-a -marm -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian -O2
+KBUILD_CFLAGS += $(call cc-option,--min_array_alignment=4,)
+KBUILD_CFLAGS += $(call cc-option,-mno-unaligned-access,--no_unaligned_access)
 
 #Include the cur dir.
 KBUILD_CPPFLAGS += -I.
