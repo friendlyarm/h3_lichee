@@ -24,7 +24,7 @@ export MKBOOTIMG=${LICHEE_TOOLS_DIR}/pack/pctools/linux/android/mkbootimg
 
 KERNEL_VERSION=`make -s kernelversion -C ./`
 LICHEE_KDIR=`pwd`
-LICHEE_MOD_DIR=${LICHEE_KDIR}/output/lib/modules/${KERNEL_VERSION}
+LICHEE_MOD_DIR=${LICHEE_KDIR}/output/lib/modules/${KERNEL_VERSION}-h3
 export LICHEE_KDIR
 
 update_kern_ver()
