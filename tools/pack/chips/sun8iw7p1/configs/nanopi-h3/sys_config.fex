@@ -152,7 +152,7 @@ twi_scl = port:PA18<3><default><default><default>
 twi_sda = port:PA19<3><default><default><default>
 
 [twi2]
-twi_used = 0
+twi_used = 1
 twi_scl = port:PE12<3><default><default><default>
 twi_sda = port:PE13<3><default><default><default>
 
@@ -334,7 +334,7 @@ hdmi_used = 1
 hdmi_power = "vcc-hdmi-18"
 
 [tv_para]
-tv_used = 1
+tv_used = 0
 tv_dac_used = 1
 tv_dac_src0 = 0
 
@@ -351,7 +351,7 @@ gmac_used = 2
 gmac_power1 =
 
 [csi0]
-vip_used = 1
+vip_used = 0
 vip_mode = 0
 vip_dev_qty = 1
 vip_define_sensor_list = 0
@@ -451,7 +451,7 @@ sdc_regulator = "none"
 sdc_power_supply = "none"
 
 [mmc1_para]
-sdc_used = 1
+sdc_used = 0
 sdc_detmode = 4
 sdc_buswidth = 4
 sdc_clk = port:PG00<2><1><3><default>
