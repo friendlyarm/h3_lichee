@@ -339,12 +339,9 @@ tv_dac_used = 1
 tv_dac_src0 = 0
 
 [pwm0_para]
-pwm_used = 1
+pwm_used = 0
 pwm_positive = port:PA05<3><0><default><default>
-
-[pwm1_para]
-pwm_used = 1
-pwm_positive = port:PA06<3><0><default><default>
+;       If set gamc_phy to use = 2
 
 [gmac0]
 gmac_used = 2
