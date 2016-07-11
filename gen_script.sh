@@ -67,6 +67,23 @@ gen_script_for_neo()
     mv ${SYS_CONFIG_DIR}/boards/sys_config_current.fex ${SYS_CONFIG}
 }
 
+gen_script_for_air() 
+{
+    NEO_SYS_CONFIG=${SYS_CONFIG_DIR}/boards/sys_config_nanopi_air.fex
+    SYS_CONFIG=${SYS_CONFIG_DIR}/sys_config.fex
+    # backup current sys_config.fex
+    mv ${SYS_CONFIG} ${SYS_CONFIG_DIR}/boards/sys_config_current.fex
+    
+    cp ${NEO_SYS_CONFIG} ${SYS_CONFIG}
+    ./build.sh pack
+    [ -d ./script ] || mkdir script
+    cp -fv ./tools/pack/out/sys_config.bin ./script/script-air.bin
+
+    # restore current sys_config.fex
+    mv ${SYS_CONFIG_DIR}/boards/sys_config_current.fex ${SYS_CONFIG}
+
+}
+
 if [ $# -ne 1 ]; then
     pt_warn "Usage: $0 board[nanopi_m1|nanopi_neo]"
     exit 1
@@ -83,8 +100,11 @@ if [[ "x${BOARD}" = "xnanopi-m1" ]]; then
     gen_script_for_m1 $DISP_TV_MOD_720P_60HZ "720p-60"
 elif [ "x${BOARD}" = "xnanopi-neo" ]; then
     gen_script_for_neo
+elif [ "x${BOARD}" = "xnanopi-air" ]; then
+    gen_script_for_air
 else
     pt_error "Unsupported board"
+    exit 1
 fi
 
 cp -fv ./tools/pack/out/sys_config.bin ./tools/pack/out/script.bin
