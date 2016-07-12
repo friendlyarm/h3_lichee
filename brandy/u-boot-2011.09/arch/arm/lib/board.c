@@ -578,6 +578,9 @@ void board_init_r(gd_t *id, ulong dest_addr)
 #ifdef CONFIG_SUNXI_HDCP_IN_SECURESTORAGE
 	int hdcpkey_enable=0;
 #endif
+	char storage_type_buf[24] = {0};
+	char boot_mmc_buf[24] = {0};
+	
 	gd = id;
 	//bd = gd->bd;
 
@@ -626,7 +629,7 @@ void board_init_r(gd_t *id, ulong dest_addr)
 	axp_reinit();
 	//uboot_spare_head.boot_data.work_mode = WORK_MODE_CARD_PRODUCT;
 
-#if defined(CONFIG_CPUS_STANDBY) //Ä¿Ç°Ö»ÔÚhomeletÉÏÊ¹ÓÃ
+#if defined(CONFIG_CPUS_STANDBY) //Ä¿Ç°Ö»ï¿½ï¿½homeletï¿½ï¿½Ê¹ï¿½ï¿½
 	do_box_standby();
 #endif
 
@@ -667,7 +670,7 @@ void board_init_r(gd_t *id, ulong dest_addr)
 	/* enable exceptions */
 	enable_interrupts();
 	sunxi_dma_init();
-#ifdef CONFIG_USE_CIR	//ºìÍâ½Ó¿Ú£¬Ä¿Ç°Ö»ÓÃÓÚºÐ×Ó A20
+#ifdef CONFIG_USE_CIR	//ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½Ä¿Ç°Ö»ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½ A20
 	if (uboot_spare_head.boot_data.work_mode == WORK_MODE_BOOT)
 	{
 		ir_setup();
@@ -786,6 +789,17 @@ void board_init_r(gd_t *id, ulong dest_addr)
 
 	/* initialize environment */
 	env_relocate();
+
+	/* setenv storage_type */
+	sprintf(storage_type_buf, "%d", uboot_spare_head.boot_data.storage_type);
+	if (setenv("storage_type", storage_type_buf))
+		printf("set storage_type=%s fail\n", storage_type_buf);
+	if (uboot_spare_head.boot_data.storage_type == 1)
+		sprintf(boot_mmc_buf, "%s", "0");	
+	else
+		sprintf(boot_mmc_buf, "%s", "2");
+	setenv("boot_mmc", boot_mmc_buf);
+	
 #if defined(CONFIG_CMD_PCI) || defined(CONFIG_PCI)
 	arm_pci_init();
 #endif
