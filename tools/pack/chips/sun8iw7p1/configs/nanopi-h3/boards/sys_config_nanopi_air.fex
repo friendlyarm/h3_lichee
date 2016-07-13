@@ -448,7 +448,7 @@ sdc_regulator = "none"
 sdc_power_supply = "none"
 
 [mmc1_para]
-sdc_used = 0
+sdc_used = 1
 sdc_detmode = 4
 sdc_buswidth = 4
 sdc_clk = port:PG00<2><1><3><default>
@@ -567,7 +567,7 @@ chip_en =
 lpo_use_apclk =
 
 [wifi_para]
-wifi_used = 0
+wifi_used = 1
 wifi_sdc_id = 1
 wifi_usbc_id = 5
 wifi_usbc_type = 1

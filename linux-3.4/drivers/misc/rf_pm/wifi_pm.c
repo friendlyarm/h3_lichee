@@ -28,6 +28,30 @@ extern int sunxi_usb_disable_hcd(__u32 usbc_no);
 extern int sunxi_usb_enable_hcd(__u32 usbc_no);
 #endif
 
+int get_host_wake_irq(void)
+{
+	int host_oob_irq = 0;
+	int wl_host_wake = 0;
+	script_item_u val ;
+	script_item_value_type_e type;
+	
+	type = script_get_item("wifi_para", "wl_host_wake", &val);
+	if (SCIRPT_ITEM_VALUE_TYPE_PIO!=type) 
+		printk("get bcmdhd wl_host_wake gpio failed\n");
+	else
+		wl_host_wake = val.gpio.gpio;
+		
+	host_oob_irq = gpio_to_irq(wl_host_wake);
+	if (IS_ERR_VALUE(host_oob_irq)) {
+		printk("map gpio [%d] to virq failed, errno = %d\n",wl_host_wake, host_oob_irq);
+		return 0;
+	}
+	printk("gpio [%d] map to virq [%d] ok\n",wl_host_wake, host_oob_irq);
+
+	return host_oob_irq;
+}
+EXPORT_SYMBOL(get_host_wake_irq);
+
 void wifi_pm_power(int on)
 {
 	int on_off = 0;
@@ -85,6 +109,27 @@ static int wifi_pm_power_stat(char *page, char **start, off_t off, int count, in
 #endif
 	return p - page;
 }
+
+int force_presence_change(struct platform_device *dev, int state)
+{
+	int sdc_id = -1;
+	script_item_u val;
+	script_item_value_type_e type;
+
+	type = script_get_item("wifi_para", "wifi_sdc_id", &val);
+	if (SCIRPT_ITEM_VALUE_TYPE_INT != type) {
+		wifi_pm_msg("get wifi_sdc_id failed\n");
+	} else {
+		sdc_id = val.val;
+#if defined(CONFIG_ARCH_SUN6I) || defined(CONFIG_ARCH_SUN7I)
+		sw_mci_rescan_card(sdc_id, state);
+#elif defined(CONFIG_ARCH_SUN8I) || defined(CONFIG_ARCH_SUN9I)
+		sunxi_mci_rescan_card(sdc_id, state);
+#endif
+	}
+}
+EXPORT_SYMBOL(force_presence_change);
+
 static void scan_device(int onoff)
 {
 	int sdc_id = -1;
