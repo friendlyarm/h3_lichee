@@ -53,12 +53,12 @@ gen_script_for_m1()
 
 gen_script_for_neo() 
 {
-    NEO_SYS_CONFIG=${SYS_CONFIG_DIR}/boards/sys_config_nanopi_neo.fex
+    H3_SYS_CONFIG=${SYS_CONFIG_DIR}/boards/sys_config_nanopi_neo.fex
     SYS_CONFIG=${SYS_CONFIG_DIR}/sys_config.fex
     # backup current sys_config.fex
     mv ${SYS_CONFIG} ${SYS_CONFIG_DIR}/boards/sys_config_current.fex
     
-    cp ${NEO_SYS_CONFIG} ${SYS_CONFIG}
+    cp ${H3_SYS_CONFIG} ${SYS_CONFIG}
     ./build.sh pack
     [ -d ./script ] || mkdir script
     cp -fv ./tools/pack/out/sys_config.bin ./script/script-neo.bin
@@ -69,12 +69,12 @@ gen_script_for_neo()
 
 gen_script_for_air() 
 {
-    NEO_SYS_CONFIG=${SYS_CONFIG_DIR}/boards/sys_config_nanopi_air.fex
+    H3_SYS_CONFIG=${SYS_CONFIG_DIR}/boards/sys_config_nanopi_air.fex
     SYS_CONFIG=${SYS_CONFIG_DIR}/sys_config.fex
     # backup current sys_config.fex
     mv ${SYS_CONFIG} ${SYS_CONFIG_DIR}/boards/sys_config_current.fex
     
-    cp ${NEO_SYS_CONFIG} ${SYS_CONFIG}
+    cp ${H3_SYS_CONFIG} ${SYS_CONFIG}
     ./build.sh pack
     [ -d ./script ] || mkdir script
     cp -fv ./tools/pack/out/sys_config.bin ./script/script-air.bin
@@ -85,7 +85,7 @@ gen_script_for_air()
 }
 
 if [ $# -ne 1 ]; then
-    pt_warn "Usage: $0 board[nanopi_m1|nanopi_neo]"
+    pt_warn "Usage: $0 board[nanopi-m1|nanopi-neo|nanopi-air]"
     exit 1
 else
     BOARD=${1}

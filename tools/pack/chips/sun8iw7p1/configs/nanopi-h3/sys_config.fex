@@ -751,6 +751,12 @@ G_LV1_volt = 1200000
 G_LV2_freq = 456000000
 G_LV2_volt = 1200000
 
+[board_vendor]
+vid_used = 1
+vid_count = 2
+vid_bit_0 = port:PC04<0><1><default><default>
+vid_bit_1 = port:PC07<0><1><default><default>
+
 [Vdevice]
 Vdevice_used = 0
 Vdevice_0 = port:PH10<5><1><2><default>

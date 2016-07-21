@@ -22,7 +22,7 @@ fel_key_min = 2
 logical_start = 40960
 sprite_work_delay = 500
 sprite_err_delay = 200
-sprite_gpio0 = port:PA15<1><default><default><default>
+;sprite_gpio0 = port:PA15<1><default><default><default>
 next_work = 3
 
 [box_start_os]
@@ -40,7 +40,7 @@ gpio0 = port:PA10<1><default><default><1>
 gpio1 = port:PG11<1><default><default><1>
 
 [recovery_para]
-used = 1
+used = 0
 mode = 2
 recovery_key = port:PL04<0><default><default><default>
 
@@ -176,6 +176,8 @@ uart_port = 2
 uart_type = 4
 uart_tx = port:PA00<2><1><default><default>
 uart_rx = port:PA01<2><1><default><default>
+uart_rts = port:PA02<2><1><default><default>
+uart_cts = port:PA03<2><1><default><default>
 
 [uart3]
 uart_used = 1
@@ -183,6 +185,8 @@ uart_port = 3
 uart_type = 4
 uart_tx = port:PA13<3><1><default><default>
 uart_rx = port:PA14<3><1><default><default>
+uart_rts = port:PA15<3><1><default><default>
+uart_cts = port:PA16<3><1><default><default>
 
 [spi0]
 spi_used = 1
@@ -554,17 +558,16 @@ luns = 3
 serial_unique = 0
 
 [module_para]
-module_num = 7
-module_power0 = "vcc-wifi-33"
+module_power0 = 
 module_power0_vol = 0
 module_power1 =
-module_power1_vol =
+module_power1_vol = 1
 module_power2 =
 module_power2_vol =
 module_power3 =
 module_power3_vol =
 chip_en =
-lpo_use_apclk =
+lpo_use_apclk = "losc_out"
 
 [wifi_para]
 wifi_used = 1
@@ -576,11 +579,12 @@ wl_host_wake = port:PG10<0><default><default><0>
 wl_host_wake_invert = 0
 
 [bt_para]
-bt_used = 0
-bt_uart_id = 1
-bt_rst_n =
-bt_wake =
-bt_host_wake =
+bt_used = 1
+bt_uart_id = 3
+bt_uart_baud = 115200
+bt_rst_n = port:PG13<1><default><default><0>
+bt_wake = port:PA08<1><default><default><0>
+bt_host_wake = port:PA07<0><default><default><0>
 bt_host_wake_invert = 0
 
 [pcm0]
@@ -747,6 +751,12 @@ G_LV1_freq = 384000000
 G_LV1_volt = 1200000
 G_LV2_freq = 456000000
 G_LV2_volt = 1200000
+
+[board_vendor]
+vid_used = 1
+vid_count = 2
+vid_bit_0 = port:PC04<0><1><default><default>
+vid_bit_1 = port:PC07<0><1><default><default>
 
 [Vdevice]
 Vdevice_used = 0
