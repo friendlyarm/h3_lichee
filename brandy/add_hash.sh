@@ -41,6 +41,9 @@ build_sboot()
 
 do_common()
 {
+    if [ ! -s ./cur.log ]; then
+        echo "1234567891234567891234567891234567891234" >./cur.log
+    fi
     if [ "x${BUILD_MODE}" = "xuboot" ] ; then
         echo " build_uboot "
         build_uboot
