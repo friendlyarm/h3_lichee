@@ -4,8 +4,10 @@
  */
 
 #include "bsp_common.h"
+#include <linux/kernel.h>
 
 enum bus_pixeltype find_bus_type(enum bus_pixelcode code) {
+  // printk("%s %x\n", __func__, code);
   switch(code) {
     case BUS_FMT_BGR565_2X8_BE:
     case BUS_FMT_BGR565_2X8_LE:
@@ -199,6 +201,7 @@ enum bit_width find_bus_precision(enum bus_pixelcode code) {
 
 enum pixel_fmt_type find_pixel_fmt_type(enum pixel_fmt code)
 {
+  // printk("%s %x\n", __func__, code);
   switch(code) {
     case PIX_FMT_RGB565:
       return RGB565;

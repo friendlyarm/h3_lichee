@@ -25,6 +25,7 @@ MODULE_LICENSE("GPL");
 #define AF_WIN_NEW_COORD
 //for internel driver debug
 #define DEV_DBG_EN      0
+// #define OV5640_REG_SYS	1
 #if(DEV_DBG_EN == 1)    
 #define vfe_dev_dbg(x,arg...) printk("[OV5640]"x,##arg)
 #else
@@ -4487,6 +4488,7 @@ static int sensor_enum_fmt(struct v4l2_subdev *sd, unsigned index,
   if (index >= N_FMTS)
     return -EINVAL;
 
+  vfe_dev_dbg("%s %d %x\n", __func__, index, *code);
   *code = sensor_formats[index].mbus_code;
   return 0;
 }
@@ -4500,7 +4502,7 @@ static int sensor_enum_size(struct v4l2_subdev *sd,
   fsize->type = V4L2_FRMSIZE_TYPE_DISCRETE;
   fsize->discrete.width = sensor_win_sizes[fsize->index].width;
   fsize->discrete.height = sensor_win_sizes[fsize->index].height;
-  
+  vfe_dev_dbg("%s %d width=%d height=%d\n", __func__, fsize->index,  fsize->discrete.width,  fsize->discrete.height);
   return 0;
 }
 
@@ -4513,9 +4515,12 @@ static int sensor_try_fmt_internal(struct v4l2_subdev *sd,
   int index;
   struct sensor_win_size *wsize;
 
-  for (index = 0; index < N_FMTS; index++)
+  vfe_dev_dbg("%s fmt->code=%x\n", __func__, fmt->code);
+  for (index = 0; index < N_FMTS; index++) {
+  	vfe_dev_dbg("%s sensor_formats[%d].mbus_code=%x fmt->code=%x\n", __func__, index, sensor_formats[index].mbus_code, fmt->code);
     if (sensor_formats[index].mbus_code == fmt->code)
       break;
+  }    
 
   if (index >= N_FMTS) 
     return -EINVAL;
@@ -4683,6 +4688,7 @@ static int sensor_s_fmt(struct v4l2_subdev *sd,
   if (ret)
     return ret;
   
+  vfe_dev_dbg("%s %d capture_mode=%x\n", __func__, __LINE__, info->capture_mode);
   if(info->capture_mode == V4L2_MODE_VIDEO)
   {
     //video
@@ -4749,6 +4755,7 @@ static int sensor_s_fmt(struct v4l2_subdev *sd,
   sensor_s_hflip(sd,info->hflip);
   sensor_s_vflip(sd,info->vflip);
   
+  vfe_dev_dbg("%s %d capture_mode=%x\n", __func__, __LINE__, info->capture_mode);
   if(info->capture_mode == V4L2_MODE_VIDEO ||
   	info->capture_mode == V4L2_MODE_PREVIEW)
   {
@@ -5202,12 +5209,55 @@ static struct cci_driver cci_drv = {
 	.data_width = CCI_BITS_8,
 };
 
+#ifdef OV5640_REG_SYS
+static int sys_cur_reg = 0;
+static ssize_t ov5640_reg_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t count)
+{
+	int tmp, value;
 
+	value = 0;
+	tmp = simple_strtoul(buf, NULL, 16);
+	if (tmp < 0xffff) {  			 // reg(0xFFFF)
+		sys_cur_reg = tmp;
+	}	
+	else {							 // reg-value(0xFFFF-0XFFFF)	
+		value = tmp & 0x0000FFFF;
+		sys_cur_reg= (tmp >> 16) & 0xFFFF;		
+		sensor_write(glb_sd, sys_cur_reg, value);
+	}
+	return count;
+}
+
+static ssize_t ov5640_reg_show(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	unsigned char value;
+	value = 0;
+	sensor_read(glb_sd, sys_cur_reg, &value);
+	return sprintf(buf, "reg[0x%x]=%x\n", sys_cur_reg, value);
+}
+
+static DEVICE_ATTR(ov5640_reg, S_IWUSR | S_IRUGO,
+					ov5640_reg_show, ov5640_reg_store);
+static struct attribute *ov5640_attributes[] = {
+	&dev_attr_ov5640_reg.attr,
+	NULL
+};
+static const struct attribute_group ov5640_attr_group = {
+	.attrs = ov5640_attributes,
+};
+
+struct kobject *ov5640_kobj;
+#endif
 static int sensor_probe(struct i2c_client *client,
       const struct i2c_device_id *id)
 {
   struct v4l2_subdev *sd;
   struct sensor_info *info;
+#ifdef OV5640_REG_SYS  
+  int ret;
+#endif
+
+  vfe_dev_dbg("%s %d\n", __func__, __LINE__);
 //  int ret;
   info = kzalloc(sizeof(struct sensor_info), GFP_KERNEL);
   if (info == NULL)
@@ -5219,12 +5269,28 @@ static int sensor_probe(struct i2c_client *client,
   info->af_first_flag = 1;
   info->init_first_flag = 1;
   info->auto_focus = 0;
+
+#ifdef OV5640_REG_SYS
+  ov5640_kobj = kobject_create_and_add("ov5640_debug", kernel_kobj);
+  if (!ov5640_kobj)
+  	return -ENOMEM;
+  ret = sysfs_create_group(ov5640_kobj, &ov5640_attr_group);
+  if (ret)
+  	kobject_put(ov5640_kobj);
+#endif
+
   return 0;
 }
 
 static int sensor_remove(struct i2c_client *client)
 {
 	struct v4l2_subdev *sd;
+
+#ifdef OV5640_REG_SYS
+	sysfs_remove_group(&client->dev.kobj, &ov5640_attr_group);	
+	kobject_put(ov5640_kobj);
+#endif
+
 	sd = cci_dev_remove_helper(client, &cci_drv);
 	printk("sensor_remove ov5640 sd = %p!\n",sd);
 	kfree(to_state(sd));

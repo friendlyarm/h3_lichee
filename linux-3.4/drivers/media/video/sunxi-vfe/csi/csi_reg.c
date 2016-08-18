@@ -74,6 +74,7 @@ void csi_disable(unsigned int sel)
 /* configure */
 void csi_if_cfg(unsigned int sel, struct csi_if_cfg *csi_if_cfg)
 {
+	// printk("%s %d %d %d\n", __func__, csi_if_cfg->src_type, csi_if_cfg->interface, csi_if_cfg->data_width);
 	vfe_reg_clr_set(csi_base_addr[sel] + CSI_IF_CFG_REG_OFF, CSI_IF_CFG_REG_SRC_TYPE_MASK,
 				csi_if_cfg->src_type << CSI_IF_CFG_REG_SRC_TYPE);
   

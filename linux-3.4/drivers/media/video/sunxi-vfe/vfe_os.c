@@ -2,7 +2,7 @@
 #include <linux/ion_sunxi.h>
 #include "vfe_os.h"
 
-unsigned int vfe_dbg_en = 0;
+unsigned int vfe_dbg_en = 0;			// set 1 if need debug
 unsigned int vfe_dbg_lv = 1;
 EXPORT_SYMBOL_GPL(vfe_dbg_en);
 EXPORT_SYMBOL_GPL(vfe_dbg_lv);

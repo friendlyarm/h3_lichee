@@ -39,7 +39,7 @@
 #define I2C_EXIT()  		pr_debug("%s()%d - %s \n", __func__, __LINE__, "Exit")
 #define I2C_ENTER() 		pr_debug("%s()%d - %s \n", __func__, __LINE__, "Enter ...")
 #define I2C_DBG(fmt, arg...)	pr_debug("%s()%d - "fmt, __func__, __LINE__, ##arg)
-#define I2C_ERR(fmt, arg...)	pr_warn("%s()%d - "fmt, __func__, __LINE__, ##arg)
+#define I2C_ERR(fmt, arg...)	pr_debug("%s()%d - "fmt, __func__, __LINE__, ##arg)
 
 #ifndef CONFIG_SUNXI_I2C_PRINT_TRANSFER_INFO
 static int bus_transfer_dbg = -1;

@@ -91,6 +91,7 @@ int bsp_csi_set_fmt(unsigned int sel, struct bus_info *bus_info, struct frame_in
   //csi_disable(sel);//add for csi change fmt@20130111
 //set csi interface
 //depends on bus interface
+  // printk("%s %d bus_info->bus_if=%d\n", __func__, __LINE__, bus_info->bus_if);
   switch(bus_info->bus_if)  {
     case PARALLEL:
       if_cfg.interface = CSI_IF_INTLV;
@@ -108,6 +109,7 @@ int bsp_csi_set_fmt(unsigned int sel, struct bus_info *bus_info, struct frame_in
   for(ch=0;ch<bus_info->ch_total_num;ch++) {
   //get bus pixel type, bus width and bus data precision
   //depends on bus format
+	// printk("%s %d bus_info->bus_ch_fmt[%d]=%x\n", __func__, __LINE__, ch, bus_info->bus_ch_fmt[ch]);
     bus_pix_type[ch] = find_bus_type(bus_info->bus_ch_fmt[ch]);
     bus_width[ch] = find_bus_width(bus_info->bus_ch_fmt[ch]);
     bus_precision[ch] = find_bus_precision(bus_info->bus_ch_fmt[ch]);
@@ -158,6 +160,7 @@ int bsp_csi_set_fmt(unsigned int sel, struct bus_info *bus_info, struct frame_in
   //set input/output format and size/line stride/offset
   //depends on bus format,bus precision,target frame format, field format
 
+    // printk("%s %d frame_info->pix_ch_fmt[%d]=%x bus_pix_type[%d]=%d\n", __func__, __LINE__, ch, frame_info->pix_ch_fmt[ch], ch, bus_pix_type[ch]);
     switch(frame_info->pix_ch_fmt[ch]) {
       case PIX_FMT_RGB565:
         if(bus_pix_type[ch] == BUS_FMT_RGB565) {
@@ -184,6 +187,7 @@ int bsp_csi_set_fmt(unsigned int sel, struct bus_info *bus_info, struct frame_in
         }
         break;
       case PIX_FMT_YUYV:
+      	// printk("%s %d bus_pix_type[%d]=%d \n", __func__, __LINE__, ch, bus_pix_type[ch]);
         if(bus_pix_type[ch] == BUS_FMT_YUYV) {
           fmt_cfg[ch].input_fmt = CSI_RAW;
           fmt_cfg[ch].output_fmt = (is_buf_itl[ch] == 1)? CSI_FRAME_RAW_8:CSI_FIELD_RAW_8;
