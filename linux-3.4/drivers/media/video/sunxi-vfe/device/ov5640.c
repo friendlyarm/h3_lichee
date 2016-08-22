@@ -4300,6 +4300,10 @@ static int sensor_init(struct v4l2_subdev *sd, u32 val)
     io_set_flash_ctrl(sd, SW_CTRL_FLASH_OFF, info->fl_dev_info);
   }
   #endif
+
+  sensor_s_init_af(sd);
+  info->capture_mode = V4L2_MODE_PREVIEW;
+  info->auto_focus=0;
   return 0;
 }
 
@@ -4831,28 +4835,28 @@ static int sensor_s_fmt(struct v4l2_subdev *sd,
 			}		
 		}
 		
-		if( (info->width!=QSXGA_WIDTH)&&(info->preview_first_flag != 1) )
+		if( (info->width!=QSXGA_WIDTH) )
 		{  
-  		ret = sensor_s_relaunch_af_zone(sd);
-  		if (ret < 0) {
-  			vfe_dev_err("sensor_s_relaunch_af_zone err !\n");
-  			//return ret;
-  		}
-  		
-  		//msleep(100);
-  		ret = sensor_write(sd, 0x3022, 0x03);		//sensor_s_single_af
-  		if (ret < 0) {
-  			vfe_dev_err("sensor_s_single_af err !\n");
-  			//return ret;
-  		}
-  		
-  		if(info->auto_focus==1)
-  			sensor_s_continueous_af(sd, 1);
-		  
-		  msleep(100);
-		}
+	  		ret = sensor_s_relaunch_af_zone(sd);
+	  		if (ret < 0) {
+	  			vfe_dev_err("sensor_s_relaunch_af_zone err !\n");
+	  			//return ret;
+	  		}
+	  		
+	  		//msleep(100);
+	  		ret = sensor_write(sd, 0x3022, 0x03);		//sensor_s_single_af
+	  		if (ret < 0) {
+	  			vfe_dev_err("sensor_s_single_af err !\n");
+	  			//return ret;
+	  		}
+	  		
+	  		if(info->auto_focus==0)
+	  			sensor_s_continueous_af(sd, 1);
+			  
+			  msleep(100);
+			}
 		else
-		  msleep(150);
+		  	msleep(150);
 	} else {
     if (wsize->width > SVGA_WIDTH) {
       ret = sensor_set_capture_exposure(sd);

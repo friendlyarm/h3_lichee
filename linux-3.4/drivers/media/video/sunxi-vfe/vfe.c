@@ -3193,8 +3193,7 @@ static int vidioc_queryctrl(struct file *file, void *priv,
     {
       if(qc->id != V4L2_CID_GAIN)
       {
-        // vfe_warn("v4l2 sub device queryctrl %s unsuccess!\n", v4l2_ctrl_get_name(qc->id));
-        ret = 0; 	// TODO: implement queryctrl
+        vfe_warn("v4l2 sub device queryctrl %s unsuccess!\n", v4l2_ctrl_get_name(qc->id));
       }
     }
   }
