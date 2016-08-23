@@ -1028,7 +1028,7 @@ static struct regval_list sensor_1080p_regs[] = { //1080: 1920*1080
   //pll and clock setting
   {0x3034,0x18},
 #ifndef FPGA_VER
-  {0x3035,0x11},  //0x11:30fps 0x21:15fps
+  {0x3035,0xa1},  //0x11:30fps 0x21:15fps
 #else
   {0x3035,0x41},  //0x11:30fps 0x21:15fps 0x41:7.5fps
 #endif  
@@ -1124,7 +1124,7 @@ static struct regval_list sensor_720p_regs[] = { //1280*720
 //  //pll and clock setting
   {0x3034,0x18},
 #ifndef FPGA_VER
-  {0x3035,0x21},  //0x11:60fps 0x21:30fps 0x41:15fps
+  {0x3035,0x41},  //0x11:60fps 0x21:30fps 0x41:15fps
 #else
   {0x3035,0x41},  //0x11:60fps 0x21:30fps 0x41:15fps 0xa1:7.5fps
 #endif
@@ -1228,7 +1228,7 @@ static struct regval_list sensor_svga_regs[] = { //SVGA: 800*600
 #ifndef FPGA_VER
   {0x3035,0x11}, 
 #else
-  {0x3035,0x21}, //0x11:30fps 0x21:15fps
+  {0x3035,0x11}, //0x11:30fps 0x21:15fps
 #endif               
   {0x3036,0x46},                
   {0x3037,0x13},                
