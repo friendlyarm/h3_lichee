@@ -185,8 +185,8 @@ uart_port = 3
 uart_type = 4
 uart_tx = port:PA13<3><1><default><default>
 uart_rx = port:PA14<3><1><default><default>
-uart_rts = port:PA15<3><1><default><default>
-uart_cts = port:PA16<3><1><default><default>
+uart_rts = port:PA15<1><2><default><default>
+uart_cts = port:PA16<3><2><default><default>
 
 [spi0]
 spi_used = 1
