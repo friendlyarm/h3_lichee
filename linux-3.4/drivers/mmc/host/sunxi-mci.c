@@ -2103,7 +2103,7 @@ static void sunxi_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	BUG_ON(ios->power_mode >= sizeof(pwr_mode)/sizeof(pwr_mode[0]));
 	BUG_ON(ios->signal_voltage >= sizeof(vdd)/sizeof(vdd[0]));
 	BUG_ON(ios->timing >= sizeof(timing)/sizeof(timing[0]));
-	SMC_MSG(smc_host, "sdc%d set ios: "
+	SMC_DBG(smc_host, "sdc%d set ios: "
 		"clk %dHz bm %s pm %s vdd %s width %d timing %s dt %s\n",
 		smc_host->pdev->id, ios->clock, bus_mode[ios->bus_mode],
 		pwr_mode[ios->power_mode], vdd[ios->signal_voltage],
@@ -3076,7 +3076,7 @@ static int sunxi_mci_probe(struct platform_device *pdev)
 		smc_host->cd_timer.function = &sunxi_mci_cd_cb;
 		smc_host->cd_timer.data = (unsigned long)smc_host;
 		add_timer(&smc_host->cd_timer);
-		smc_host->present = 0;
+		smc_host->present = !__gpio_get_value(smc_host->pdata->cd.gpio);
 	}else if(smc_host->cd_mode == CARD_DETECT_BY_D3){
 		u32 rval = 0;
 
@@ -4046,6 +4046,15 @@ fail:
 }
 
 
+static int storage_type;
+static int __init setup_bootdev(char *str)
+{
+	storage_type = simple_strtoul(str,NULL,0);
+	printk("%s %d\n", __func__, storage_type);
+	return 1;
+}
+__setup("storage_type=", setup_bootdev);
+
 static int __init sunxi_mci_init(void)
 {
 	int i;
@@ -4072,8 +4081,10 @@ static int __init sunxi_mci_init(void)
 		mmcinfo = &sunxi_mci_pdata[i];
 		if (mmcinfo->used) {
 			sdc_used |= 1 << i;
-			if (mmcinfo->cdmode == CARD_ALWAYS_PRESENT)
-				boot_card |= 1 << i;
+			if (storage_type == 1)
+				boot_card |= 1 << 0;
+			else if (storage_type == 2)
+				boot_card |= 1 << 2;
 			if (mmcinfo->isiodev)
 				io_used |= 1 << i;
 		}

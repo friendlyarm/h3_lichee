@@ -2001,17 +2001,17 @@ static int mmc_rescan_try_freq(struct mmc_host *host, unsigned freq)
 	/* Order's important: probe SDIO, then SD, then MMC */
 	// pr_info("*******************Try sdio*******************\n");
 	if (!mmc_attach_sdio(host)){
-		pr_info("*******************sdio init ok*******************\n");
+		// pr_info("*******************sdio init ok*******************\n");
 		return 0;
 	}
 	// pr_info("*******************Try sd *******************\n");
 	if (!mmc_attach_sd(host)){
- 		pr_info("*******************sd init ok*******************\n");
+ 		// pr_info("*******************sd init ok*******************\n");
 		return 0;
 	}
 	// pr_info("*******************Try mmc*******************\n");
 	if (!mmc_attach_mmc(host)){
-		pr_info("*******************mmc init ok *******************\n");
+		// pr_info("*******************mmc init ok *******************\n");
 		return 0;
 	}
 
