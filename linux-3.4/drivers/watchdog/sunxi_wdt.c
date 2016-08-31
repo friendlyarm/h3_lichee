@@ -417,7 +417,7 @@ static long sunxi_wdt_ioctl(struct file *file, unsigned int cmd,
 		if(get_user(new_timeout, argp))
 			return -EFAULT;
 		if(!new_timeout || new_timeout > MAX_TIMEOUT) {
-			pr_err("%s err, line %d\n", __func__, __LINE__);
+			// pr_err("%s err, line %d\n", __func__, __LINE__);
 			return -EINVAL;
 		}
 		watchdog_set_timeout(new_timeout);
