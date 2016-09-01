@@ -49,39 +49,39 @@ static __s32 check_sum(void *mem_base, __u32 size, __u32 src_sum)
 	__u32 curlen = 0;
 	__s32 i = 0;
 
-	/* Éú³ÉÐ£ÑéºÍ */
-	count = size >> 2;                         // ÒÔ ×Ö£¨4bytes£©Îªµ¥Î»¼ÆÊý
+	/* ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ */
+	count = size >> 2;                         // ï¿½ï¿½ ï¿½Ö£ï¿½4bytesï¿½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
 
-	//16×Ö½Ú¶ÔÆë
+	//16ï¿½Ö½Ú¶ï¿½ï¿½ï¿½
 	do
 	{
-		sum += *buf++;                         // ÒÀ´ÎÀÛ¼Ó£¬ÇóµÃÐ£ÑéºÍ
-		sum += *buf++;                         // ÒÀ´ÎÀÛ¼Ó£¬ÇóµÃÐ£ÑéºÍ
-		sum += *buf++;                         // ÒÀ´ÎÀÛ¼Ó£¬ÇóµÃÐ£ÑéºÍ
-		sum += *buf++;                         // ÒÀ´ÎÀÛ¼Ó£¬ÇóµÃÐ£ÑéºÍ
+		sum += *buf++;                         // ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Ó£ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½
+		sum += *buf++;                         // ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Ó£ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½
+		sum += *buf++;                         // ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Ó£ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½
+		sum += *buf++;                         // ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Ó£ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½
 	}while( ( count -= 4 ) > (4-1) );
 
-	//4×Ö½Ú¶ÔÆë
+	//4ï¿½Ö½Ú¶ï¿½ï¿½ï¿½
 	for (i = 0; i < count; i++)
 	{
 		sum += *buf++;
 	}
 
-	//Èç¹ûÓÐ1 2 3×Ö½ÚµÄÎ²°Í£¬Ôò´¦ÀíÎ²°ÍÊý¾Ý£¬°´ÕÕlsbµÄ¸ñÊ½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½1 2 3ï¿½Ö½Úµï¿½Î²ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½lsbï¿½Ä¸ï¿½Ê½
 	curlen = size % 4;
 	if((size & 0x03) != 0)
 	{
 		memcpy(&last, mem_base + size - curlen, curlen);
-		sum += last;	//¼ÓÉÏÎ²°Í²¹È«µÄu32Êý¾Ý
+		sum += last;	//ï¿½ï¿½ï¿½ï¿½Î²ï¿½Í²ï¿½È«ï¿½ï¿½u32ï¿½ï¿½ï¿½
 	}
 
 	printf("sum=%x\n", sum);
 	printf("src_sum=%x\n", src_sum);
 
 	if( sum == src_sum )
-		return 0;               // Ð£Ñé³É¹¦
+		return 0;               // Ð£ï¿½ï¿½É¹ï¿½
 	else
-		return -1;             // Ð£ÑéÊ§°Ü
+		return -1;             // Ð£ï¿½ï¿½Ê§ï¿½ï¿½
 }
 
 /*
@@ -245,7 +245,7 @@ int sunxi_bmp_display(char *name)
 	strcpy(bmp_name, name);
 
 #ifndef USE_AW_FAT
-	char *const bmp_argv[6] = { "fatload", "sunxi_flash", "0", "40000000", bmp_name, NULL };
+	char *const bmp_argv[6] = { "fatload", "mmc", "0", "40000000", bmp_name, NULL };
     if(do_fat_fsload(0, 0, 5, bmp_argv))
 	{
 	   printf("sunxi bmp info error : unable to open logo file %s\n", bmp_argv[4]);
