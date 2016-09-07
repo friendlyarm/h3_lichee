@@ -28,9 +28,9 @@ extern unsigned int vfe_dbg_lv;
 #define vfe_dbg(l,x,arg...) if(vfe_dbg_en && l <= vfe_dbg_lv) printk(KERN_DEBUG"[VFE_DEBUG]"x,##arg)
 //print when error happens
 #define vfe_err(x,arg...) printk(KERN_ERR"[VFE_ERR]"x,##arg)
-#define vfe_warn(x,arg...) printk(KERN_WARNING"[VFE_WARN]"x,##arg)
+#define vfe_warn(x,arg...) if(vfe_dbg_en) printk(KERN_WARNING"[VFE_WARN]"x,##arg)
 //print unconditional, for important info
-#define vfe_print(x,arg...) printk(KERN_NOTICE"[VFE]"x,##arg)
+#define vfe_print(x,arg...) if(vfe_dbg_en) printk(KERN_NOTICE"[VFE]"x,##arg)
 
 typedef unsigned int __hdle;
 

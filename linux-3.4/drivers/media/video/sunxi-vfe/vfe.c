@@ -5120,9 +5120,9 @@ static void probe_work_handle(struct work_struct *work)
 		dev->input = input_num;
 		if(vfe_sensor_register_check(dev,&dev->v4l2_dev,dev->ccm_cfg[input_num],&dev->dev_sensor[input_num],input_num) == NULL)
 		{
-			vfe_err("vfe sensor register check error at input_num = %d\n",input_num);
+			vfe_warn("vfe sensor register check error at input_num = %d\n",input_num);
 			dev->device_valid_flag[input_num] = 0;
-			//goto snesor_register_end;
+			goto probe_hdl_unreg_dev;
 		}
 		else{
 			dev->device_valid_flag[input_num] = 1;
@@ -5222,7 +5222,7 @@ probe_hdl_clk_close:
 	vfe_print("vfe_exit @ probe_hdl!\n");
 	//vfe_exit();
 
-	vfe_err("Failed to install at probe handle\n");
+	vfe_warn("Failed to install at probe handle\n");
 	mutex_unlock(&probe_hdl_lock);
 	return ;
 }

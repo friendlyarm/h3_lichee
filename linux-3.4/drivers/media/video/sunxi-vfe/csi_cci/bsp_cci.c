@@ -191,7 +191,7 @@ static int bsp_cci_tx_start_wait_done_unlocked(unsigned int sel, struct cci_msg 
 	//printk("cci_cnt_done = %d, cci_cnt_irq = %d\n",cci_cnt_done, cci_cnt_irq);
 	if(1 == status_err_flag[sel])
 	{
-		printk("[VFE CCI_%d ERR] Status error at addr_8bit = %x, wr_flag = %d, val = %x\n", sel, msg->bus_fmt.saddr_7bit<<1,msg->bus_fmt.wr_flag, *(int *)msg->pkt_buf);
+		// printk("[VFE CCI_%d ERR] Status error at addr_8bit = %x, wr_flag = %d, val = %x\n", sel, msg->bus_fmt.saddr_7bit<<1,msg->bus_fmt.wr_flag, *(int *)msg->pkt_buf);
 		ret = -1;
 	}
 	if(msg->bus_fmt.wr_flag == 1)
@@ -216,7 +216,7 @@ static int bsp_cci_tx_start_wait_done_unlocked(unsigned int sel, struct cci_msg 
 	cci_int_get_status(sel, &status);	
 	if(status.error) {
 		cci_int_clear_status(sel, CCI_INT_ERROR);
-		printk("[VFE CCI_%d ERR] Status error at addr_8bit = %x, wr_flag = %d\n", sel, msg->bus_fmt.saddr_7bit<<1,msg->bus_fmt.wr_flag);
+		//printk("[VFE CCI_%d ERR] Status error at addr_8bit = %x, wr_flag = %d\n", sel, msg->bus_fmt.saddr_7bit<<1,msg->bus_fmt.wr_flag);
 		bsp_cci_bus_error_process(sel);
 		bsp_csi_cci_exit(sel);
 		bsp_csi_cci_init_helper(sel);
