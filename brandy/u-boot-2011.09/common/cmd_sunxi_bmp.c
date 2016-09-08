@@ -241,11 +241,12 @@ int sunxi_bmp_display(char *name)
 #else
 	sunxi_bmp_store_t bmp_info;
 	char  bmp_name[32];
+	const char *boot_mmc = getenv("boot_mmc");
 	memset(bmp_name, 0, 32);
 	strcpy(bmp_name, name);
 
 #ifndef USE_AW_FAT
-	char *const bmp_argv[6] = { "fatload", "mmc", "0", "40000000", bmp_name, NULL };
+	char *const bmp_argv[6] = { "fatload", "mmc", boot_mmc, "40000000", bmp_name, NULL };
     if(do_fat_fsload(0, 0, 5, bmp_argv))
 	{
 	   printf("sunxi bmp info error : unable to open logo file %s\n", bmp_argv[4]);
