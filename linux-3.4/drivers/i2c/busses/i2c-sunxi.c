@@ -438,9 +438,12 @@ static int twi_start(void __iomem *base_addr, int bus_num)
 	return SUNXI_I2C_OK;
 }
 
+static int twi_stop(void __iomem *base_addr, int bus_num);
 static int twi_restart(void __iomem *base_addr, int bus_num)
 {
 	unsigned int timeout = 0xff;
+	twi_stop(base_addr, bus_num);
+	mdelay(1);
 	twi_set_start(base_addr);
 	twi_clear_irq_flag(base_addr);
 	while((1 == twi_get_start(base_addr))&&(--timeout));
