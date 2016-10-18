@@ -474,3 +474,10 @@ config SND_SOC_TAS5731_CODEC
 	default n
 	help
 	  Say Y or M if you want to add support for tas5731.
+
+config SND_SOC_PCM5102A
+	tristate "PCM5102A codec"
+	depends on ARCH_SUN8IW7
+	default n
+	help
+	  Say Y or M if you want to add support for pcm5102a codec.

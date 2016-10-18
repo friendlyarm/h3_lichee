@@ -147,7 +147,7 @@ twi_scl = port:PA11<2><default><default><default>
 twi_sda = port:PA12<2><default><default><default>
 
 [twi1]
-twi_used = 1
+twi_used = 0
 twi_scl = port:PA18<3><default><default><default>
 twi_sda = port:PA19<3><default><default><default>
 
@@ -584,7 +584,7 @@ bt_host_wake =
 bt_host_wake_invert = 0
 
 [pcm0]
-daudio_used = 0
+daudio_used = 1
 daudio_master = 4
 daudio_select = 1
 audio_format = 1
@@ -630,7 +630,7 @@ i2s_dout0 = port:PG12<2><1><default><default>
 i2s_din = port:PG13<2><1><default><default>
 
 [audio0]
-audio_used = 1
+audio_used = 0
 lineout_vol = 31
 cap_vol = 5
 audio_hp_ldo = "none"
@@ -828,5 +828,5 @@ mali_extreme_vol = 1400
 ;1wire parameters (default - PA20)
 ;----------------------------------------------------------------------------------
 [w1_para]
-w1_used = 1
+w1_used = 0
 gpio = 20

@@ -215,3 +215,5 @@ obj-$(CONFIG_SND_SOC_ACX00DAPM_CODEC) += ac100_dapm.o #AC200
 obj-$(CONFIG_SND_SOC_ACX00DAPM_CODEC) += acx00_dapm.o
 #tas5731
 obj-$(CONFIG_SND_SOC_TAS5731_CODEC) += tas5731.o
+
+obj-$(CONFIG_SND_SOC_PCM5102A)	+= snd-soc-pcm5102a.o

@@ -37,6 +37,13 @@ config SND_SUNXI_SOC_SUN8IW7_RT3261
 	help
 	  Say Y or M if you want to add rt3261 codec support
 
+config SND_SUNXI_SOC_SUN8IW7_PCM5102A
+	tristate "Machine for h3 pcm5102a"
+	depends on ARCH_SUN8IW7 && SND_SOC_PCM5102A
+	default n
+	help
+	  Say Y or M if you want to add pcm5102a codec support
+
 config SND_VIRBB_DAI
 	tristate "virtual bb interface"
 	depends on (ARCH_SUN8IW6||ARCH_SUN8IW7)&& MFD_ACX00=y
