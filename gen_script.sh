@@ -59,6 +59,8 @@ elif [ "x${BOARD}" = "xnanopi-neo" ]; then
     gen_script "neo"
 elif [ "x${BOARD}" = "xnanopi-air" ]; then
     gen_script "air"
+elif [ "x${BOARD}" = "xnanopi-m1-plus" ]; then
+    gen_script "m1_plus"
 else
     pt_error "Unsupported board"
     exit 1
