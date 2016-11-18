@@ -348,8 +348,29 @@ pwm_positive = port:PA05<3><0><default><default>
 ;       If set gamc_phy to use = 2
 
 [gmac0]
-gmac_used = 2
+gmac_used = 1
+gmac_rxd3          = port:PD00<2><default><3><default>
+gmac_rxd2          = port:PD01<2><default><3><default>
+gmac_rxd1          = port:PD02<2><default><3><default>
+gmac_rxd0          = port:PD03<2><default><3><default>
+gmac_rxclk         = port:PD04<2><default><3><default>
+gmac_rxdv          = port:PD05<2><default><3><default>
+gmac_rxerr         = port:PD06<2><default><3><default>
+gmac_txd3          = port:PD07<2><default><3><default>
+gmac_txd2          = port:PD08<2><default><3><default>
+gmac_txd1          = port:PD09<2><default><3><default>
+gmac_txd0          = port:PD10<2><default><3><default>
+gmac_crs           = port:PD11<2><default><3><default>
+gmac_txclk         = port:PD12<2><default><3><default>
+gmac_txen          = port:PD13<2><default><3><default>
+gmac_txerr         = port:PD14<2><default><3><default>
+gmac_col           = port:PD15<2><default><3><default>
+gmac_mdc           = port:PD16<2><default><3><default>
+gmac_mdio          = port:PD17<2><default><3><default>
 gmac_power1 =
+
+[gmac_phy_power]
+gmac_phy_power_en   = port:PD06<1><default><default><0>
 
 [csi0]
 vip_used                 = 1
