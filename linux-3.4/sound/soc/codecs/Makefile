@@ -98,6 +98,7 @@ snd-soc-wm9705-objs := wm9705.o
 snd-soc-wm9712-objs := wm9712.o
 snd-soc-wm9713-objs := wm9713.o
 snd-soc-wm-hubs-objs := wm_hubs.o
+snd-soc-pcm5102a-objs := pcm5102a.o
 
 snd-soc-rt3261-objs := rt3261/rt3261.o rt3261/rt_codec_ioctl.o rt3261/rt3261_ioctl.o rt3261/rt3261-dsp.o
 snd-soc-max9877-objs := max9877.o
