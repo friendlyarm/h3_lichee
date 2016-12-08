@@ -62,7 +62,7 @@ elif [ $# -eq 0 ] ; then
 	mklichee
 	exit $?
 elif [ "x$1" = "xlunch" ] ; then
-	select_lunch
+	select_lunch $2
 	init_defconf
 	init_buildcmd $*
 	mklichee

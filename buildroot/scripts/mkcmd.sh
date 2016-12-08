@@ -364,6 +364,28 @@ function select_lunch()
         fi
         printf "Invalid input ...\n"
     done
+    BOARD=${1}
+    if [[ "x${BOARD}" = "xnanopi-m1" ]]; then
+        gen_script "m1"
+    elif [ "x${BOARD}" = "xnanopi-neo" ]; then
+        gen_script "neo"
+    elif [ "x${BOARD}" = "xnanopi-air" ]; then
+        gen_script "air"
+    elif [ "x${BOARD}" = "xnanopi-m1-plus" ]; then
+        gen_script "m1_plus"
+    else
+        echo "Unsupported board ${BOARD}"
+        exit 1
+    fi
+    pwd
+}
+function gen_script() 
+{
+    SYS_CONFIG_DIR=./tools/pack/chips/sun8iw7p1/configs/nanopi-h3
+    SRC_SYS_CONFIG=boards/sys_config_nanopi_${1}.fex
+    DEST_SYS_CONFIG=sys_config.fex
+    pwd
+    (cd ${SYS_CONFIG_DIR} && cp -v ${SRC_SYS_CONFIG} ${DEST_SYS_CONFIG})
 }
 
 function select_business()
