@@ -11,11 +11,29 @@ show_help()
 	echo "  -h  Show help message"
 	echo "  -p <platform> platform, e.g. sun5i, sun6i, sun8iw1p1, sun8iw3p1, sun9iw1p1"
 	echo "  -m <mode> mode, e.g. ota_test"
+	echo "  -t install gcc tools chain"
 	printf "\n\n"
+}
+
+prepare_toolchain()
+{
+        local ARCH="arm";
+        local GCC="";
+        local GCC_PREFIX="";
+        local toolchain_archive_arm="./toolchain/gcc-linaro-arm.tar.xz";
+        local tooldir_arm="./toolchain/gcc-arm";
+
+        echo "Prepare toolchain ..."
+
+        if [ ! -d "${tooldir_arm}" -o "`ls -A ${tooldir_arm} 2>/dev/null`" = "" ]; then
+                mkdir -p ${tooldir_arm} || exit 1
+                tar --strip-components=1 -xf ${toolchain_archive_arm} -C ${tooldir_arm} || exit 1
+        fi
 }
 
 build_uboot()
 {
+	prepare_toolchain
 	cd u-boot-2011.09/
 	if [ "x${LICHEE_BOARD}" = "xnanopi-h3"  -a "x${LICHEE_PLATFORM}" = "xlinux" ] ; then
 		printf "\033[0;32;1mskip uboot clean for nanopi-h3 Linux system\033[0m\n"
@@ -37,7 +55,7 @@ build_uboot()
 	cd - 1>/dev/null
 }
 
-while getopts p:m: OPTION
+while getopts p:m:t OPTION
 do
 	case $OPTION in
 	p)
@@ -45,6 +63,10 @@ do
 		;;
 	m)
 		MODE=$OPTARG
+		;;
+	t)
+		prepare_toolchain
+		exit
 		;;
 	*) show_help
 		exit

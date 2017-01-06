@@ -21,7 +21,7 @@
 # MA 02111-1307 USA
 #
 
-CROSS_COMPILE ?= $(CURDIR)/../gcc-linaro/bin/arm-linux-gnueabi-
+CROSS_COMPILE ?= $(CURDIR)/../toolchain/gcc-arm/bin/arm-linux-gnueabi-
 
 ifndef CONFIG_STANDALONE_LOAD_ADDR
 ifeq ($(SOC),omap3)

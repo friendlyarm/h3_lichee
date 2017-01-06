@@ -632,9 +632,10 @@ function clbr()
 function prepare_toolchain()
 {
     mk_info "prepare toolchain ..."
-    tooldir=${LICHEE_BR_OUT}/external-toolchain
-    if [ ! -d ${tooldir} ] ; then
-        mkbr
+    tooldir=${LICHEE_TOP_DIR}/brandy/toolchain/gcc-arm/
+    echo ${LICHEE_BR_OUT}
+    if [ ! -d "${tooldir}" -o "`ls -A ${tooldir} 2>/dev/null`" = "" ]; then
+        (cd ${LICHEE_TOP_DIR}/brandy/ && ./build.sh -t)
     fi
 
     if ! echo $PATH | grep -q "${tooldir}" ; then
