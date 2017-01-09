@@ -1,1 +1,6 @@
-*.bin
+boot0_nand_sun8iw7p1.bin
+boot0_sdcard_sun8iw7p1.bin
+fes1_sun8iw7p1.bin
+sboot_sun8iw7p1.bin
+u-boot-sun8iw7p1.bin
+

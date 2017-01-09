@@ -633,7 +633,7 @@ function prepare_toolchain()
 {
     mk_info "prepare toolchain ..."
     tooldir=${LICHEE_TOP_DIR}/brandy/toolchain/gcc-arm/
-    echo ${LICHEE_BR_OUT}
+    
     if [ ! -d "${tooldir}" -o "`ls -A ${tooldir} 2>/dev/null`" = "" ]; then
         (cd ${LICHEE_TOP_DIR}/brandy/ && ./build.sh -t)
     fi
@@ -867,6 +867,10 @@ function mkclean()
 
     mk_info "clean product output dir ..."
     rm -rf ${LICHEE_PLAT_OUT}
+    rm -rf ${LICHEE_TOP_DIR}/out
+    rm -rf ${LICHEE_TOP_DIR}/linux-3.4/output
+    rm -rf ${LICHEE_TOP_DIR}/tools/pack/out
+    rm -rf ${LICHEE_TOP_DIR}/.buildconfig
 }
 
 function mkdistclean()

@@ -1130,6 +1130,7 @@ clean:
 	@rm -f $(obj)onenand_ipl/u-boot.lds
 	@rm -f $(obj)spl/{u-boot-spl,u-boot-spl.bin,u-boot-spl.lds,u-boot-spl.map}
 	@rm -f $(TIMESTAMP_FILE) $(VERSION_FILE)
+	@rm -f cur.log tools/sunxi_env_gen
 	@find $(OBJTREE) -type f \
 		\( -name 'core' -o -name '*.bak' -o -name '*~' \
 		-o -name '*.o'	-o -name '*.exe' -o -name '*.axf' \
