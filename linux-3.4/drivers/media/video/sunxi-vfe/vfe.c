@@ -400,24 +400,10 @@ static struct vfe_fmt formats[] = {
 };
 
 static enum v4l2_mbus_pixelcode try_yuv422_bus[] = {
-	V4L2_MBUS_FMT_UYVY10_20X1,
-	V4L2_MBUS_FMT_UYVY8_16X1,
-
-	V4L2_MBUS_FMT_YUYV10_2X10,
-	V4L2_MBUS_FMT_YVYU10_2X10,
 	V4L2_MBUS_FMT_YUYV8_2X8,
 	V4L2_MBUS_FMT_YVYU8_2X8,
 	V4L2_MBUS_FMT_UYVY8_2X8,
 	V4L2_MBUS_FMT_VYUY8_2X8,
-
-	V4L2_MBUS_FMT_YUYV10_1X20,
-	V4L2_MBUS_FMT_YVYU10_1X20,
-	V4L2_MBUS_FMT_UYVY8_1X16,
-	V4L2_MBUS_FMT_VYUY8_1X16,
-	V4L2_MBUS_FMT_YUYV8_1X16,
-	V4L2_MBUS_FMT_YVYU8_1X16,
-
-	V4L2_MBUS_FMT_YUV8_1X24,
 };
 
 #define N_TRY_YUV422 ARRAY_SIZE(try_yuv422_bus)
@@ -1996,8 +1982,26 @@ static enum v4l2_mbus_pixelcode *try_fmt_internal(struct vfe_dev *dev,struct v4l
     }
   } else if (pix_fmt_type == YUV422_INTLVD) {
     //vfe_dbg(0,"not using isp at %s!\n",__func__);
+    switch(f->fmt.pix.pixelformat) {
+      case V4L2_PIX_FMT_YUYV:
+      	ccm_fmt.code = V4L2_MBUS_FMT_YUYV8_2X8;
+      	break;
+      case V4L2_PIX_FMT_YVYU:
+      	ccm_fmt.code = V4L2_MBUS_FMT_YVYU8_2X8;
+      	break;
+      case V4L2_PIX_FMT_UYVY:
+      	ccm_fmt.code = V4L2_MBUS_FMT_UYVY8_2X8;
+      	break;
+      case V4L2_PIX_FMT_VYUY:
+      	ccm_fmt.code = V4L2_MBUS_FMT_VYUY8_2X8;
+      	break;
+      default:
+      	return NULL;
+    }
     for(bus_pix_code = try_yuv422_bus; bus_pix_code < try_yuv422_bus + N_TRY_YUV422; bus_pix_code++) {
-      ccm_fmt.code  = *bus_pix_code;
+      if (*bus_pix_code != ccm_fmt.code) {
+      	continue;
+      }
       ccm_fmt.field = f->fmt.pix.field;
       ret = v4l2_subdev_call(dev->sd,video,try_mbus_fmt,&ccm_fmt);
       if (ret >= 0) {
