@@ -334,7 +334,7 @@
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
 	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} rootfstype=ext4 rootwait init=/sbin/init storage_type=${storage_type} fb_base=0x40000000\0" \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
-	"boot_normal=fatload mmc ${boot_mmc}:1 0x43000000 script.bin;fatload mmc ${boot_mmc}:1 40007800 uimage;bootm 40007800\0" \
+	"boot_normal=fatload mmc ${boot_mmc}:1 40007800 boot.img;boota 40007800\0" \
 	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
 	"boot_fastboot=fastboot\0" \
 
