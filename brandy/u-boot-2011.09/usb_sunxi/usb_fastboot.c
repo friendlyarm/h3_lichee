@@ -599,6 +599,7 @@ static int __flash_to_part(char *name)
 	u32   part_sectors;
 	u32   nblock = FASTBOOT_TRANSFER_BUFFER_SIZE/512;
 	char  response[68];
+	char cmd[64];
 
 	start        = sunxi_partition_get_offset_byname(name);
 	part_sectors = sunxi_partition_get_size_byname(name);
@@ -610,89 +611,104 @@ static int __flash_to_part(char *name)
         return 0;
     }
 
-	if((!start) || (!part_sectors))
-	{
-		uint  addr_in_hex;
-		int   ret;
-
-		printf("sunxi fastboot download FAIL: partition %s does not exist\n", name);
-		printf("probe it as a dram address\n");
-
-		ret = strict_strtoul((const char *)name, 16, (long unsigned int*)&addr_in_hex);
-		if(ret)
+	if (!strcmp(name, "boot0")) {
+		start = 16;
+		part_sectors = 64;
+		memset(cmd, 0, 64);
+		sprintf(cmd, "mmc write %x 10 40", (int)addr);
+		printf("%s", cmd);
+		run_command(cmd, 0);
+	} else if (!strcmp(name, "u-boot")) {
+		start = 32800;
+		part_sectors=2272;
+		memset(cmd, 0, 64);
+		sprintf(cmd, "mmc write %x 8020 8E0", (int)addr);
+		printf("%s", cmd);
+		run_command(cmd, 0);
+	} else {
+		if((!start) || (!part_sectors))
 		{
-			printf("sunxi fatboot download FAIL: it is not a dram address\n");
+			uint  addr_in_hex;
+			int   ret;
 
-			sprintf(response, "FAILdownload: partition %s does not exist", name);
-			__sunxi_fastboot_send_status(response, strlen(response));
+			printf("sunxi fastboot download FAIL: partition %s does not exist\n", name);
+			printf("probe it as a dram address\n");
 
-			return -1;
-		}
-		else
-		{
-			printf("ready to move data to 0x%x, bytes 0x%x\n", addr_in_hex, trans_data.try_to_recv);
-			memcpy((void *)addr_in_hex, addr, trans_data.try_to_recv);
-		}
-	}
-	else
-	{
-		int  format;
-
-		printf("ready to download bytes 0x%x\n", trans_data.try_to_recv);
-		format = unsparse_probe(addr, trans_data.try_to_recv, start);
-
-		if(ANDROID_FORMAT_DETECT == format)
-		{
-			if(unsparse_direct_write(addr, trans_data.try_to_recv))
+			ret = strict_strtoul((const char *)name, 16, (long unsigned int*)&addr_in_hex);
+			if(ret)
 			{
-				printf("sunxi fastboot download FAIL: failed to write partition %s \n", name);
-				sprintf(response,"FAILdownload: write partition %s err", name);
+				printf("sunxi fatboot download FAIL: it is not a dram address\n");
 
-				return -1;
-			}
-		}
-		else
-		{
-		    data_sectors = (trans_data.try_to_recv + 511)/512;
-		    if(data_sectors > part_sectors)
-		    {
-		    	printf("sunxi fastboot download FAIL: partition %s size 0x%x is smaller than data size 0x%x\n", name, trans_data.act_recv, data_sectors * 512);
-				sprintf(response, "FAILdownload: partition size < data size");
-
+				sprintf(response, "FAILdownload: partition %s does not exist", name);
 				__sunxi_fastboot_send_status(response, strlen(response));
 
 				return -1;
-		    }
-			while(data_sectors >= nblock)
+			}
+			else
 			{
-				if(!sunxi_flash_write(start, nblock, addr))
+				printf("ready to move data to 0x%x, bytes 0x%x\n", addr_in_hex, trans_data.try_to_recv);
+				memcpy((void *)addr_in_hex, addr, trans_data.try_to_recv);
+			}
+		}
+		else
+		{
+			int  format;
+
+			printf("ready to download bytes 0x%x\n", trans_data.try_to_recv);
+			format = unsparse_probe(addr, trans_data.try_to_recv, start);
+
+			if(ANDROID_FORMAT_DETECT == format)
+			{
+				if(unsparse_direct_write(addr, trans_data.try_to_recv))
 				{
 					printf("sunxi fastboot download FAIL: failed to write partition %s \n", name);
 					sprintf(response,"FAILdownload: write partition %s err", name);
-
-					__sunxi_fastboot_send_status(response, strlen(response));
 
 					return -1;
 				}
-				start += nblock;
-				data_sectors -= nblock;
-				addr  += FASTBOOT_TRANSFER_BUFFER_SIZE;
 			}
-			if(data_sectors)
+			else
 			{
-				if(!sunxi_flash_write(start, data_sectors, addr))
-				{
-					printf("sunxi fastboot download FAIL: failed to write partition %s \n", name);
-					sprintf(response,"FAILdownload: write partition %s err", name);
+			    data_sectors = (trans_data.try_to_recv + 511)/512;
+			    if(data_sectors > part_sectors)
+			    {
+			    	printf("sunxi fastboot download FAIL: partition %s size 0x%x is smaller than data size 0x%x\n", name, trans_data.act_recv, data_sectors * 512);
+					sprintf(response, "FAILdownload: partition size < data size");
 
 					__sunxi_fastboot_send_status(response, strlen(response));
 
 					return -1;
+			    }
+				while(data_sectors >= nblock)
+				{
+					if(!sunxi_flash_write(start, nblock, addr))
+					{
+						printf("sunxi fastboot download FAIL: failed to write partition %s \n", name);
+						sprintf(response,"FAILdownload: write partition %s err", name);
+
+						__sunxi_fastboot_send_status(response, strlen(response));
+
+						return -1;
+					}
+					start += nblock;
+					data_sectors -= nblock;
+					addr  += FASTBOOT_TRANSFER_BUFFER_SIZE;
+				}
+				if(data_sectors)
+				{
+					if(!sunxi_flash_write(start, data_sectors, addr))
+					{
+						printf("sunxi fastboot download FAIL: failed to write partition %s \n", name);
+						sprintf(response,"FAILdownload: write partition %s err", name);
+
+						__sunxi_fastboot_send_status(response, strlen(response));
+
+						return -1;
+					}
 				}
 			}
 		}
 	}
-
 	printf("sunxi fastboot: successed in downloading partition '%s'\n", name);
 	sprintf(response, "OKAY");
 
