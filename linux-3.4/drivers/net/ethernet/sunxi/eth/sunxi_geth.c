@@ -266,8 +266,10 @@ static int geth_power_on(struct geth_priv *priv)
 {
 	int value;
 
-	if (priv->gpio_power_hd != -1)
+	if (priv->gpio_power_hd != -1) {
 		gpio_set_value(priv->gpio_power_hd, 1);
+		mdelay(50);
+	}	
 
 #ifdef CONFIG_GETH_PHY_POWER
 	struct regulator **regu;
@@ -333,8 +335,10 @@ static void geth_power_off(struct geth_priv *priv)
 {
 	int value;
 
-	if (priv->gpio_power_hd != -1)
+	if (priv->gpio_power_hd != -1) {
 		gpio_set_value(priv->gpio_power_hd, 0);
+		mdelay(50);
+	}	
 
 #ifdef CONFIG_GETH_PHY_POWER
 	struct regulator **regu = priv->power;
