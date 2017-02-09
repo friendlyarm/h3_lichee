@@ -43,6 +43,7 @@ function parse_arg()
 
 parse_arg $@
 pt_info "This script is only for ANDROID."
+touch ./linux-3.4/.scmversion
 echo -e "2\n" | ./build.sh lunch ${BOARD}
 
 cd ../android
