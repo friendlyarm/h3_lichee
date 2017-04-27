@@ -372,7 +372,7 @@ function select_lunch()
     elif [ "x${BOARD}" = "xnanopi-air" ]; then
         gen_script "air"
     elif [ "x${BOARD}" = "xnanopi-m1-plus" ]; then
-        gen_script "m1_plus"
+        gen_script "m1-plus"
     else
         echo "Unsupported board ${BOARD}"
         exit 1
@@ -382,7 +382,7 @@ function select_lunch()
 function gen_script() 
 {
     SYS_CONFIG_DIR=./tools/pack/chips/sun8iw7p1/configs/nanopi-h3
-    SRC_SYS_CONFIG=boards/sys_config_nanopi_${1}.fex
+    SRC_SYS_CONFIG=board/sys_config_nanopi-${1}.fex
     DEST_SYS_CONFIG=sys_config.fex
     pwd
     (cd ${SYS_CONFIG_DIR} && cp -v ${SRC_SYS_CONFIG} ${DEST_SYS_CONFIG})

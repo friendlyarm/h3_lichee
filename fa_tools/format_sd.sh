@@ -71,7 +71,7 @@ fi
 install_package dosfstools
 umount /dev/${DEV_NAME}* >/dev/null 2>&1
 pt_info "formatting ${DEV_NAME}, please wait..."
-dd if=/dev/zero of=/dev/${DEV_NAME} bs=16M count=4
+dd if=/dev/zero of=/dev/${DEV_NAME} bs=16M count=6
 sync
 
 fdisk /dev/$DEV_NAME <<EOF
