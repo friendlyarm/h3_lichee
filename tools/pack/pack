@@ -392,10 +392,12 @@ function do_common()
 function do_finish()
 {
 	if [ -e ${IMG_NAME} ]; then
-        mv ${IMG_NAME} ../${IMG_NAME}
+		BOARD_NAME=`cat ../../../.config | grep BOARD_NAME | cut -d "=" -f 2`
+		RENAME_IMG_NAME=`echo ${IMG_NAME} | sed "s/nanopi-h3/${BOARD_NAME}/g"`
+        mv ${IMG_NAME} ../${RENAME_IMG_NAME}
         echo '----------image is at----------'
         echo -e '\033[0;32;1m'
-        echo ${ROOT_DIR}/${IMG_NAME}
+        echo ${ROOT_DIR}/${RENAME_IMG_NAME}
         echo -e '\033[0m'
     fi
 
