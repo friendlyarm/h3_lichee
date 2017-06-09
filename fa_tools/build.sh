@@ -112,7 +112,7 @@ function  build_kernel_4_linux()
     cd ${PRJ_ROOT_DIR}
     execute_cmd "./build.sh -p sun8iw7p1 -b nanopi-h3 -m kernel"
     pack_lichee_4_linux
-    pt_info "build and pack linux kernel for ${LINUX_PLAT} success"
+    pt_info "build and pack kernel for ${LINUX_PLAT} success"
 }
 
 function  build_lichee_4_linux()
@@ -143,9 +143,17 @@ function pack_lichee_4_android()
 function build_uboot_4_android()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "./build.sh -p sun8iw7p1 -b nanopi-h3 -m uboot"
+    execute_cmd "./build.sh -p sun8iw7p1_android -b nanopi-h3 -m uboot"
     pack_lichee_4_android
     pt_info "build and pack u-boot for ${ANDROID_PLAT} success"    
+}
+
+function  build_kernel_4_android()
+{
+    cd ${PRJ_ROOT_DIR}
+    execute_cmd "./build.sh -p sun8iw7p1_android -b nanopi-h3 -m kernel"
+    pack_lichee_4_android
+    pt_info "build and pack kernel for ${ANDROID_PLAT} success"
 }
 
 function build_lichee_4_android()
@@ -153,6 +161,13 @@ function build_lichee_4_android()
     cd ${PRJ_ROOT_DIR}
     execute_cmd "echo -e \"2\n\" | ./build.sh lunch ${BOARD_NAME}"
     pt_info "build lichee for ${ANDROID_PLAT} success. Please build and pack in Android directory"
+}
+
+function build_clean_4_android()
+{
+    cd ${PRJ_ROOT_DIR}
+    execute_cmd "./build.sh -p sun8iw7p1_android -b nanopi-h3 -m clean"
+    pt_info "clean lichee for ${ANDROID_PLAT} success"
 }
 
 function update_config()
@@ -203,7 +218,14 @@ elif [ "x${PLATFORM}" = "xandroid" ]; then
         pt_info "pack lichee for ${ANDROID_PLAT} success" 
     elif [ "x${TARGET}" = "xu-boot" ]; then
         build_uboot_4_android
-    else
+    elif [ "x${TARGET}" = "xkernel" ]; then
+        build_kernel_4_android
+    elif [ "x${TARGET}" = "xall" ]; then
         build_lichee_4_android
+    elif [ "x${TARGET}" = "xclean" ]; then
+        build_clean_4_android
+    else
+        pt_error "unsupported target"
+        usage
     fi
 fi
