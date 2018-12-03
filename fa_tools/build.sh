@@ -180,7 +180,7 @@ function update_config()
 
 cd ..
 PRJ_ROOT_DIR=`pwd`
-H5_BOARD="nanopi-air|nanopi-neo|nanopi-m1|nanopi-m1-plus"
+H5_BOARD="nanopi-air|nanopi-neo|nanopi-m1|nanopi-m1-plus|nanopi-duo2"
 H5_PLATFORM="linux|android"
 H5_TARGET="all|u-boot|kernel|pack|clean"
 BOARD_NAME=none

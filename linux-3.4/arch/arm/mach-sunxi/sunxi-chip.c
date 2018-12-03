@@ -32,6 +32,19 @@
 #include <mach/sunxi-chip.h>
 #include <mach/sunxi-smc.h>
 
+// copy from u-boot /include/friendlyelec/boardtype.h
+// H3
+#define BOARD_TYPE_NANOPI_M1              (0)
+#define BOARD_TYPE_NANOPI_NEO             (1)
+#define BOARD_TYPE_NANOPI_NEO_AIR         (2)
+#define BOARD_TYPE_NANOPI_M1_PLUS         (3)
+#define BOARD_TYPE_NANOPI_DUO             (4)
+#define BOARD_TYPE_NANOPI_NEO_CORE        (5)
+#define BOARD_TYPE_NANOPI_K1              (6)
+#define BOARD_TYPE_NANOPI_HERO            (7)
+#define BOARD_TYPE_NANOPI_DUO2            (8)
+#define BOARD_TYPE_NANOPI_R1              (9)
+
 static unsigned int sunxi_soc_ver;
 static unsigned int sunxi_soc_chipid[4];
 static unsigned int sunxi_pmu_chipid[4];
@@ -124,6 +137,11 @@ unsigned int sunxi_get_board_vendor_id(void)
 			goto fail;
 		}
 		vid_val |= (pin_val<<i);
+	}
+
+	// compatible with friendlyelec Linux-4.14
+	if (vid_val == 0x5) {
+		vid_val = BOARD_TYPE_NANOPI_DUO2;
 	}
 	return vid_val;
 fail:
