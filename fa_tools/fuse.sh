@@ -31,7 +31,7 @@ function usage()
 
 function parse_arg()
 {
-    if [ $# -lt 4 ]; then
+    if [ $# -ne 6 ]; then
         usage
     fi
     OLD_IFS=${IFS}
