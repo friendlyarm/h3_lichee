@@ -321,6 +321,7 @@
 #define CONFIG_ENV_SIZE				(128 << 10)	/* 128KB */
 #define CONFIG_CMD_SAVEENV
 
+/* fb_base: Linux call fb_parse_bootlogo_base to get fb_base=0x40000000 */
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"fsck.repair=yes\0" \
 	"selinux=0\0" \
@@ -332,8 +333,8 @@
 	"mmc_root=/dev/mmcblk0p2\0" \
 	"init=/sbin/init\0" \
 	"loglevel=8\0" \
-	"setargs_mmc=setenv bootargs console=${console} console=${fbconsole} root=${mmc_root} rootwait storage_type=${storage_type} " \
-	"init=${init} loglevel=${loglevel} partitions=${partitions} selinux=${selinux} fsck.repair=${fsck.repair}\0" \
+	"setargs_mmc=setenv bootargs console=${console} root=${mmc_root} rootwait storage_type=${storage_type} " \
+	"init=${init} loglevel=${loglevel} partitions=${partitions} selinux=${selinux} fsck.repair=${fsck.repair} fb_base=0x40000000\0" \
 	"boot_normal=fatload mmc ${boot_mmc}:1 40007800 boot.img;boota 40007800\0" \
 	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
 	"boot_fastboot=fastboot\0" \
